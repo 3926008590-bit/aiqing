@@ -34,10 +34,7 @@ export function ChatHeader() {
         <span>螃蟹交付专员-绝缘创建了群组</span>
       </div>
 
-      {/* System tip */}
-      <div className="bg-neutral-100 px-6 py-3 text-center text-xs leading-relaxed text-neutral-500">
-        用户_5871616已催促，正策马加鞭为您处理，预计3-5分钟内回复~
-      </div>
+
     </header>
   )
 }
