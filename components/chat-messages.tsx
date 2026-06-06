@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useEffect, useRef } from "react"
 import type { ReactNode } from "react"
 import type { Message } from "./chat-types"
+import { Check } from "lucide-react" // 请确保项目中安装了 lucide-react
 
 function MessageRow({ children }: { children: ReactNode }) {
   return (
@@ -45,7 +46,7 @@ function ImportantCard() {
   return (
     <MessageRow>
       <div className="relative w-full max-w-full rounded-xl rounded-tl-sm border border-red-300 bg-white px-4 py-3">
-        <span className="absolute -top-px right-0 rounded-bl-xl rounded-tr-xl bg-red-500 px-2.5 py-1 text-[11px] font-medium text-white">
+        <span className="absolute -top-px right-0 rounded-bl-xl rounded-tr-xl bg-red-500 px-2.5 py-1 text-[111px] font-medium text-white">
           重要步骤
         </span>
         <p className="mb-1.5 text-base font-semibold text-neutral-900">温馨小贴士</p>
@@ -189,6 +190,7 @@ function TypingIndicator() {
 
 export function ChatMessages({ messages, typing }: { messages: Message[]; typing: boolean }) {
   const bottomRef = useRef<HTMLDivElement>(null)
+  const steps = ["确认账号信息", "买家上号验号", "双方换绑账号"]
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -196,6 +198,25 @@ export function ChatMessages({ messages, typing }: { messages: Message[]; typing
 
   return (
     <main className="flex-1 overflow-y-auto bg-neutral-100 pb-2">
+      {/* 新增：步骤条和群组提示消息 */}
+      <MessageRow>
+        <div className="flex flex-col items-center gap-2 py-2">
+          <div className="flex items-center gap-3">
+            {steps.map((step) => (
+              <div key={step} className="flex items-center gap-1 text-green-600 text-xs">
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-green-500 text-white">
+                  <Check className="h-2.5 w-2.5" strokeWidth={3} />
+                </span>
+                <span className="font-medium">{step}</span>
+              </div>
+            ))}
+          </div>
+          <div className="text-center text-xs text-neutral-500">
+            螃蟹交付专员-绝缘创建了群组
+          </div>
+        </div>
+      </MessageRow>
+
       <OrderCard />
       <ImportantCard />
       <ProductCard />
