@@ -128,7 +128,7 @@ function TransactionCard() {
           {isExpanded && (
             <div className="mt-3 overflow-hidden rounded-lg bg-white">
               <img
-                src="https://neeko-copilot.bytedance.net/api/text2image?prompt=account%20transaction%20notice%20reminder%20document%20with%20orange%20header%20and%20three%20sections%20containing%20seller%20notices%20channel%20service%20mechanism%20transaction%20rules%20with%20numbered%20points%20in%20Chinese%20language%20clean%20design&image_size=portrait_16_9"
+                src="https://picsum.photos/400/800"
                 alt="账号交易须知提醒"
                 className="w-full"
                 decoding="async"
