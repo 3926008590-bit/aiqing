@@ -69,8 +69,8 @@ export function RatingModal({
 
 const ORDER_INFO = [
   { label: "订单编号", value: "ZH21590414336825520954" },
-  { label: "商品编号", value: "CRTTR5293" },
-  { label: "商品名称", value: "【CRTTR5293】金皮3..." },
+  { label: "商品编号", value: "CRJYG6289" },
+  { label: "商品名称", value: "【CRJYG6289】金皮3..." },
   { label: "原价", value: "¥288" },
   { label: "预估到手", value: "¥235" },
   { label: "订单状态", value: "已支付 · 交付中" },

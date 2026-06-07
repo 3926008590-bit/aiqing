@@ -10,7 +10,7 @@ export function ChatHeader() {
         <button aria-label="返回" className="flex h-8 w-8 shrink-0 items-center justify-center">
           <ChevronLeft className="h-6 w-6 text-neutral-800" />
         </button>
-        <h1 className="ml-2.5 text-left text-base font-semibold text-neutral-900">CRTTR5293超自然行动组</h1>
+        <h1 className="ml-2.5 text-left text-base font-semibold text-neutral-900">CRJYG6289超自然行动组</h1>
         <button aria-label="更多" className="ml-auto flex h-8 w-8 shrink-0 items-center justify-center">
           <MoreHorizontal className="h-6 w-6 text-neutral-800" />
         </button>

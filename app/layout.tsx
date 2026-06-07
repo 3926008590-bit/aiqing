@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'CRTTR5293超自然行动组',
+  title: 'CRJYG6289超自然行动组',
   description: '游戏账号交易客服聊天',
   generator: 'v0.app',
   icons: {
