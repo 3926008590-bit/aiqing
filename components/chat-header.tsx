@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronLeft, MoreHorizontal, Check, FileText, MessageSquare, AlertTriangle, Star, Copy, Share2, ChevronRight } from "lucide-react"
+import { ChevronLeft, MoreHorizontal, Check, FileText, MessageSquare, AlertTriangle, Star, Copy, Share2, ChevronRight, Settings } from "lucide-react"
 
 const steps = ["确认账号信息", "买家上号验号", "双方换绑账号"]
 
@@ -12,6 +12,7 @@ interface FunctionMenuProps {
 
 function FunctionMenu({ onClose, onAction }: FunctionMenuProps) {
   const menuItems = [
+    { icon: Settings, label: "DIY设置", action: "settings" },
     { icon: FileText, label: "订单详情", action: "order" },
     { icon: MessageSquare, label: "交易信息", action: "transaction" },
     { icon: AlertTriangle, label: "投诉建议", action: "complaint" },

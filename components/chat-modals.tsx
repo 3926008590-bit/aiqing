@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { X, Star } from "lucide-react"
+import { useChatConfig } from "./chat-config"
 
 function ModalShell({
   title,
@@ -67,17 +68,19 @@ export function RatingModal({
   )
 }
 
-const ORDER_INFO = [
-  { label: "订单编号", value: "ZH21590414336825520954" },
-  { label: "商品编号", value: "CRJYG6289" },
-  { label: "商品名称", value: "【CRJYG6289】金皮3..." },
-  { label: "原价", value: "¥288" },
-  { label: "预估到手", value: "¥235" },
-  { label: "订单状态", value: "已支付 · 交付中" },
-  { label: "下单时间", value: "05/07 13:32" },
-]
-
 export function TransactionModal({ onClose }: { onClose: () => void }) {
+  const { config } = useChatConfig()
+  
+  const ORDER_INFO = [
+    { label: "订单编号", value: config.orderNumber },
+    { label: "商品编号", value: config.productId },
+    { label: "商品名称", value: `【${config.productId}】${config.productName}` },
+    { label: "原价", value: config.originalPrice },
+    { label: "预估到手", value: config.finalPrice },
+    { label: "订单状态", value: "已支付 · 交付中" },
+    { label: "下单时间", value: "05/07 13:32" },
+  ]
+
   return (
     <ModalShell title="交易信息" onClose={onClose}>
       <div className="divide-y divide-neutral-100">

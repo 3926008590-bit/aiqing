@@ -4,8 +4,11 @@ import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import type { ReactNode } from "react"
 import type { Message } from "./chat-types"
+import { useChatConfig } from "./chat-config"
 
 function MessageRow({ children }: { children: ReactNode }) {
+  const { config } = useChatConfig()
+  
   return (
     <div className="flex gap-2 px-3 py-2">
       <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full">
@@ -19,7 +22,7 @@ function MessageRow({ children }: { children: ReactNode }) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-1 flex items-center gap-1.5">
-          <span className="text-xs text-neutral-500">螃蟹交付专员-绝缘</span>
+          <span className="text-xs text-neutral-500">{config.customerServiceName}</span>
           <span className="rounded bg-amber-400 px-1.5 py-px text-[10px] font-medium text-white">官方</span>
           <span className="ml-1 text-[11px] text-neutral-400">05/07 13:32</span>
         </div>
@@ -30,19 +33,23 @@ function MessageRow({ children }: { children: ReactNode }) {
 }
 
 function OrderCard() {
+  const { config } = useChatConfig()
+  
   return (
     <MessageRow>
       <div className="w-fit max-w-full rounded-xl rounded-tl-sm border border-neutral-100 bg-white px-4 py-3 shadow-sm">
         <p className="mb-1.5 text-base font-semibold text-neutral-900">订单已支付</p>
         <p className="text-sm leading-relaxed text-neutral-500">订单编号:</p>
-        <p className="text-sm leading-relaxed text-neutral-700">ZH87654321987654321123</p>
-        <p className="text-sm leading-relaxed text-neutral-500">商品编号:CRJYG6289</p>
+        <p className="text-sm leading-relaxed text-neutral-700">{config.orderNumber}</p>
+        <p className="text-sm leading-relaxed text-neutral-500">商品编号:{config.productId}</p>
       </div>
     </MessageRow>
   )
 }
 
 function ImportantCard() {
+  const { config } = useChatConfig()
+  
   return (
     <MessageRow>
       <div className="relative w-full max-w-full rounded-xl rounded-tl-sm border-2 border-red-400 bg-white px-4 py-3">
@@ -52,7 +59,7 @@ function ImportantCard() {
         <p className="mb-1.5 text-base font-semibold text-neutral-900">温馨小贴士</p>
         <p className="mb-1.5 text-sm font-medium text-orange-500">用户_***616(买家)</p>
         <span className="mb-2 inline-block rounded-full bg-orange-500 px-2.5 py-0.5 text-sm font-medium text-white">
-          @绝缘pxzc(卖家)
+          @{config.sellerName}(卖家)
         </span>
         <p className="mb-1 text-sm leading-relaxed text-red-500">
           1.客服服务时间为：09:30-00:30，非服务时段请勿擅自操作流程
@@ -64,6 +71,7 @@ function ImportantCard() {
 }
 
 function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
+  const { config } = useChatConfig()
   const [isExpanded, setIsExpanded] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
@@ -81,7 +89,7 @@ function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
         <div className="flex items-center gap-2 mb-2.5">
           <div className="text-base font-semibold text-neutral-800">请阅读确认</div>
           <div className="bg-orange-500 text-white px-2.5 py-1 rounded-full text-xs whitespace-nowrap">
-            @绝缘pxzc(卖家)
+            @{config.sellerName}(卖家)
           </div>
         </div>
 
@@ -89,7 +97,7 @@ function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
         <div className="flex gap-2.5 bg-neutral-100 rounded-md p-2.5 mb-2.5">
           <div className="w-[100px] h-[80px] rounded overflow-hidden flex-shrink-0">
             <Image
-              src="/game-skin.png"
+              src={config.productImage}
               alt="商品图"
               width={100}
               height={80}
@@ -97,9 +105,9 @@ function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
             />
           </div>
           <div className="flex-1">
-            <div className="text-sm font-semibold mb-1.5">【CRJYG6289】金皮1...</div>
-            <div className="text-xs text-neutral-500 mb-0.5">原价 ¥120</div>
-            <div className="text-lg text-orange-500 font-bold">预估到手 ¥90</div>
+            <div className="text-sm font-semibold mb-1.5">【{config.productId}】{config.productName}</div>
+            <div className="text-xs text-neutral-500 mb-0.5">{config.originalPrice}</div>
+            <div className="text-lg text-orange-500 font-bold">{config.finalPrice}</div>
           </div>
         </div>
 
@@ -155,6 +163,8 @@ function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
 }
 
 function BotBubble({ message }: { message: Message }) {
+  const { config } = useChatConfig()
+  
   return (
     <div className="flex gap-2 px-3 py-2">
       <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full">
@@ -168,7 +178,7 @@ function BotBubble({ message }: { message: Message }) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-1 flex items-center gap-1.5">
-          <span className="text-xs text-neutral-500">螃蟹交付专员-绝缘</span>
+          <span className="text-xs text-neutral-500">{config.customerServiceName}</span>
           <span className="rounded bg-amber-400 px-1.5 py-px text-[10px] font-medium text-white">官方</span>
           <span className="ml-1 text-[11px] text-neutral-400">{message.time}</span>
         </div>

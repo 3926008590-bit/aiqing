@@ -5,15 +5,19 @@ import { ChatHeader } from "@/components/chat-header"
 import { ChatMessages } from "@/components/chat-messages"
 import { ChatFooter } from "@/components/chat-footer"
 import { RatingModal, TransactionModal, ComplaintModal } from "@/components/chat-modals"
+import { SettingPanel } from "@/components/setting-panel"
+import { ChatConfigProvider, useChatConfig } from "@/components/chat-config"
 import { type Message, nowTime, uid, smartReply } from "@/components/chat-types"
 
 type ModalKind = "rating" | "transaction" | "complaint" | null
 
-export default function Page() {
+function ChatApp() {
   const [messages, setMessages] = useState<Message[]>([])
   const [typing, setTyping] = useState(false)
   const [modal, setModal] = useState<ModalKind>(null)
+  const [showSettings, setShowSettings] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const { config } = useChatConfig()
 
   const pushMessage = useCallback((msg: Omit<Message, "id" | "time">) => {
     setMessages((prev) => [...prev, { ...msg, id: uid(), time: nowTime() }])
@@ -59,6 +63,10 @@ export default function Page() {
   // 处理功能菜单的操作
   const handleMenuAction = useCallback((action: string) => {
     switch (action) {
+      case "settings":
+        // 打开DIY设置
+        setShowSettings(true)
+        break
       case "order":
         // 显示订单详情（暂时用交易信息弹窗代替）
         setModal("transaction")
@@ -77,19 +85,19 @@ export default function Page() {
         break
       case "copy":
         // 复制订单编号
-        navigator.clipboard.writeText("ZH87654321987654321123")
+        navigator.clipboard.writeText(config.orderNumber)
         pushMessage({ sender: "system", type: "text", content: "订单编号已复制到剪贴板" })
-        botReply("订单编号：ZH87654321987654321123 已复制到剪贴板～")
+        botReply(`订单编号：${config.orderNumber} 已复制到剪贴板～`)
         break
       case "share":
         // 分享会话（模拟）
         pushMessage({ sender: "system", type: "text", content: "正在生成分享链接..." })
-        botReply("分享链接已生成：https://example.com/session/ZH87654321123\n您可以复制此链接分享给好友～")
+        botReply(`分享链接已生成：https://example.com/session/${config.orderNumber}\n您可以复制此链接分享给好友～`)
         break
       default:
         break
     }
-  }, [pushMessage, botReply])
+  }, [config.orderNumber, pushMessage, botReply])
 
   return (
     <div className="mx-auto flex h-dvh max-w-md flex-col bg-neutral-100">
@@ -135,6 +143,17 @@ export default function Page() {
           }}
         />
       )}
+
+      {/* DIY设置面板 */}
+      {showSettings && <SettingPanel onClose={() => setShowSettings(false)} />}
     </div>
+  )
+}
+
+export default function Page() {
+  return (
+    <ChatConfigProvider>
+      <ChatApp />
+    </ChatConfigProvider>
   )
 }
