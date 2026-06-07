@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { ReactNode } from "react"
 import type { Message } from "./chat-types"
 
@@ -19,7 +19,7 @@ function MessageRow({ children }: { children: ReactNode }) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-1 flex items-center gap-1.5">
-          <span className="text-xs text-neutral-500">螃蟹交付专员-凯凯凯</span>
+          <span className="text-xs text-neutral-500">螃蟹交付专员-绝缘</span>
           <span className="rounded bg-amber-400 px-1.5 py-px text-[10px] font-medium text-white">官方</span>
           <span className="ml-1 text-[11px] text-neutral-400">05/07 13:32</span>
         </div>
@@ -35,8 +35,8 @@ function OrderCard() {
       <div className="w-fit max-w-full rounded-xl rounded-tl-sm border border-neutral-100 bg-white px-4 py-3 shadow-sm">
         <p className="mb-1.5 text-base font-semibold text-neutral-900">订单已支付</p>
         <p className="text-sm leading-relaxed text-neutral-500">订单编号:</p>
-        <p className="text-sm leading-relaxed text-neutral-700">ZH21590414336825520954</p>
-        <p className="text-sm leading-relaxed text-neutral-500">商品编号:CRTTR5293</p>
+        <p className="text-sm leading-relaxed text-neutral-700">ZH87654321987654321098</p>
+        <p className="text-sm leading-relaxed text-neutral-500">商品编号:CRTTR8765</p>
       </div>
     </MessageRow>
   )
@@ -50,9 +50,9 @@ function ImportantCard() {
           重要步骤
         </span>
         <p className="mb-1.5 text-base font-semibold text-neutral-900">温馨小贴士</p>
-        <p className="mb-1.5 text-sm font-medium text-orange-500">@@用户_***616(买家)</p>
+        <p className="mb-1.5 text-sm font-medium text-orange-500">用户_***616(买家)</p>
         <span className="mb-2 inline-block rounded-full bg-orange-500 px-2.5 py-0.5 text-sm font-medium text-white">
-          @效率爽快点(卖家)
+          @绝缘pxzc(卖家)
         </span>
         <p className="mb-1 text-sm leading-relaxed text-red-500">
           1.客服服务时间为：09:30-00:30，非服务时段请勿擅自操作流程
@@ -63,38 +63,87 @@ function ImportantCard() {
   )
 }
 
-function ProductCard() {
+function TransactionCard() {
+  const [isExpanded, setIsExpanded] = useState(false)
+
   return (
     <MessageRow>
       <div className="relative w-full max-w-full overflow-hidden rounded-xl rounded-tl-sm border border-neutral-100 bg-white shadow-sm">
-        <span className="absolute right-2 top-3 rotate-6 rounded-full border-2 border-green-500/70 px-2 py-0.5 text-[11px] font-bold text-green-600/80">
-          已完成
-        </span>
-        <div className="flex items-center gap-2 px-3 pt-3">
-          <p className="text-sm font-semibold text-neutral-900">请阅读确认</p>
-          <span className="inline-block rounded-full bg-orange-500 px-2 py-0.5 text-xs font-medium text-white">
+        <div className="absolute right-4 top-3 flex h-10 w-10 items-center justify-center rounded-full border-2 border-neutral-300 opacity-60">
+          <span className="text-xs font-medium text-neutral-400">已作废</span>
+        </div>
+        <div className="flex items-center gap-2 px-4 pt-4">
+          <p className="text-base font-semibold text-neutral-900">请阅读确认</p>
+          <span className="inline-block rounded-full bg-orange-500 px-3 py-1 text-sm font-medium text-white">
             @效率爽快点(卖家)
           </span>
         </div>
-        <div className="flex gap-3 p-3">
-          <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-neutral-100">
-            <Image
-              src="/game-skin.png"
-              alt="商品缩略图"
-              width={64}
-              height={64}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="flex min-w-0 flex-col justify-center">
-            <p className="truncate text-sm font-medium text-neutral-900">【CRTTR5293】金皮3...</p>
-            <p className="mt-1 text-sm text-neutral-400 line-through">原价¥288</p>
-            <p className="mt-0.5 text-orange-500">
-              <span className="text-sm">预估到手¥</span>
-              <span className="text-lg font-semibold">235</span>
-            </p>
+        <div className="mx-4 mt-3 rounded-lg bg-neutral-100 p-3">
+          <div className="flex gap-3">
+            <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg">
+              <Image
+                src="/game-skin.png"
+                alt="商品缩略图"
+                width={64}
+                height={64}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="flex flex-col justify-center">
+              <p className="text-base font-medium text-neutral-900">【CXLQG5071】金皮1...</p>
+              <p className="mt-1 text-sm text-neutral-400 line-through">原价¥120</p>
+              <p className="mt-1 text-lg font-semibold text-orange-500">预估到手¥90</p>
+            </div>
           </div>
         </div>
+        <div className="px-4 mt-4">
+          <p className="text-base font-medium text-neutral-900">交易流程:</p>
+          <p className="mt-2 text-sm leading-relaxed text-blue-500">
+            1.确认账号信息—2.买家上号验号—3.双方换绑账号—4.合同放款
+          </p>
+        </div>
+        <div className="px-4 mt-4 space-y-1.5">
+          <p className="text-sm text-neutral-500">1.请仔细阅读以下须知</p>
+          <p className="text-sm text-neutral-500">2.点击【<span className="font-medium text-orange-500">开始交易</span>】即视为同意交易</p>
+        </div>
+        <div className="mx-4 mt-4 overflow-hidden rounded-lg bg-gradient-to-br from-orange-50 to-amber-100 p-4">
+          <p className="text-center text-base font-semibold text-neutral-700">账号交易须知提醒</p>
+          <div className="mt-3 flex items-center justify-between rounded-lg bg-white/70 p-3">
+            <span className="rounded-full bg-orange-400 px-2 py-1 text-xs font-semibold text-white">卖家须知</span>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="flex items-center gap-1 rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-700"
+            >
+              <span>{isExpanded ? "收起" : "展开"}</span>
+              <svg
+                className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+          {isExpanded && (
+            <div className="mt-3 overflow-hidden rounded-lg bg-white">
+              <img
+                src="/transaction-notice.png"
+                alt="账号交易须知提醒"
+                className="w-full"
+                decoding="async"
+              />
+            </div>
+          )}
+          {!isExpanded && (
+            <p className="mt-2 text-center text-xs text-neutral-400">
+              渠道账号是整体打包出售，若账号同渠道有连体登录的游
+            </p>
+          )}
+        </div>
+        <button className="mx-4 mt-4 mb-4 w-full rounded-lg bg-neutral-300 py-3 text-base font-medium text-neutral-500">
+          开始交易
+        </button>
       </div>
     </MessageRow>
   )
@@ -114,7 +163,7 @@ function BotBubble({ message }: { message: Message }) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-1 flex items-center gap-1.5">
-          <span className="text-xs text-neutral-500">螃蟹交付专员-凯凯凯</span>
+          <span className="text-xs text-neutral-500">螃蟹交付专员-绝缘</span>
           <span className="rounded bg-amber-400 px-1.5 py-px text-[10px] font-medium text-white">官方</span>
           <span className="ml-1 text-[11px] text-neutral-400">{message.time}</span>
         </div>
@@ -197,15 +246,16 @@ export function ChatMessages({ messages, typing }: { messages: Message[]; typing
 
   return (
     <main className="flex-1 overflow-y-auto bg-neutral-100 pb-2">
+      <div className="px-6 py-2 text-center text-xs leading-relaxed text-neutral-500">螃蟹交付专员-绝缘创建了群组</div>
       <OrderCard />
       <ImportantCard />
-      <ProductCard />
       {messages.map((m) => {
         if (m.sender === "system") return <SystemTip key={m.id} message={m} />
         if (m.sender === "user") return <UserBubble key={m.id} message={m} />
         return <BotBubble key={m.id} message={m} />
       })}
       {typing && <TypingIndicator />}
+      <TransactionCard />
       <div ref={bottomRef} />
     </main>
   )
