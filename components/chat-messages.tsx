@@ -73,15 +73,15 @@ function ImportantCard() {
 
 function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
   const { config } = useChatConfig()
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [isConfirmed, setIsConfirmed] = useState(false)
 
   const handleConfirm = () => {
-    setIsConfirmed(true);
+    setIsConfirmed(true)
     if (onConfirm) {
-      onConfirm();
+      onConfirm()
     }
-  };
+  }
 
   return (
     <MessageRow>
@@ -127,7 +127,7 @@ function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
         {/* 须知区域：纯图片背景 + 展开按钮 */}
         <div className="relative mb-2.5">
           <div 
-            className={`rounded-md overflow-hidden transition-all duration-300 ${isExpanded ? '' : 'h-24'}`}
+            className={`rounded-md overflow-hidden transition-all duration-300 ${isExpanded ? "" : "h-24"}`}
           >
             <Image
               src="/transaction-notice.png"
@@ -135,14 +135,14 @@ function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
               width={296}
               height={isExpanded ? 600 : 96}
               className="w-full object-cover"
-              style={{ objectPosition: 'center top' }}
+              style={{ objectPosition: "center top" }}
             />
           </div>
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/90 text-orange-500 border-none px-4 py-1 rounded-full text-sm cursor-pointer flex items-center gap-1"
           >
-            {isExpanded ? '收起 ▲' : '展开 ▼'}
+            {isExpanded ? "收起 ▲" : "展开 ▼"}
           </button>
         </div>
 
@@ -152,11 +152,11 @@ function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
           disabled={isConfirmed}
           className={`w-full py-2.5 border-none rounded-md text-sm transition-all duration-300 ${
             isConfirmed
-              ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
-              : 'bg-orange-500 text-white cursor-pointer'
+              ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
+              : "bg-orange-500 text-white cursor-pointer"
           }`}
         >
-          {isConfirmed ? '已确认' : '开始交易'}
+          {isConfirmed ? "已确认" : "开始交易"}
         </button>
       </div>
     </MessageRow>
@@ -195,21 +195,25 @@ function UserBubble({ message, isRead }: { message: Message; isRead?: boolean })
   return (
     <div className="flex justify-end px-3 py-2">
       <div className="flex max-w-[75%] flex-col items-end">
-        <div className="mb-1 flex items-center gap-1 justify-end">
-          <span className="text-[11px] text-neutral-400">{message.time}</span>
-          {isRead && (
-            <CheckCheck className="h-3.5 w-3.5 text-blue-500" />
-          )}
-        </div>
-        <div className="flex items-end gap-2">
-          <BubbleBody message={message} side="right" />
-          <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full">
+        <div className="flex items-center gap-2">
+          <div className="flex flex-col items-end">
+            <div className="mb-1 flex items-center gap-1">
+              <span className="text-[11px] text-neutral-400">{message.time}</span>
+            </div>
+            <BubbleBody message={message} side="right" />
+            <div className="mt-1 flex items-center justify-end">
+              {isRead && (
+                <span className="text-[11px] text-neutral-400">全部已读</span>
+              )}
+            </div>
+          </div>
+          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
             {config.userAvatar ? (
               <Image
                 src={config.userAvatar}
                 alt={config.userName}
-                width={36}
-                height={36}
+                width={40}
+                height={40}
                 className="h-full w-full object-cover"
               />
             ) : (
@@ -227,7 +231,7 @@ function UserBubble({ message, isRead }: { message: Message; isRead?: boolean })
 function BubbleBody({ message, side }: { message: Message; side: "left" | "right" }) {
   if (message.type === "image") {
     return (
-      <div className={`overflow-hidden rounded-xl ${side === "right" ? "rounded-tr-sm" : "rounded-tl-sm"}`}>
+      <div className={`overflow-hidden rounded-2xl ${side === "right" ? "rounded-tr-md" : "rounded-tl-md"}`}>
         <Image
           src={message.content || "/placeholder.svg"}
           alt="发送的图片"
@@ -240,10 +244,10 @@ function BubbleBody({ message, side }: { message: Message; side: "left" | "right
   }
   return (
     <div
-      className={`w-fit max-w-full whitespace-pre-wrap break-words rounded-xl px-3.5 py-2.5 text-sm leading-relaxed ${
+      className={`w-fit max-w-full whitespace-pre-wrap break-words rounded-2xl px-4 py-2.5 text-base leading-relaxed ${
         side === "right"
-          ? "rounded-tr-sm bg-orange-500 text-white"
-          : "rounded-tl-sm border border-neutral-100 bg-white text-neutral-800 shadow-sm"
+          ? "rounded-tr-md bg-[#95ec69] text-neutral-900"
+          : "rounded-tl-md border border-neutral-100 bg-white text-neutral-800 shadow-sm"
       }`}
     >
       {message.content}

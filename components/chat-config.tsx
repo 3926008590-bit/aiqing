@@ -14,6 +14,7 @@ export interface ChatConfig {
   finalPrice: string
   userName: string
   userAvatar: string
+  groupName: string
 }
 
 const defaultConfig: ChatConfig = {
@@ -28,6 +29,7 @@ const defaultConfig: ChatConfig = {
   finalPrice: "¥90",
   userName: "用户_***616",
   userAvatar: "",
+  groupName: "CRJYG6289超自然行动组",
 }
 
 const STORAGE_KEY = "chat-config"

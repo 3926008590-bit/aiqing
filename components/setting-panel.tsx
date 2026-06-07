@@ -35,6 +35,7 @@ export function SettingPanel({ onClose }: SettingPanelProps) {
         finalPrice: "¥90",
         userName: "用户_***616",
         userAvatar: "",
+        groupName: "CRJYG6289超自然行动组",
       })
     }
   }
@@ -100,6 +101,15 @@ export function SettingPanel({ onClose }: SettingPanelProps) {
           {/* 基础设置 */}
           {activeTab === "basic" && (
             <div className="space-y-4">
+              <FormField label="群名称">
+                <input
+                  type="text"
+                  value={formData.groupName}
+                  onChange={(e) => setFormData({ ...formData, groupName: e.target.value })}
+                  className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
+                  placeholder="例如：CRJYG6289超自然行动组"
+                />
+              </FormField>
               <FormField label="客服名称">
                 <input
                   type="text"
@@ -109,7 +119,6 @@ export function SettingPanel({ onClose }: SettingPanelProps) {
                   placeholder="例如：螃蟹交付专员-绝缘"
                 />
               </FormField>
-
               <FormField label="订单编号">
                 <input
                   type="text"
@@ -119,7 +128,6 @@ export function SettingPanel({ onClose }: SettingPanelProps) {
                   placeholder="例如：ZH123456789"
                 />
               </FormField>
-
               <FormField label="商品编号">
                 <input
                   type="text"
