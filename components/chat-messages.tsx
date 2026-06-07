@@ -65,6 +65,7 @@ function ImportantCard() {
 
 function TransactionCard() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   return (
     <MessageRow>
@@ -130,9 +131,24 @@ function TransactionCard() {
         </div>
 
         {/* 底部按钮 */}
-        <button className="w-full py-2.5 bg-neutral-300 text-neutral-500 border-none rounded-md text-sm cursor-not-allowed">
-          开始交易
+        <button
+          onClick={() => setIsConfirmed(true)}
+          disabled={isConfirmed}
+          className={`w-full py-2.5 border-none rounded-md text-sm transition-all duration-300 ${
+            isConfirmed
+              ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
+              : 'bg-orange-500 text-white cursor-pointer'
+          }`}
+        >
+          {isConfirmed ? '已确认' : '开始交易'}
         </button>
+
+        {/* 客服消息提示 */}
+        {isConfirmed && (
+          <div className="mt-2.5 px-3 py-2 bg-neutral-200 rounded-lg text-sm text-neutral-700">
+            客服：你已确认，等待对方确认中。
+          </div>
+        )}
       </div>
     </MessageRow>
   )
