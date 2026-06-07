@@ -41,7 +41,7 @@ export function smartReply(input: string): string {
     return "不客气，能帮到您是我的荣幸～祝您游戏愉快！🦀"
   }
   if (/你好|在吗|在不|客服|有人吗/.test(text)) {
-    return "您好，我是螃蟹交付专员-凯凯，很高兴为您服务，请问有什么可以帮您？"
+    return "您好，我是螃蟹交付专员-绝缘，很高兴为您服务，请问有什么可以帮您？"
   }
   return "已收到您的消息，客服正在快马加鞭为您处理，请稍候～"
 }

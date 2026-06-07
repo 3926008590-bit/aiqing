@@ -1,4 +1,4 @@
-import { ChevronLeft, MoreHorizontal, Check, Zap } from "lucide-react"
+import { ChevronLeft, MoreHorizontal, Check } from "lucide-react"
 
 const steps = ["确认账号信息", "买家上号验号", "双方换绑账号"]
 
@@ -26,17 +26,6 @@ export function ChatHeader() {
             <span className="text-xs font-medium">{step}</span>
           </div>
         ))}
-      </div>
-
-      {/* Created group tip */}
-      <div className="flex items-center justify-center gap-1 bg-neutral-100 pt-3 text-center text-xs text-neutral-500">
-        <Zap className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-        <span>螃蟹交付专员-凯凯凯创建了群组</span>
-      </div>
-
-      {/* System tip */}
-      <div className="bg-neutral-100 px-6 py-3 text-center text-xs leading-relaxed text-neutral-500">
-        用户_5871616已催促，正策马加鞭为您处理，预计3-5分钟内回复~
       </div>
     </header>
   )

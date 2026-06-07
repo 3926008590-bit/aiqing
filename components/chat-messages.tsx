@@ -19,7 +19,7 @@ function MessageRow({ children }: { children: ReactNode }) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-1 flex items-center gap-1.5">
-          <span className="text-xs text-neutral-500">螃蟹交付专员-凯凯凯</span>
+          <span className="text-xs text-neutral-500">螃蟹交付专员-绝缘</span>
           <span className="rounded bg-amber-400 px-1.5 py-px text-[10px] font-medium text-white">官方</span>
           <span className="ml-1 text-[11px] text-neutral-400">05/07 13:32</span>
         </div>
@@ -35,8 +35,8 @@ function OrderCard() {
       <div className="w-fit max-w-full rounded-xl rounded-tl-sm border border-neutral-100 bg-white px-4 py-3 shadow-sm">
         <p className="mb-1.5 text-base font-semibold text-neutral-900">订单已支付</p>
         <p className="text-sm leading-relaxed text-neutral-500">订单编号:</p>
-        <p className="text-sm leading-relaxed text-neutral-700">ZH21590414336825520954</p>
-        <p className="text-sm leading-relaxed text-neutral-500">商品编号:CRTTR5293</p>
+        <p className="text-sm leading-relaxed text-neutral-700">ZH87654321987654321098</p>
+        <p className="text-sm leading-relaxed text-neutral-500">商品编号:CRTTR8765</p>
       </div>
     </MessageRow>
   )
@@ -50,9 +50,9 @@ function ImportantCard() {
           重要步骤
         </span>
         <p className="mb-1.5 text-base font-semibold text-neutral-900">温馨小贴士</p>
-        <p className="mb-1.5 text-sm font-medium text-orange-500">@@用户_***616(买家)</p>
+        <p className="mb-1.5 text-sm font-medium text-orange-500">用户_***616(买家)</p>
         <span className="mb-2 inline-block rounded-full bg-orange-500 px-2.5 py-0.5 text-sm font-medium text-white">
-          @效率爽快点(卖家)
+          @绝缘pxzc(卖家)
         </span>
         <p className="mb-1 text-sm leading-relaxed text-red-500">
           1.客服服务时间为：09:30-00:30，非服务时段请勿擅自操作流程
@@ -73,7 +73,7 @@ function TransactionCard() {
         <div className="flex items-center gap-2 px-3 pt-3">
           <p className="text-sm font-semibold text-neutral-900">请阅读确认</p>
           <span className="inline-block rounded-full bg-orange-500 px-2 py-0.5 text-xs font-medium text-white">
-            @效率爽快点(卖家)
+            @绝缘pxzc(卖家)
           </span>
         </div>
         <div className="p-3">
@@ -88,7 +88,7 @@ function TransactionCard() {
               />
             </div>
             <div className="flex min-w-0 flex-col justify-center">
-              <p className="truncate text-sm font-medium text-neutral-900">【CXLQG5071】金皮1...</p>
+              <p className="truncate text-sm font-medium text-neutral-900">【CRTTR8765】金皮1...</p>
               <p className="mt-1 text-xs text-neutral-400 line-through">原价¥120</p>
               <p className="mt-0.5 text-orange-500">
                 <span className="text-xs">预估到手¥</span>
@@ -146,7 +146,7 @@ function BotBubble({ message }: { message: Message }) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-1 flex items-center gap-1.5">
-          <span className="text-xs text-neutral-500">螃蟹交付专员-凯凯凯</span>
+          <span className="text-xs text-neutral-500">螃蟹交付专员-绝缘</span>
           <span className="rounded bg-amber-400 px-1.5 py-px text-[10px] font-medium text-white">官方</span>
           <span className="ml-1 text-[11px] text-neutral-400">{message.time}</span>
         </div>
@@ -231,6 +231,7 @@ export function ChatMessages({ messages, typing }: { messages: Message[]; typing
     <main className="flex-1 overflow-y-auto bg-neutral-100 pb-2">
       <OrderCard />
       <ImportantCard />
+      <div className="px-6 py-2 text-center text-xs leading-relaxed text-neutral-500">螃蟹交付专员-绝缘创建了群组</div>
       {messages.map((m) => {
         if (m.sender === "system") return <SystemTip key={m.id} message={m} />
         if (m.sender === "user") return <UserBubble key={m.id} message={m} />
