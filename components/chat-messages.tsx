@@ -64,194 +64,64 @@ function ImportantCard() {
 }
 
 function TransactionCard() {
-  const [isExpanded, setIsExpanded] = useState(false)
-
   return (
     <MessageRow>
-      <div className="relative w-full max-w-full overflow-hidden rounded-xl rounded-tl-sm border border-neutral-100 bg-white shadow-sm">
-        {/* 已作废印章 */}
-        <div className="absolute right-3 top-3 rotate-12">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-neutral-300 opacity-60">
-            <span className="text-sm font-bold text-neutral-400">已作废</span>
-          </div>
-        </div>
-        
-        {/* 标题区域 */}
-        <div className="flex items-center gap-2 px-4 pt-4">
-          <p className="text-2xl md:text-3xl font-bold text-neutral-800">请阅读确认</p>
-          <span className="inline-block rounded-full bg-gradient-to-r from-orange-400 to-amber-500 px-4 py-2 text-lg font-bold text-white">
+      <div className="w-full max-w-[360px] bg-white rounded-xl shadow-sm p-4">
+        {/* 顶部标题 */}
+        <div className="flex justify-between items-center mb-4">
+          <div className="text-lg font-semibold text-neutral-800">请阅读确认</div>
+          <div className="bg-orange-500 text-white px-3 py-1.5 rounded-full text-sm">
             @效率爽快点(卖家)
-          </span>
+          </div>
         </div>
-        
+
         {/* 商品信息 */}
-        <div className="mx-4 mt-4 rounded-2xl bg-neutral-100 p-4">
-          <div className="flex gap-4">
-            <div className="h-28 w-28 shrink-0 overflow-hidden rounded-xl">
-              <Image
-                src="/game-skin.png"
-                alt="商品缩略图"
-                width={112}
-                height={112}
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="flex flex-col justify-center flex-1">
-              <p className="text-xl md:text-2xl font-semibold text-neutral-800">【CXLQG5071】金皮1...</p>
-              <p className="mt-2 text-2xl md:text-3xl text-neutral-400 line-through">原价¥120</p>
-              <p className="mt-2 text-3xl md:text-4xl font-semibold text-orange-500">预估到手¥90</p>
-            </div>
+        <div className="flex gap-3 mb-4">
+          <div className="w-[120px] h-[100px] rounded-lg overflow-hidden bg-neutral-100 flex-shrink-0">
+            <Image
+              src="/game-skin.png"
+              alt="商品缩略图"
+              width={120}
+              height={100}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="flex-1">
+            <div className="text-base font-semibold mb-2">【CXLQG5071】金皮1...</div>
+            <div className="text-sm text-neutral-500 mb-1">原价 ¥120</div>
+            <div className="text-xl text-orange-500 font-bold">预估到手 ¥90</div>
           </div>
         </div>
-        
+
         {/* 交易流程 */}
-        <div className="px-4 mt-6">
-          <p className="text-2xl md:text-3xl font-bold text-neutral-800">交易流程：</p>
-          <p className="mt-3 text-2xl md:text-3xl leading-relaxed text-blue-400 font-semibold">
+        <div className="mb-4">
+          <div className="text-base font-semibold mb-2">交易流程：</div>
+          <div className="text-base text-blue-400 leading-relaxed">
             1.确认账号信息—2.买家上号验号—3.双方换绑账号—4.合同放款
-          </p>
+          </div>
+          <div className="text-sm text-neutral-600 mt-2 leading-relaxed">
+            1.请仔细阅读以下须知<br />
+            2.点击【开始交易】即视为同意交易
+          </div>
         </div>
-        
-        {/* 提示文字 */}
-        <div className="px-4 mt-6 space-y-3">
-          <p className="text-xl md:text-2xl text-neutral-500">1.请仔细阅读以下须知</p>
-          <p className="text-xl md:text-2xl text-neutral-500">2.点击【<span className="font-bold text-yellow-600">开始交易</span>】即视为同意交易</p>
-        </div>
-        
-        {/* 账号交易须知提醒区域 */}
-        <div className="mx-4 mt-6 overflow-hidden rounded-3xl bg-gradient-to-br from-orange-200 via-amber-100 to-orange-200 p-6 relative">
-          {/* 装饰背景 */}
-          <div className="absolute top-0 right-0 w-40 h-40 bg-orange-300/30 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-amber-300/30 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-          
-          <p className="text-center text-3xl md:text-4xl font-black text-neutral-700 relative z-10" style={{ textShadow: '2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff' }}>
+
+        {/* 须知提醒 */}
+        <div className="bg-gradient-to-b from-orange-50 to-amber-50 rounded-lg p-3 mb-4">
+          <div className="text-lg font-semibold text-center text-neutral-700 mb-3">
             账号交易须知提醒
-          </p>
-          
-          {/* 卖家须知区域 */}
-          <div className="mt-6 relative z-10">
-            <div className="bg-white/80 backdrop-blur rounded-2xl overflow-hidden border-2 border-orange-200">
-              {/* 标题栏 */}
-              <div className="flex items-center justify-between bg-gradient-to-r from-orange-400 to-transparent p-4 relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-transparent" style={{ clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)' }}></div>
-                <span className="relative z-10 text-xl md:text-2xl font-black text-white">卖家须知</span>
-                <button
-                  onClick={() => setIsExpanded(!isExpanded)}
-                  className="relative z-10 flex items-center gap-2 rounded-full bg-white px-6 py-2 shadow-lg"
-                >
-                  <span className="text-xl md:text-2xl font-medium text-amber-600">{isExpanded ? "收起" : "展开"}</span>
-                  <svg
-                    className={`h-6 w-6 transition-transform text-amber-600 ${isExpanded ? "rotate-180" : ""}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={3}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-              </div>
-              
-              {/* 展开内容 */}
-              {isExpanded && (
-                <div className="p-5 space-y-6">
-                  {/* 卖家须知内容 */}
-                  <div className="space-y-5">
-                    <div className="flex gap-4">
-                      <div className="h-12 w-12 shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white text-2xl font-bold">
-                        01
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-xl md:text-2xl font-semibold text-neutral-800">
-                          渠道账号是整体打包出售，若账号同渠道有连体登录的游戏，无法单款游戏拆分出售。
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-4">
-                      <div className="h-12 w-12 shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white text-2xl font-bold">
-                        02
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-xl md:text-2xl font-bold text-orange-500">无法换绑请提前告知</p>
-                        <p className="text-xl md:text-2xl font-semibold text-neutral-700 mt-1">
-                          账号若存在虚拟号注册，绑定手机号停机，注销导致<span className="text-orange-500 font-bold">无法换绑</span>等死绑情况，请提前告知，避免产生个人损失。
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-4">
-                      <div className="h-12 w-12 shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white text-2xl font-bold">
-                        03
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-xl md:text-2xl font-bold text-orange-500">4399账号不要空绑定进行交易</p>
-                        <p className="text-xl md:text-2xl font-semibold text-neutral-700 mt-1">
-                          请务必绑定手机/邮箱/密保问题其中任一项，避免账号有丢失风险。
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-4">
-                      <div className="h-12 w-12 shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white text-2xl font-bold">
-                        04
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-xl md:text-2xl font-bold text-orange-500">提前关闭云空间或云服务</p>
-                        <p className="text-xl md:text-2xl font-semibold text-neutral-700 mt-1">
-                          为避免交易过程中个人隐私泄露，在进行账号换绑前，卖家需提前关闭不同渠道对应的云空间或云服务
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-4">
-                      <div className="h-12 w-12 shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white text-2xl font-bold">
-                        05
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-xl md:text-2xl font-semibold text-neutral-800">
-                          交易前需<span className="font-bold">卖家确认账号</span>（如华为/小米/vivo/苹果ID等）能否退出，并提前告知<span className="text-orange-500 font-bold">实名、邮箱、银行卡、密保等是否支持换绑/清退。</span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* 渠道服机制 */}
-                  <div className="bg-gradient-to-r from-orange-100 to-amber-100 rounded-2xl overflow-hidden border border-orange-200">
-                    <div className="bg-gradient-to-r from-orange-400 to-transparent p-4 relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-transparent" style={{ clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)' }}></div>
-                      <span className="relative z-10 text-xl md:text-2xl font-black text-white">渠道服机制</span>
-                    </div>
-                    <div className="p-5">
-                      <div className="flex gap-4">
-                        <div className="h-12 w-12 shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white text-2xl font-bold">
-                          01
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-xl md:text-2xl font-semibold text-neutral-800">
-                            因厂商机制不同，各渠道服账号换绑审核期及押款时间各异（如华为3天、应用宝-微信7天、谷歌邮箱7天）。
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {/* 收起时的提示 */}
-              {!isExpanded && (
-                <div className="p-5">
-                  <p className="text-center text-lg md:text-xl text-neutral-400">
-                    渠道账号是整体打包出售，若账号同渠道有连体登录的游
-                  </p>
-                </div>
-              )}
+          </div>
+          <div className="flex gap-2">
+            <div className="bg-orange-500 text-white px-3 py-1 rounded text-sm">
+              卖家须知
+            </div>
+            <div className="text-orange-500 text-sm flex items-center gap-1">
+              展开 ▼
             </div>
           </div>
         </div>
-        
-        {/* 开始交易按钮 */}
-        <button className="mx-4 mt-6 mb-6 w-full rounded-2xl bg-neutral-300 py-4 text-3xl md:text-4xl font-medium text-neutral-500">
+
+        {/* 底部按钮 */}
+        <button className="w-full py-3 bg-neutral-300 text-neutral-500 border-none rounded-lg text-base cursor-not-allowed">
           开始交易
         </button>
       </div>
