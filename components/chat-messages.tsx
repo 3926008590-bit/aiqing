@@ -69,17 +69,10 @@ function TransactionCard() {
   return (
     <MessageRow>
       <div className="w-[320px] bg-white rounded-lg p-3 relative">
-        {/* 作废印章 */}
-        <div className="absolute top-2 right-2 w-[60px] h-[60px] opacity-70 pointer-events-none flex items-center justify-center">
-          <div className="w-full h-full rounded-full border-4 border-neutral-300 flex items-center justify-center">
-            <span className="text-xs font-bold text-neutral-400">已作废</span>
-          </div>
-        </div>
-
-        {/* 顶部区域 */}
-        <div className="flex justify-between items-center mb-2.5">
+        {/* 顶部标题区：名字和标签并排 */}
+        <div className="flex items-center gap-2 mb-2.5">
           <div className="text-base font-semibold text-neutral-800">请阅读确认</div>
-          <div className="bg-orange-500 text-white px-2.5 py-1 rounded-full text-xs">
+          <div className="bg-orange-500 text-white px-2.5 py-1 rounded-full text-xs whitespace-nowrap">
             @效率爽快点(卖家)
           </div>
         </div>
