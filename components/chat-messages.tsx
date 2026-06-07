@@ -126,24 +126,12 @@ function TransactionCard() {
             </button>
           </div>
           {isExpanded && (
-            <div className="mt-3 space-y-3">
-              <div className="rounded-lg bg-white p-3">
-                <div className="space-y-2.5 text-xs">
-                  <p><span className="mr-2 inline-block h-5 w-5 shrink-0 rounded-full bg-orange-400 text-center text-[10px] font-bold text-white">01</span><span className="font-medium text-orange-600">渠道账号是整体打包出售</span>，若账号同渠道有连体登录的游戏，无法单款游戏拆分出售。</p>
-                  <p><span className="mr-2 inline-block h-5 w-5 shrink-0 rounded-full bg-orange-400 text-center text-[10px] font-bold text-white">02</span><span className="font-medium text-orange-600">无法换绑请提前告知</span><br />账号若存在虚拟号注册，绑定手机号停机，注销导致无法换绑等死绑情况，请提前告知，避免产生个人损失。</p>
-                  <p><span className="mr-2 inline-block h-5 w-5 shrink-0 rounded-full bg-orange-400 text-center text-[10px] font-bold text-white">03</span><span className="font-medium text-orange-600">4399账号不要空绑定进行交易</span><br />请务必绑定手机/邮箱/密保问题其中任一项，避免账号有丢失风险。</p>
-                  <p><span className="mr-2 inline-block h-5 w-5 shrink-0 rounded-full bg-orange-400 text-center text-[10px] font-bold text-white">04</span><span className="font-medium text-orange-600">提前关闭云空间或云服务</span><br />为避免交易过程中个人隐私泄露，在进行账号换绑前，卖家需提前关闭不同渠道对应的云空间或云服务。</p>
-                  <p><span className="mr-2 inline-block h-5 w-5 shrink-0 rounded-full bg-orange-400 text-center text-[10px] font-bold text-white">05</span><span className="font-medium text-orange-600">交易前需卖家确认账号</span>（如华为/小米/vivo/苹果ID等）能否退出，并提前告知实名、邮箱、银行卡、密保等是否支持换绑/清退。</p>
-                </div>
-              </div>
-              <div className="rounded-lg bg-white p-3">
-                <h4 className="mb-2 text-xs font-semibold text-orange-600">渠道服务机制</h4>
-                <div className="space-y-2.5 text-xs">
-                  <p><span className="mr-2 inline-block h-5 w-5 shrink-0 rounded-full bg-orange-400 text-center text-[10px] font-bold text-white">01</span>因厂商机制不同，各渠道服务账号换绑审核期及押款时间各异（如华为为3天、应用宝-微信7天，谷歌邮箱7天）。</p>
-                  <p><span className="mr-2 inline-block h-5 w-5 shrink-0 rounded-full bg-orange-400 text-center text-[10px] font-bold text-white">02</span>渠道服基于安卓系统版本数据共享，可通过对应手机的应用商城下载游戏，使用不同手机账号登录游玩。</p>
-                  <p><span className="mr-2 inline-block h-5 w-5 shrink-0 rounded-full bg-orange-400 text-center text-[10px] font-bold text-white">03</span><span className="font-medium text-orange-600">一个手机号仅能同时绑定一个手机渠道账号</span><br />若被换绑的手机号在该渠道已有账号，不管是否有游戏角色都请不要继续换绑，否则两个账号会互相抵消并且无法追回，请及时更换其他手机号换绑。</p>
-                </div>
-              </div>
+            <div className="mt-3 overflow-hidden rounded-lg bg-white">
+              <Image
+                src="https://neeko-copilot.bytedance.net/api/text2image?prompt=account%20transaction%20notice%20reminder%20document%20with%20orange%20header%20and%20three%20sections%20containing%20seller%20notices%20channel%20service%20mechanism%20transaction%20rules%20with%20numbered%20points%20in%20Chinese%20language%20clean%20design&image_size=portrait_16_9"
+                alt="账号交易须知提醒"
+                className="w-full"
+              />
             </div>
           )}
           {!isExpanded && (
