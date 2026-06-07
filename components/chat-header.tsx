@@ -10,7 +10,7 @@ export function ChatHeader() {
         <button aria-label="返回" className="flex h-8 w-8 shrink-0 items-center justify-center">
           <ChevronLeft className="h-6 w-6 text-neutral-800" />
         </button>
-        <h1 className="ml-2.5 text-left text-base font-semibold text-neutral-900">CRTTR5200超自然行动组</h1>
+        <h1 className="ml-2.5 text-left text-base font-semibold text-neutral-900">CRTTR5293超自然行动组</h1>
         <button aria-label="更多" className="ml-auto flex h-8 w-8 shrink-0 items-center justify-center">
           <MoreHorizontal className="h-6 w-6 text-neutral-800" />
         </button>
@@ -31,7 +31,7 @@ export function ChatHeader() {
       {/* Created group tip */}
       <div className="flex items-center justify-center gap-1 bg-neutral-100 pt-3 text-center text-xs text-neutral-500">
         <Zap className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-        <span>螃蟹交付专员-凯凯创建了群组</span>
+        <span>螃蟹交付专员-凯凯凯创建了群组</span>
       </div>
 
       {/* System tip */}
