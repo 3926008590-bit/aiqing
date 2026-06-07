@@ -100,6 +100,75 @@ function ProductCard() {
   )
 }
 
+function TransactionCard() {
+  return (
+    <MessageRow>
+      <div className="relative w-full max-w-full overflow-hidden rounded-xl rounded-tl-sm border border-neutral-100 bg-white shadow-sm">
+        <span className="absolute -top-1.5 right-2 rotate-12 rounded-full bg-red-400 px-2.5 py-0.5 text-[10px] font-bold text-white opacity-80">
+          已作废
+        </span>
+        <div className="flex items-center gap-2 px-3 pt-3">
+          <p className="text-sm font-semibold text-neutral-900">请阅读确认</p>
+          <span className="inline-block rounded-full bg-orange-500 px-2 py-0.5 text-xs font-medium text-white">
+            @效率爽快点(卖家)
+          </span>
+        </div>
+        <div className="p-3">
+          <div className="flex gap-3 rounded-lg bg-neutral-100 p-2">
+            <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg">
+              <Image
+                src="/game-skin.png"
+                alt="商品缩略图"
+                width={64}
+                height={64}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="flex min-w-0 flex-col justify-center">
+              <p className="truncate text-sm font-medium text-neutral-900">【CXLQG5071】金皮1...</p>
+              <p className="mt-1 text-xs text-neutral-400 line-through">原价¥120</p>
+              <p className="mt-0.5 text-orange-500">
+                <span className="text-xs">预估到手¥</span>
+                <span className="text-base font-semibold">90</span>
+              </p>
+            </div>
+          </div>
+          <div className="mt-4">
+            <p className="mb-2 text-sm font-medium text-neutral-700">交易流程:</p>
+            <p className="text-xs leading-relaxed text-blue-500">
+              1.确认账号信息—2.买家上号验号—3.双方换绑账号—4.合同放款
+            </p>
+          </div>
+          <div className="mt-3 space-y-1 text-xs text-neutral-500">
+            <p>1.请仔细阅读以下须知</p>
+            <p>2.点击【开始交易】即视为同意交易</p>
+          </div>
+          <div className="mt-4 overflow-hidden rounded-lg bg-gradient-to-br from-orange-50 to-amber-100 p-3">
+            <p className="text-center text-sm font-semibold text-neutral-700">账号交易须知提醒</p>
+            <div className="mt-2 flex items-center justify-between">
+              <span className="rounded-full bg-orange-200 px-2 py-0.5 text-[10px] font-medium text-orange-600">
+                卖家须知
+              </span>
+              <button className="flex items-center gap-1 text-xs text-neutral-600">
+                <span>展开</span>
+                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+            <p className="mt-2 line-clamp-2 text-xs text-neutral-500">
+              渠道账号是整体打包出售，若账号同渠道有连体登录的游
+            </p>
+          </div>
+          <button className="mt-4 w-full rounded-lg bg-neutral-300 py-2.5 text-sm font-medium text-neutral-500">
+            开始交易
+          </button>
+        </div>
+      </div>
+    </MessageRow>
+  )
+}
+
 function BotBubble({ message }: { message: Message }) {
   return (
     <div className="flex gap-2 px-3 py-2">
@@ -206,6 +275,7 @@ export function ChatMessages({ messages, typing }: { messages: Message[]; typing
         return <BotBubble key={m.id} message={m} />
       })}
       {typing && <TypingIndicator />}
+      <TransactionCard />
       <div ref={bottomRef} />
     </main>
   )
