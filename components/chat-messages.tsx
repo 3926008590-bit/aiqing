@@ -229,9 +229,9 @@ export function ChatMessages({ messages, typing }: { messages: Message[]; typing
 
   return (
     <main className="flex-1 overflow-y-auto bg-neutral-100 pb-2">
+      <div className="px-6 py-2 text-center text-xs leading-relaxed text-neutral-500">螃蟹交付专员-绝缘创建了群组</div>
       <OrderCard />
       <ImportantCard />
-      <div className="px-6 py-2 text-center text-xs leading-relaxed text-neutral-500">螃蟹交付专员-绝缘创建了群组</div>
       {messages.map((m) => {
         if (m.sender === "system") return <SystemTip key={m.id} message={m} />
         if (m.sender === "user") return <UserBubble key={m.id} message={m} />
