@@ -113,8 +113,14 @@ function TransactionCard() {
         </div>
 
         {/* 须知区域：纯图片背景 */}
-        <div className="h-24 bg-neutral-200 rounded-md mb-2.5 flex items-center justify-center">
-          <span className="text-xs text-neutral-400">notice-bg.png</span>
+        <div className="h-24 rounded-md mb-2.5 overflow-hidden">
+          <Image
+            src="/transaction-notice.png"
+            alt="notice-bg"
+            width={296}
+            height={96}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* 底部按钮 */}
