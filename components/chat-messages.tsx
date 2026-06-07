@@ -64,84 +64,73 @@ function ImportantCard() {
 }
 
 function TransactionCard() {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <MessageRow>
-      <div className="relative w-full max-w-full overflow-hidden rounded-xl rounded-tl-sm border border-neutral-100 bg-white shadow-sm">
-        <div className="absolute right-4 top-3 flex h-10 w-10 items-center justify-center rounded-full border-2 border-neutral-300 opacity-60">
-          <span className="text-xs font-medium text-neutral-400">已作废</span>
-        </div>
-        <div className="flex items-center gap-2 px-4 pt-4">
-          <p className="text-base font-semibold text-neutral-900">请阅读确认</p>
-          <span className="inline-block rounded-full bg-orange-500 px-3 py-1 text-sm font-medium text-white">
+      <div className="w-[320px] bg-white rounded-lg p-3 relative">
+        {/* 顶部标题区：名字和标签并排 */}
+        <div className="flex items-center gap-2 mb-2.5">
+          <div className="text-base font-semibold text-neutral-800">请阅读确认</div>
+          <div className="bg-orange-500 text-white px-2.5 py-1 rounded-full text-xs whitespace-nowrap">
             @效率爽快点(卖家)
-          </span>
-        </div>
-        <div className="mx-4 mt-3 rounded-lg bg-neutral-100 p-3">
-          <div className="flex gap-3">
-            <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg">
-              <Image
-                src="/game-skin.png"
-                alt="商品缩略图"
-                width={64}
-                height={64}
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="flex flex-col justify-center">
-              <p className="text-base font-medium text-neutral-900">【CXLQG5071】金皮1...</p>
-              <p className="mt-1 text-sm text-neutral-400 line-through">原价¥120</p>
-              <p className="mt-1 text-lg font-semibold text-orange-500">预估到手¥90</p>
-            </div>
           </div>
         </div>
-        <div className="px-4 mt-4">
-          <p className="text-base font-medium text-neutral-900">交易流程:</p>
-          <p className="mt-2 text-sm leading-relaxed text-blue-500">
+
+        {/* 商品模块 */}
+        <div className="flex gap-2.5 bg-neutral-100 rounded-md p-2.5 mb-2.5">
+          <div className="w-[100px] h-[80px] rounded overflow-hidden flex-shrink-0">
+            <Image
+              src="/game-skin.png"
+              alt="商品图"
+              width={100}
+              height={80}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="flex-1">
+            <div className="text-sm font-semibold mb-1.5">【CXLQG5071】金皮1...</div>
+            <div className="text-xs text-neutral-500 mb-0.5">原价 ¥120</div>
+            <div className="text-lg text-orange-500 font-bold">预估到手 ¥90</div>
+          </div>
+        </div>
+
+        {/* 交易流程 */}
+        <div className="mb-2.5">
+          <div className="text-sm font-semibold mb-1.5">交易流程：</div>
+          <div className="text-sm text-blue-400 leading-relaxed">
             1.确认账号信息—2.买家上号验号—3.双方换绑账号—4.合同放款
-          </p>
-        </div>
-        <div className="px-4 mt-4 space-y-1.5">
-          <p className="text-sm text-neutral-500">1.请仔细阅读以下须知</p>
-          <p className="text-sm text-neutral-500">2.点击【<span className="font-medium text-orange-500">开始交易</span>】即视为同意交易</p>
-        </div>
-        <div className="mx-4 mt-4 overflow-hidden rounded-lg bg-gradient-to-br from-orange-50 to-amber-100 p-4">
-          <p className="text-center text-base font-semibold text-neutral-700">账号交易须知提醒</p>
-          <div className="mt-3 flex items-center justify-between rounded-lg bg-white/70 p-3">
-            <span className="rounded-full bg-orange-400 px-2 py-1 text-xs font-semibold text-white">卖家须知</span>
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-1 rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-700"
-            >
-              <span>{isExpanded ? "收起" : "展开"}</span>
-              <svg
-                className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
           </div>
-          {isExpanded && (
-            <div className="mt-3 overflow-hidden rounded-lg bg-white">
-              <img
-                src="/transaction-notice.png"
-                alt="账号交易须知提醒"
-                className="w-full"
-                decoding="async"
-              />
-            </div>
-          )}
-          {!isExpanded && (
-            <p className="mt-2 text-center text-xs text-neutral-400">
-              渠道账号是整体打包出售，若账号同渠道有连体登录的游
-            </p>
-          )}
+          <div className="text-xs text-neutral-600 mt-1.5 leading-relaxed">
+            1.请仔细阅读以下须知<br />
+            2.点击【<span className="text-orange-500">开始交易</span>】即视为同意交易
+          </div>
         </div>
-        <button className="mx-4 mt-4 mb-4 w-full rounded-lg bg-neutral-300 py-3 text-base font-medium text-neutral-500">
+
+        {/* 须知区域：纯图片背景 + 展开按钮 */}
+        <div className="relative mb-2.5">
+          <div 
+            className={`rounded-md overflow-hidden transition-all duration-300 ${isExpanded ? '' : 'h-24'}`}
+          >
+            <Image
+              src="/transaction-notice.png"
+              alt="notice-bg"
+              width={296}
+              height={isExpanded ? 600 : 96}
+              className="w-full object-cover"
+              style={{ objectPosition: 'center top' }}
+            />
+          </div>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/90 text-orange-500 border-none px-4 py-1 rounded-full text-sm cursor-pointer flex items-center gap-1"
+          >
+            {isExpanded ? '收起 ▲' : '展开 ▼'}
+          </button>
+        </div>
+
+        {/* 底部按钮 */}
+        <button className="w-full py-2.5 bg-neutral-300 text-neutral-500 border-none rounded-md text-sm cursor-not-allowed">
           开始交易
         </button>
       </div>
