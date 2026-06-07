@@ -56,9 +56,44 @@ export default function Page() {
     botReply("你已确认，等待对方确认中。")
   }, [botReply])
 
+  // 处理功能菜单的操作
+  const handleMenuAction = useCallback((action: string) => {
+    switch (action) {
+      case "order":
+        // 显示订单详情（暂时用交易信息弹窗代替）
+        setModal("transaction")
+        break
+      case "transaction":
+        // 显示交易信息
+        setModal("transaction")
+        break
+      case "complaint":
+        // 显示投诉建议
+        setModal("complaint")
+        break
+      case "rating":
+        // 显示服务评价
+        setModal("rating")
+        break
+      case "copy":
+        // 复制订单编号
+        navigator.clipboard.writeText("ZH87654321987654321123")
+        pushMessage({ sender: "system", type: "text", content: "订单编号已复制到剪贴板" })
+        botReply("订单编号：ZH87654321987654321123 已复制到剪贴板～")
+        break
+      case "share":
+        // 分享会话（模拟）
+        pushMessage({ sender: "system", type: "text", content: "正在生成分享链接..." })
+        botReply("分享链接已生成：https://example.com/session/ZH87654321123\n您可以复制此链接分享给好友～")
+        break
+      default:
+        break
+    }
+  }, [pushMessage, botReply])
+
   return (
     <div className="mx-auto flex h-dvh max-w-md flex-col bg-neutral-100">
-      <ChatHeader />
+      <ChatHeader onMenuAction={handleMenuAction} />
       <ChatMessages messages={messages} typing={typing} onTransactionConfirm={handleTransactionConfirm} />
       <ChatFooter
         onSend={handleSend}
