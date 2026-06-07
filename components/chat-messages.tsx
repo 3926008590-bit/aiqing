@@ -74,7 +74,7 @@ function TransactionCard() {
         <div className="flex items-center gap-2 mb-2.5">
           <div className="text-base font-semibold text-neutral-800">请阅读确认</div>
           <div className="bg-orange-500 text-white px-2.5 py-1 rounded-full text-xs whitespace-nowrap">
-            @效率爽快点(卖家)
+            @绝缘pxzc(卖家)
           </div>
         </div>
 
