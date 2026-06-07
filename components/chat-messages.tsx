@@ -66,62 +66,59 @@ function ImportantCard() {
 function TransactionCard() {
   return (
     <MessageRow>
-      <div className="w-full max-w-[360px] bg-white rounded-xl shadow-sm p-4">
-        {/* 顶部标题 */}
-        <div className="flex justify-between items-center mb-4">
-          <div className="text-lg font-semibold text-neutral-800">请阅读确认</div>
-          <div className="bg-orange-500 text-white px-3 py-1.5 rounded-full text-sm">
+      <div className="w-[320px] bg-white rounded-lg p-3 relative">
+        {/* 作废印章 */}
+        <div className="absolute top-2 right-2 w-[60px] h-[60px] opacity-70 pointer-events-none flex items-center justify-center">
+          <div className="w-full h-full rounded-full border-4 border-neutral-300 flex items-center justify-center">
+            <span className="text-xs font-bold text-neutral-400">已作废</span>
+          </div>
+        </div>
+
+        {/* 顶部区域 */}
+        <div className="flex justify-between items-center mb-2.5">
+          <div className="text-base font-semibold text-neutral-800">请阅读确认</div>
+          <div className="bg-orange-500 text-white px-2.5 py-1 rounded-full text-xs">
             @效率爽快点(卖家)
           </div>
         </div>
 
-        {/* 商品信息 */}
-        <div className="flex gap-3 mb-4">
-          <div className="w-[120px] h-[100px] rounded-lg overflow-hidden bg-neutral-100 flex-shrink-0">
+        {/* 商品模块 */}
+        <div className="flex gap-2.5 bg-neutral-100 rounded-md p-2.5 mb-2.5">
+          <div className="w-[100px] h-[80px] rounded overflow-hidden flex-shrink-0">
             <Image
               src="/game-skin.png"
-              alt="商品缩略图"
-              width={120}
-              height={100}
+              alt="商品图"
+              width={100}
+              height={80}
               className="w-full h-full object-cover"
             />
           </div>
           <div className="flex-1">
-            <div className="text-base font-semibold mb-2">【CXLQG5071】金皮1...</div>
-            <div className="text-sm text-neutral-500 mb-1">原价 ¥120</div>
-            <div className="text-xl text-orange-500 font-bold">预估到手 ¥90</div>
+            <div className="text-sm font-semibold mb-1.5">【CXLQG5071】金皮1...</div>
+            <div className="text-xs text-neutral-500 mb-0.5">原价 ¥120</div>
+            <div className="text-lg text-orange-500 font-bold">预估到手 ¥90</div>
           </div>
         </div>
 
         {/* 交易流程 */}
-        <div className="mb-4">
-          <div className="text-base font-semibold mb-2">交易流程：</div>
-          <div className="text-base text-blue-400 leading-relaxed">
+        <div className="mb-2.5">
+          <div className="text-sm font-semibold mb-1.5">交易流程：</div>
+          <div className="text-sm text-blue-400 leading-relaxed">
             1.确认账号信息—2.买家上号验号—3.双方换绑账号—4.合同放款
           </div>
-          <div className="text-sm text-neutral-600 mt-2 leading-relaxed">
+          <div className="text-xs text-neutral-600 mt-1.5 leading-relaxed">
             1.请仔细阅读以下须知<br />
-            2.点击【开始交易】即视为同意交易
+            2.点击【<span className="text-orange-500">开始交易</span>】即视为同意交易
           </div>
         </div>
 
-        {/* 须知提醒 */}
-        <div className="bg-gradient-to-b from-orange-50 to-amber-50 rounded-lg p-3 mb-4">
-          <div className="text-lg font-semibold text-center text-neutral-700 mb-3">
-            账号交易须知提醒
-          </div>
-          <div className="flex gap-2">
-            <div className="bg-orange-500 text-white px-3 py-1 rounded text-sm">
-              卖家须知
-            </div>
-            <div className="text-orange-500 text-sm flex items-center gap-1">
-              展开 ▼
-            </div>
-          </div>
+        {/* 须知区域：纯图片背景 */}
+        <div className="h-24 bg-neutral-200 rounded-md mb-2.5 flex items-center justify-center">
+          <span className="text-xs text-neutral-400">notice-bg.png</span>
         </div>
 
         {/* 底部按钮 */}
-        <button className="w-full py-3 bg-neutral-300 text-neutral-500 border-none rounded-lg text-base cursor-not-allowed">
+        <button className="w-full py-2.5 bg-neutral-300 text-neutral-500 border-none rounded-md text-sm cursor-not-allowed">
           开始交易
         </button>
       </div>
