@@ -128,7 +128,7 @@ function TransactionCard() {
           {isExpanded && (
             <div className="mt-3 overflow-hidden rounded-lg bg-white">
               <img
-                src="https://picsum.photos/400/800"
+                src="/transaction-notice.png"
                 alt="账号交易须知提醒"
                 className="w-full"
                 decoding="async"
