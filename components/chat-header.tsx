@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronLeft, MoreHorizontal, Check, FileText, MessageSquare, AlertTriangle, Star, Copy, Share2, ChevronRight, Settings } from "lucide-react"
+import { ChevronLeft, MoreHorizontal, Check, Share2, Shield, QrCode } from "lucide-react"
 import { useChatConfig } from "./chat-config"
 
 const steps = ["确认账号信息", "买家上号验号", "双方换绑账号"]
@@ -13,13 +13,10 @@ interface FunctionMenuProps {
 
 function FunctionMenu({ onClose, onAction }: FunctionMenuProps) {
   const menuItems = [
-    { icon: Settings, label: "DIY设置", action: "settings" },
-    { icon: FileText, label: "订单详情", action: "order" },
-    { icon: MessageSquare, label: "交易信息", action: "transaction" },
-    { icon: AlertTriangle, label: "投诉建议", action: "complaint" },
-    { icon: Star, label: "服务评价", action: "rating" },
-    { icon: Copy, label: "复制订单编号", action: "copy" },
+    { icon: Shield, label: "防红设置", action: "antired" },
+    { icon: QrCode, label: "分享二维码", action: "qrcode" },
     { icon: Share2, label: "分享会话", action: "share" },
+    { icon: Shield, label: "DIY设置", action: "settings" },
   ]
 
   const handleClick = (action: string) => {
@@ -52,7 +49,6 @@ function FunctionMenu({ onClose, onAction }: FunctionMenuProps) {
                 <item.icon className="h-5 w-5 text-orange-500" />
               </div>
               <span className="flex-1 text-base text-neutral-800">{item.label}</span>
-              <ChevronRight className="h-5 w-5 text-neutral-400" />
             </button>
           ))}
         </div>
