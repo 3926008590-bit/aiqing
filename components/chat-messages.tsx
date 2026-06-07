@@ -35,8 +35,8 @@ function OrderCard() {
       <div className="w-fit max-w-full rounded-xl rounded-tl-sm border border-neutral-100 bg-white px-4 py-3 shadow-sm">
         <p className="mb-1.5 text-base font-semibold text-neutral-900">订单已支付</p>
         <p className="text-sm leading-relaxed text-neutral-500">订单编号:</p>
-        <p className="text-sm leading-relaxed text-neutral-700">ZH87654321987654321098</p>
-        <p className="text-sm leading-relaxed text-neutral-500">商品编号:CRTTR8765</p>
+        <p className="text-sm leading-relaxed text-neutral-700">ZH87654321987654321123</p>
+        <p className="text-sm leading-relaxed text-neutral-500">商品编号:CRJYG6289</p>
       </div>
     </MessageRow>
   )
@@ -97,7 +97,7 @@ function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
             />
           </div>
           <div className="flex-1">
-            <div className="text-sm font-semibold mb-1.5">【CXLQG5071】金皮1...</div>
+            <div className="text-sm font-semibold mb-1.5">【CRJYG6289】金皮1...</div>
             <div className="text-xs text-neutral-500 mb-0.5">原价 ¥120</div>
             <div className="text-lg text-orange-500 font-bold">预估到手 ¥90</div>
           </div>
