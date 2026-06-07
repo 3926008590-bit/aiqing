@@ -63,43 +63,6 @@ function ImportantCard() {
   )
 }
 
-function ProductCard() {
-  return (
-    <MessageRow>
-      <div className="relative w-full max-w-full overflow-hidden rounded-xl rounded-tl-sm border border-neutral-100 bg-white shadow-sm">
-        <span className="absolute right-2 top-3 rotate-6 rounded-full border-2 border-green-500/70 px-2 py-0.5 text-[11px] font-bold text-green-600/80">
-          已完成
-        </span>
-        <div className="flex items-center gap-2 px-3 pt-3">
-          <p className="text-sm font-semibold text-neutral-900">请阅读确认</p>
-          <span className="inline-block rounded-full bg-orange-500 px-2 py-0.5 text-xs font-medium text-white">
-            @效率爽快点(卖家)
-          </span>
-        </div>
-        <div className="flex gap-3 p-3">
-          <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-neutral-100">
-            <Image
-              src="/game-skin.png"
-              alt="商品缩略图"
-              width={64}
-              height={64}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="flex min-w-0 flex-col justify-center">
-            <p className="truncate text-sm font-medium text-neutral-900">【CRTTR5293】金皮3...</p>
-            <p className="mt-1 text-sm text-neutral-400 line-through">原价¥288</p>
-            <p className="mt-0.5 text-orange-500">
-              <span className="text-sm">预估到手¥</span>
-              <span className="text-lg font-semibold">235</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </MessageRow>
-  )
-}
-
 function TransactionCard() {
   return (
     <MessageRow>
@@ -268,7 +231,6 @@ export function ChatMessages({ messages, typing }: { messages: Message[]; typing
     <main className="flex-1 overflow-y-auto bg-neutral-100 pb-2">
       <OrderCard />
       <ImportantCard />
-      <ProductCard />
       {messages.map((m) => {
         if (m.sender === "system") return <SystemTip key={m.id} message={m} />
         if (m.sender === "user") return <UserBubble key={m.id} message={m} />
