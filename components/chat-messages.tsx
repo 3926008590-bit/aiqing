@@ -64,6 +64,8 @@ function ImportantCard() {
 }
 
 function TransactionCard() {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <MessageRow>
       <div className="w-[320px] bg-white rounded-lg p-3 relative">
@@ -112,15 +114,26 @@ function TransactionCard() {
           </div>
         </div>
 
-        {/* 须知区域：纯图片背景 */}
-        <div className="h-24 rounded-md mb-2.5 overflow-hidden">
-          <Image
-            src="/transaction-notice.png"
-            alt="notice-bg"
-            width={296}
-            height={96}
-            className="w-full h-full object-cover"
-          />
+        {/* 须知区域：纯图片背景 + 展开按钮 */}
+        <div className="relative mb-2.5">
+          <div 
+            className={`rounded-md overflow-hidden transition-all duration-300 ${isExpanded ? '' : 'h-24'}`}
+          >
+            <Image
+              src="/transaction-notice.png"
+              alt="notice-bg"
+              width={296}
+              height={isExpanded ? 600 : 96}
+              className="w-full object-cover"
+              style={{ objectPosition: 'center top' }}
+            />
+          </div>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/90 text-orange-500 border-none px-4 py-1 rounded-full text-sm cursor-pointer flex items-center gap-1"
+          >
+            {isExpanded ? '收起 ▲' : '展开 ▼'}
+          </button>
         </div>
 
         {/* 底部按钮 */}
