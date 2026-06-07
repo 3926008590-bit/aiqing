@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import type { ReactNode } from "react"
 import type { Message } from "./chat-types"
 import { useChatConfig } from "./chat-config"
+import { Check, CheckCheck } from "lucide-react"
 
 function MessageRow({ children }: { children: ReactNode }) {
   const { config } = useChatConfig()
@@ -57,7 +58,7 @@ function ImportantCard() {
           重要步骤
         </span>
         <p className="mb-1.5 text-base font-semibold text-neutral-900">温馨小贴士</p>
-        <p className="mb-1.5 text-sm font-medium text-orange-500">用户_***616(买家)</p>
+        <p className="mb-1.5 text-sm font-medium text-orange-500">{config.userName}(买家)</p>
         <span className="mb-2 inline-block rounded-full bg-orange-500 px-2.5 py-0.5 text-sm font-medium text-white">
           @{config.sellerName}(卖家)
         </span>
@@ -188,11 +189,36 @@ function BotBubble({ message }: { message: Message }) {
   )
 }
 
-function UserBubble({ message }: { message: Message }) {
+function UserBubble({ message, isRead }: { message: Message; isRead?: boolean }) {
+  const { config } = useChatConfig()
+  
   return (
     <div className="flex justify-end px-3 py-2">
       <div className="flex max-w-[75%] flex-col items-end">
-        <BubbleBody message={message} side="right" />
+        <div className="mb-1 flex items-center gap-1 justify-end">
+          <span className="text-[11px] text-neutral-400">{message.time}</span>
+          {isRead && (
+            <CheckCheck className="h-3.5 w-3.5 text-blue-500" />
+          )}
+        </div>
+        <div className="flex items-end gap-2">
+          <BubbleBody message={message} side="right" />
+          <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full">
+            {config.userAvatar ? (
+              <Image
+                src={config.userAvatar}
+                alt={config.userName}
+                width={36}
+                height={36}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="h-full w-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
+                {config.userName.charAt(0)}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -254,6 +280,7 @@ function TypingIndicator() {
 
 export function ChatMessages({ messages, typing, onTransactionConfirm }: { messages: Message[]; typing: boolean; onTransactionConfirm?: () => void }) {
   const bottomRef = useRef<HTMLDivElement>(null)
+  const { config } = useChatConfig()
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -265,9 +292,9 @@ export function ChatMessages({ messages, typing, onTransactionConfirm }: { messa
       <OrderCard />
       <ImportantCard />
       <TransactionCard onConfirm={onTransactionConfirm} />
-      {messages.map((m) => {
+      {messages.map((m, index) => {
         if (m.sender === "system") return <SystemTip key={m.id} message={m} />
-        if (m.sender === "user") return <UserBubble key={m.id} message={m} />
+        if (m.sender === "user") return <UserBubble key={m.id} message={m} isRead={index === messages.length - 1} />
         return <BotBubble key={m.id} message={m} />
       })}
       {typing && <TypingIndicator />}

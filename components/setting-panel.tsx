@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { X, RotateCcw } from "lucide-react"
+import { useState, useRef } from "react"
+import { X, RotateCcw, Upload } from "lucide-react"
 import { useChatConfig, type ChatConfig } from "./chat-config"
 
 interface SettingPanelProps {
@@ -11,7 +11,9 @@ interface SettingPanelProps {
 export function SettingPanel({ onClose }: SettingPanelProps) {
   const { config, updateConfig, resetConfig } = useChatConfig()
   const [formData, setFormData] = useState<ChatConfig>(config)
-  const [activeTab, setActiveTab] = useState<"basic" | "product" | "seller">("basic")
+  const [activeTab, setActiveTab] = useState<"basic" | "product" | "seller" | "user">("basic")
+  const productImageRef = useRef<HTMLInputElement>(null)
+  const userAvatarRef = useRef<HTMLInputElement>(null)
 
   const handleSave = () => {
     updateConfig(formData)
@@ -31,7 +33,21 @@ export function SettingPanel({ onClose }: SettingPanelProps) {
         sellerName: "绝缘pxzc",
         originalPrice: "¥120",
         finalPrice: "¥90",
+        userName: "用户_***616",
+        userAvatar: "",
       })
+    }
+  }
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, field: "productImage" | "userAvatar") => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        const result = event.target?.result as string
+        setFormData({ ...formData, [field]: result })
+      }
+      reader.readAsDataURL(file)
     }
   }
 
@@ -39,6 +55,7 @@ export function SettingPanel({ onClose }: SettingPanelProps) {
     { key: "basic", label: "基础设置" },
     { key: "product", label: "商品信息" },
     { key: "seller", label: "卖家信息" },
+    { key: "user", label: "我的信息" },
   ]
 
   return (
@@ -118,15 +135,31 @@ export function SettingPanel({ onClose }: SettingPanelProps) {
           {/* 商品信息 */}
           {activeTab === "product" && (
             <div className="space-y-4">
-              <FormField label="商品图URL">
-                <input
-                  type="text"
-                  value={formData.productImage}
-                  onChange={(e) => setFormData({ ...formData, productImage: e.target.value })}
-                  className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
-                  placeholder="/game-skin.png"
-                />
-                <p className="mt-1 text-xs text-neutral-400">支持相对路径和绝对URL</p>
+              <FormField label="商品图">
+                <div className="flex flex-col gap-3">
+                  {formData.productImage && (
+                    <img
+                      src={formData.productImage}
+                      alt="商品预览"
+                      className="h-32 w-full rounded-lg object-cover"
+                    />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => productImageRef.current?.click()}
+                    className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-neutral-300 px-4 py-3 text-sm text-neutral-600 hover:border-orange-500 hover:text-orange-500"
+                  >
+                    <Upload className="h-4 w-4" />
+                    从相册选择图片
+                  </button>
+                  <input
+                    ref={productImageRef}
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => handleFileSelect(e, "productImage")}
+                  />
+                </div>
               </FormField>
 
               <FormField label="商品名称">
@@ -183,6 +216,48 @@ export function SettingPanel({ onClose }: SettingPanelProps) {
                   onChange={(e) => setFormData({ ...formData, sellerName: e.target.value })}
                   className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
                   placeholder="例如：绝缘pxzc"
+                />
+              </FormField>
+            </div>
+          )}
+
+          {/* 我的信息 */}
+          {activeTab === "user" && (
+            <div className="space-y-4">
+              <FormField label="我的头像">
+                <div className="flex flex-col gap-3">
+                  {formData.userAvatar && (
+                    <img
+                      src={formData.userAvatar}
+                      alt="我的头像"
+                      className="h-24 w-24 rounded-full object-cover"
+                    />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => userAvatarRef.current?.click()}
+                    className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-neutral-300 px-4 py-3 text-sm text-neutral-600 hover:border-orange-500 hover:text-orange-500"
+                  >
+                    <Upload className="h-4 w-4" />
+                    从相册选择头像
+                  </button>
+                  <input
+                    ref={userAvatarRef}
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => handleFileSelect(e, "userAvatar")}
+                  />
+                </div>
+              </FormField>
+
+              <FormField label="我的昵称">
+                <input
+                  type="text"
+                  value={formData.userName}
+                  onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
+                  className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
+                  placeholder="例如：用户_***616"
                 />
               </FormField>
             </div>
