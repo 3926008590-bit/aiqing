@@ -63,9 +63,16 @@ function ImportantCard() {
   )
 }
 
-function TransactionCard() {
+function TransactionCard({ onConfirm }: { onConfirm?: () => void }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
+
+  const handleConfirm = () => {
+    setIsConfirmed(true);
+    if (onConfirm) {
+      onConfirm();
+    }
+  };
 
   return (
     <MessageRow>
@@ -132,7 +139,7 @@ function TransactionCard() {
 
         {/* 底部按钮 */}
         <button
-          onClick={() => setIsConfirmed(true)}
+          onClick={handleConfirm}
           disabled={isConfirmed}
           className={`w-full py-2.5 border-none rounded-md text-sm transition-all duration-300 ${
             isConfirmed
@@ -142,13 +149,6 @@ function TransactionCard() {
         >
           {isConfirmed ? '已确认' : '开始交易'}
         </button>
-
-        {/* 客服消息提示 */}
-        {isConfirmed && (
-          <div className="mt-2.5 px-3 py-2 bg-neutral-200 rounded-lg text-sm text-neutral-700">
-            客服：你已确认，等待对方确认中。
-          </div>
-        )}
       </div>
     </MessageRow>
   )
@@ -242,7 +242,7 @@ function TypingIndicator() {
   )
 }
 
-export function ChatMessages({ messages, typing }: { messages: Message[]; typing: boolean }) {
+export function ChatMessages({ messages, typing, onTransactionConfirm }: { messages: Message[]; typing: boolean; onTransactionConfirm?: () => void }) {
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -254,7 +254,7 @@ export function ChatMessages({ messages, typing }: { messages: Message[]; typing
       <div className="px-6 py-2 text-center text-xs leading-relaxed text-neutral-500">螃蟹交付专员-绝缘创建了群组</div>
       <OrderCard />
       <ImportantCard />
-      <TransactionCard />
+      <TransactionCard onConfirm={onTransactionConfirm} />
       {messages.map((m) => {
         if (m.sender === "system") return <SystemTip key={m.id} message={m} />
         if (m.sender === "user") return <UserBubble key={m.id} message={m} />

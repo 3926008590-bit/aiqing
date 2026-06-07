@@ -52,10 +52,14 @@ export default function Page() {
     botReply("收到您的催促啦！客服会优先为您加急处理，预计 3-5 分钟内回复～")
   }, [pushMessage, botReply])
 
+  const handleTransactionConfirm = useCallback(() => {
+    botReply("你已确认，等待对方确认中。")
+  }, [botReply])
+
   return (
     <div className="mx-auto flex h-dvh max-w-md flex-col bg-neutral-100">
       <ChatHeader />
-      <ChatMessages messages={messages} typing={typing} />
+      <ChatMessages messages={messages} typing={typing} onTransactionConfirm={handleTransactionConfirm} />
       <ChatFooter
         onSend={handleSend}
         onSendImage={handleSendImage}
