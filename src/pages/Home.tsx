@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useChatStore, Message } from '../store/chatStore';
+import { useChatStore, Message, MomentPost } from '../store/chatStore';
 import { sendMessage } from '../utils/api';
 import { ChatMessage } from '../components/ChatMessage';
 import { ChatInput } from '../components/ChatInput';
@@ -117,6 +117,12 @@ export const Home: React.FC = () => {
     userProfile,
     updateUserProfile,
     updateBalance,
+    moments,
+    addMoment,
+    likeMoment,
+    unlikeMoment,
+    commentMoment,
+    aiName,
   } = useChatStore();
 
   const { showToast } = useToast();
@@ -153,12 +159,17 @@ export const Home: React.FC = () => {
   const [momentsOpen, setMomentsOpen] = useState(false);
   // 偷看手机
   const [peekPhoneOpen, setPeekPhoneOpen] = useState(false);
+  const [peekPhoneApp, setPeekPhoneApp] = useState<string | null>(null);
   // 礼物弹窗
   const [giftOpen, setGiftOpen] = useState(false);
   const [giftAmount, setGiftAmount] = useState(0);
   // 红包弹窗
   const [redPacketOpen, setRedPacketOpen] = useState(false);
   const [redPacketAmount, setRedPacketAmount] = useState(0);
+  // 朋友圈评论弹窗
+  const [commentOpen, setCommentOpen] = useState(false);
+  const [commentMomentId, setCommentMomentId] = useState<string | null>(null);
+  const [commentText, setCommentText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const currentConversation = conversations.find((c) => c.id === currentConversationId);
 
@@ -212,6 +223,37 @@ export const Home: React.FC = () => {
 
     addMessage({ role: 'user', content: message });
     updateStreamingContent('');
+
+    // 检测用户是否让 AI 发朋友圈：如"发一条朋友圈说..." "发朋友圈..."等
+    const sendMomentKeywords = ['发朋友圈', '发个朋友圈', '发一条朋友圈', '更新朋友圈', '发条朋友圈', '发个动态', '发一条动态'];
+    let detectedMomentContent = '';
+    let detectedSendMoment = false;
+    for (const kw of sendMomentKeywords) {
+      if (message.includes(kw)) {
+        detectedSendMoment = true;
+        const index = message.indexOf(kw);
+        let rest = message.slice(index + kw.length);
+        rest = rest.replace(/^[\s:：说的内容发]*/, '').trim();
+        rest = rest.replace(/[。！？,.!?~～]+$/g, '').trim();
+        if (rest.length > 0) {
+          detectedMomentContent = rest;
+        }
+        break;
+      }
+    }
+
+    // 如果检测到发朋友圈指令，直接添加到 store 中
+    if (detectedSendMoment && detectedMomentContent) {
+      const aiAuthor = currentConversation?.title || '芋';
+      setTimeout(() => {
+        addMoment({
+          author: aiAuthor,
+          content: detectedMomentContent,
+          isAIAuthor: true,
+        });
+        showToast('已发布朋友圈');
+      }, 1500);
+    }
 
     const allMessages = [
       ...(currentConversation?.messages || []),
@@ -371,6 +413,87 @@ export const Home: React.FC = () => {
     updateBalance(userProfile.balance - redPacketAmount);
     addMessage({ role: 'user', content: `[红包] ${redPacketAmount}元 恭喜发财，大吉大利 🧧` });
     setRedPacketOpen(false);
+  };
+
+  // 打开朋友圈评论弹窗
+  const handleOpenComment = (momentId: string) => {
+    setCommentMomentId(momentId);
+    setCommentText('');
+    setCommentOpen(true);
+  };
+
+  // 发送朋友圈评论
+  const handleSendComment = () => {
+    if (!commentMomentId || !commentText.trim()) return;
+    commentMoment(commentMomentId, {
+      author: userProfile.nickname || '我',
+      content: commentText.trim(),
+      isUser: true,
+    });
+    setCommentOpen(false);
+    setCommentText('');
+    // AI 会回复评论（通过store状态变化触发UI更新）
+    showToast('评论成功');
+  };
+
+  // 朋友圈点赞/取消点赞
+  const handleToggleLike = (momentId: string) => {
+    const userName = userProfile.nickname || '我';
+    const moment = moments.find((m) => m.id === momentId);
+    if (!moment) return;
+    if (moment.likes.includes(userName)) {
+      unlikeMoment(momentId, userName);
+    } else {
+      likeMoment(momentId, userName);
+    }
+  };
+
+  // AI发朋友圈（用户让发或AI主动发）
+  const handleAIPostMoment = async (content?: string) => {
+    if (!apiKey) {
+      setSettingsOpen(true);
+      return;
+    }
+    const sendMessages: { role: 'system' | 'user' | 'assistant'; content: string }[] = [
+      { role: 'system', content: '你是一个喜欢发朋友圈的人。请根据你的性格和最近的生活，想一条适合发朋友圈的内容。不要太长，20-50字左右，像真人发朋友圈一样自然。不要用emoji。只回复朋友圈内容本身，不要其他话。' },
+      ...(currentConversation?.messages || []).slice(-6).map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
+    ];
+    try {
+      let aiContent = content;
+      if (!aiContent) {
+        // 调用AI生成
+        await sendMessage(apiKey, sendMessages, {
+          onChunk: () => {},
+          onFinish: (fullContent) => {
+            if (fullContent && fullContent.trim()) {
+              const aiConv = currentConversation;
+              addMoment({
+                author: aiConv?.title || aiName,
+                authorAvatarColor: aiConv?.avatarColor,
+                authorAvatarColor2: aiConv?.avatarColor2,
+                authorAvatar: aiConv?.avatarImage,
+                content: fullContent.trim(),
+                isAIAuthor: true,
+              });
+              showToast('TA发了一条朋友圈');
+            }
+          },
+          onError: () => {},
+        });
+      } else {
+        // 直接使用给定内容发
+        addMoment({
+          author: currentConversation?.title || aiName,
+          authorAvatarColor: currentConversation?.avatarColor,
+          authorAvatarColor2: currentConversation?.avatarColor2,
+          authorAvatar: currentConversation?.avatarImage,
+          content: aiContent,
+          isAIAuthor: true,
+        });
+      }
+    } catch {
+      // ignore
+    }
   };
 
   // 查看朋友圈
@@ -945,51 +1068,26 @@ export const Home: React.FC = () => {
 
             {/* 朋友圈内容列表 */}
             <div style={{ flex: 1, background: '#ffffff' }}>
-              {(() => {
-                const contactList = conversations.length > 0
-                  ? conversations.map((c) => c.title).filter((n) => n && n.trim().length > 0)
-                  : [];
-
-                const samplePosts: Array<{
-                  name: string;
-                  avatar?: string;
-                  avatarColor?: string;
-                  avatarColor2?: string;
-                  text: string;
-                  time: string;
-                }> = [
-                  ...contactList.slice(0, 4).map((name, i) => {
-                    const conv = conversations.find((c) => c.title === name);
-                    const posts = [
-                      '今天天气真不错，出来走走～',
-                      '刚看完一部电影，强烈推荐！',
-                      '周末去了趟公园，心情很好',
-                      '最近在读一本书，很有启发',
-                      '生活就是要保持一点好奇心',
-                    ];
-                    return {
-                      name,
-                      avatar: conv?.avatarImage,
-                      avatarColor: conv?.avatarColor,
-                      avatarColor2: conv?.avatarColor2,
-                      text: posts[i % posts.length],
-                      time: `${i + 1} 小时前`,
-                    };
-                  }),
-                ];
-
-                // 如果没有联系人，加一条默认的芋的动态
-                if (samplePosts.length === 0) {
-                  samplePosts.push({
-                    name: '芋',
-                    text: '今天也在想你呢～',
-                    time: '刚刚',
-                  });
-                }
-
-                return samplePosts.map((post, idx) => (
+              {moments.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '40px 20px', color: '#999999' }}>
+                  暂无朋友圈
+                </div>
+              )}
+              {moments.map((post) => {
+                const timeAgo = (() => {
+                  const diff = Date.now() - post.createdAt;
+                  const mins = Math.floor(diff / 60000);
+                  if (mins < 1) return '刚刚';
+                  if (mins < 60) return `${mins} 分钟前`;
+                  const hours = Math.floor(mins / 60);
+                  if (hours < 24) return `${hours} 小时前`;
+                  const days = Math.floor(hours / 24);
+                  return `${days} 天前`;
+                })();
+                const userLiked = post.likes.includes(userProfile?.nickname || '我');
+                return (
                   <div
-                    key={idx}
+                    key={post.id}
                     style={{
                       display: 'flex',
                       gap: '12px',
@@ -1003,9 +1101,9 @@ export const Home: React.FC = () => {
                         width: '44px',
                         height: '44px',
                         borderRadius: '6px',
-                        background: post.avatar
+                        background: post.authorAvatar
                           ? 'transparent'
-                          : `linear-gradient(135deg, ${post.avatarColor || '#45b7d1'}, ${post.avatarColor2 || '#2193b0'})`,
+                          : `linear-gradient(135deg, ${post.authorAvatarColor || '#45b7d1'}, ${post.authorAvatarColor2 || '#2193b0'})`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -1016,68 +1114,108 @@ export const Home: React.FC = () => {
                         flexShrink: 0,
                       }}
                     >
-                      {post.avatar ? (
-                        <img
-                          src={post.avatar}
-                          alt="头像"
-                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                        />
+                      {post.authorAvatar ? (
+                        <img src={post.authorAvatar} alt={post.author} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                       ) : (
-                        post.name.charAt(0)
+                        post.author.charAt(0)
                       )}
                     </div>
 
                     {/* 内容区 */}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div
-                        style={{
-                          color: '#576b95',
-                          fontSize: '15px',
-                          fontWeight: 500,
-                          marginBottom: '6px',
-                        }}
-                      >
-                        {post.name}
+                      <div style={{ color: '#576b95', fontSize: '15px', fontWeight: 500, marginBottom: '6px' }}>
+                        {post.author}
                       </div>
-                      <div
-                        style={{
-                          fontSize: '15px',
-                          lineHeight: 1.6,
-                          color: '#222222',
-                          marginBottom: '8px',
-                        }}
-                      >
-                        {post.text}
+                      <div style={{ fontSize: '15px', lineHeight: 1.6, color: '#222222', marginBottom: '8px', whiteSpace: 'pre-wrap' }}>
+                        {post.content}
                       </div>
-                      <div
-                        style={{
-                          fontSize: '12px',
-                          color: '#999999',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}
-                      >
-                        {post.time}
-                        <button
-                          onClick={() => showToast('评论功能待上线')}
-                          style={{
-                            background: '#f5f5f5',
-                            border: 'none',
-                            borderRadius: '4px',
-                            padding: '3px 10px',
-                            fontSize: '12px',
-                            color: '#666666',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          💬
-                        </button>
+
+                      {/* 点赞区 */}
+                      {post.likes.length > 0 && (
+                        <div style={{ background: '#f5f5f5', borderRadius: '4px', padding: '6px 10px', marginBottom: '6px', fontSize: '13px', color: '#576b95' }}>
+                          ❤️ {post.likes.join('、')}
+                        </div>
+                      )}
+
+                      {/* 评论区 */}
+                      {post.comments.length > 0 && (
+                        <div style={{ background: '#f5f5f5', borderRadius: '4px', padding: '6px 10px', marginBottom: '6px' }}>
+                          {post.comments.map((c) => (
+                            <div key={c.id} style={{ fontSize: '13px', color: '#222222', lineHeight: 1.5, marginBottom: '4px' }}>
+                              <span style={{ color: '#576b95' }}>{c.author}</span>
+                              {c.replyTo && <span> 回复 <span style={{ color: '#576b95' }}>{c.replyTo}</span></span>}：{c.content}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* 时间和操作区 */}
+                      <div style={{ fontSize: '12px', color: '#999999', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        {timeAgo}
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <button
+                            onClick={() => {
+                              if (userLiked) unlikeMoment(post.id, userProfile?.nickname || '我');
+                              else likeMoment(post.id, userProfile?.nickname || '我');
+                            }}
+                            style={{
+                              background: userLiked ? '#ff6b6b' : '#f5f5f5',
+                              border: 'none',
+                              borderRadius: '4px',
+                              padding: '3px 10px',
+                              fontSize: '12px',
+                              color: userLiked ? '#ffffff' : '#666666',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {userLiked ? '❤️已赞' : '❤️赞'}
+                          </button>
+                          <button
+                            onClick={() => {
+                              const text = window.prompt('说点什么...');
+                              if (text && text.trim()) {
+                                commentMoment(post.id, {
+                                  author: userProfile?.nickname || '我',
+                                  content: text.trim(),
+                                  isUser: true,
+                                });
+                                // 如果是 AI 的朋友圈，模拟 AI 回复
+                                if (post.isAIAuthor) {
+                                  const aiReplies = [
+                                    '谢谢～',
+                                    '哈哈哈哈哈',
+                                    '你真好～',
+                                    '感谢支持！',
+                                    '爱你哦～',
+                                  ];
+                                  setTimeout(() => {
+                                    commentMoment(post.id, {
+                                      author: post.author,
+                                      content: aiReplies[Math.floor(Math.random() * aiReplies.length)],
+                                      replyTo: userProfile?.nickname || '我',
+                                    });
+                                  }, 2000 + Math.random() * 2000);
+                                }
+                              }
+                            }}
+                            style={{
+                              background: '#f5f5f5',
+                              border: 'none',
+                              borderRadius: '4px',
+                              padding: '3px 10px',
+                              fontSize: '12px',
+                              color: '#666666',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            💬评论
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                ));
-              })()}
+                );
+              })}
             </div>
 
             {/* 底部留白 */}
