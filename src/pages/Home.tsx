@@ -2828,7 +2828,7 @@ export const Home: React.FC = () => {
 
   // ========== 微信会话列表界面 ==========
   const renderWeChat = () => (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: '#ededed' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#ededed' }}>
       {/* 顶部栏 */}
       <div
         style={{
@@ -2896,7 +2896,7 @@ export const Home: React.FC = () => {
       </div>
 
       {/* 会话列表 */}
-      <div style={{ flex: 1, overflowY: 'auto', background: '#ffffff' }}>
+      <div style={{ flex: 1, overflowY: 'auto', background: '#ffffff', minHeight: 0 }}>
         {conversations.length === 0 ? (
           <div style={{ padding: '40px 20px', textAlign: 'center', color: '#888888', fontSize: '14px' }}>
             暂无对话
@@ -3025,7 +3025,7 @@ export const Home: React.FC = () => {
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: '#ededed' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#ededed' }}>
         {/* 顶部栏 */}
         <div
           style={{
@@ -3088,7 +3088,7 @@ export const Home: React.FC = () => {
         </div>
 
         {/* 联系人列表 + 右侧字母索引 */}
-        <div style={{ flex: 1, overflowY: 'auto', background: '#ffffff', position: 'relative' }}>
+        <div style={{ flex: 1, overflowY: 'auto', background: '#ffffff', position: 'relative', minHeight: 0 }}>
           {sortedLetters.length === 0 ? (
             <div style={{ padding: '40px 20px', textAlign: 'center', color: '#888888', fontSize: '14px' }}>
               还没有联系人
@@ -3278,7 +3278,7 @@ export const Home: React.FC = () => {
     const allGroups = [group1, group2, group3, group4, group5];
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: '#ededed' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#ededed' }}>
         {/* 顶部栏 */}
         <div
           style={{
@@ -3298,7 +3298,7 @@ export const Home: React.FC = () => {
         </div>
 
         {/* 内容区 */}
-        <div style={{ flex: 1, overflowY: 'auto' }}>
+        <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
           {allGroups.map((group, groupIndex) => (
             <div key={groupIndex} style={{ marginTop: groupIndex === 0 ? '8px' : '8px', background: '#ffffff', borderTop: '1px solid #ececec', borderBottom: '1px solid #ececec' }}>
               {group.map((item, index) => (
@@ -3425,7 +3425,7 @@ export const Home: React.FC = () => {
     };
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: '#ededed' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#ededed' }}>
         {/* 用户信息区 */}
         <div
           onClick={() => setEditProfileOpen(true)}
@@ -3499,7 +3499,7 @@ export const Home: React.FC = () => {
         </div>
 
         {/* 功能列表 */}
-        <div style={{ flex: 1, overflowY: 'auto', marginTop: '8px' }}>
+        <div style={{ flex: 1, overflowY: 'auto', marginTop: '8px', minHeight: 0 }}>
           {/* 第一组：服务 */}
           <div style={{ background: '#ffffff', borderTop: '1px solid #ececec', borderBottom: '1px solid #ececec', marginBottom: '8px' }}>
             {items1.map((item, index) => (
