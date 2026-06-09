@@ -560,53 +560,66 @@ export const Home: React.FC = () => {
         {/* 顶部栏 */}
         <div
           style={{
-            height: '44px',
+            height: '48px',
+            minHeight: '48px',
             background: '#f7f7f7',
             borderBottom: '1px solid #e5e5e5',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '0 12px',
+            padding: '0 8px',
             flexShrink: 0,
           }}
         >
           <button
             onClick={handleBack}
             style={{
-              width: '32px',
-              height: '32px',
+              width: '48px',
+              height: '48px',
+              minWidth: '48px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#000000',
               cursor: 'pointer',
+              background: 'transparent',
+              border: 'none',
+              padding: 0,
+              WebkitAppearance: 'none',
+              zIndex: 10,
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
 
-          <div style={{ fontWeight: 500, fontSize: '17px', color: '#000000' }}>
+          <div style={{ fontWeight: 500, fontSize: '17px', color: '#000000', flex: 1, textAlign: 'center' }}>
             {currentConversation.title}
           </div>
 
           <button
             onClick={() => setHeaderMenuOpen(true)}
             style={{
-              width: '32px',
-              height: '32px',
+              width: '48px',
+              height: '48px',
+              minWidth: '48px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#000000',
               cursor: 'pointer',
+              background: 'transparent',
+              border: 'none',
+              padding: 0,
+              WebkitAppearance: 'none',
+              zIndex: 10,
             }}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <circle cx="5" cy="12" r="1.8" />
-              <circle cx="12" cy="12" r="1.8" />
-              <circle cx="19" cy="12" r="1.8" />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="5" cy="12" r="2" />
+              <circle cx="12" cy="12" r="2" />
+              <circle cx="19" cy="12" r="2" />
             </svg>
           </button>
         </div>
@@ -1249,14 +1262,16 @@ export const Home: React.FC = () => {
             {/* 固定的顶部栏 */}
             <div
               style={{
-                height: '44px',
+                height: '48px',
+                minHeight: '48px',
                 background: peekPhoneApp === 'wechat' ? '#ededed' : peekPhoneApp === 'messages' ? '#ededed' : peekPhoneApp === 'phone' ? '#ffffff' : peekPhoneApp === 'settings' ? '#ededed' : peekPhoneApp === 'douyin' ? '#000000' : peekPhoneApp === 'xiaohongshu' ? '#ffffff' : peekPhoneApp === 'alipay' ? '#1677FF' : peekPhoneApp === 'taobao' ? '#ff6a00' : '#000000',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '0 12px',
+                padding: '0 8px',
                 flexShrink: 0,
                 borderBottom: peekPhoneApp && peekPhoneApp !== 'photos' && peekPhoneApp !== 'camera' && peekPhoneApp !== 'music' && peekPhoneApp !== 'safari' ? '1px solid #e5e5e5' : 'none',
+                zIndex: 10,
               }}
             >
               <button
@@ -1268,19 +1283,26 @@ export const Home: React.FC = () => {
                   }
                 }}
                 style={{
-                  width: '36px',
-                  height: '36px',
+                  padding: '0 12px',
+                  height: '48px',
+                  minWidth: '80px',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
+                  justifyContent: 'flex-start',
                   color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' ? '#ffffff' : '#000000',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
-                  fontSize: '14px',
+                  fontSize: '15px',
+                  fontWeight: 500,
+                  WebkitAppearance: 'none',
+                  whiteSpace: 'nowrap',
                 }}
               >
-                {peekPhoneApp === null ? '← 关闭' : '← 返回'}
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '2px' }}>
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                {peekPhoneApp === null ? '关闭' : '返回'}
               </button>
 
               <div

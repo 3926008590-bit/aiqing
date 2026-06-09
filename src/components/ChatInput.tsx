@@ -137,6 +137,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       style={{
         background: '#f7f7f7',
         borderTop: '1px solid #e5e5e5',
+        flexShrink: 0,
+        minHeight: '56px',
       }}
     >
       {/* 工具栏 */}
@@ -146,18 +148,23 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           alignItems: 'center',
           padding: '8px 8px',
           gap: '4px',
+          minHeight: '56px',
         }}
       >
         {/* 语音按钮 */}
         <button
           onClick={() => setShowFunctionPanel(false)}
           style={{
-            width: '40px',
-            height: '40px',
+            width: '44px',
+            height: '44px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
+            background: 'transparent',
+            border: 'none',
+            WebkitAppearance: 'none',
+            cursor: 'pointer',
           }}
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.8" strokeLinecap="round">
@@ -177,7 +184,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             padding: '0 12px',
             display: 'flex',
             alignItems: 'center',
-            minHeight: '40px',
+            minHeight: '44px',
           }}
         >
           <textarea
@@ -197,10 +204,11 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               resize: 'none',
               fontSize: '16px',
               lineHeight: 1.5,
-              padding: '9px 0',
+              padding: '10px 0',
               color: '#000000',
-              minHeight: '22px',
+              minHeight: '24px',
               maxHeight: '100px',
+              WebkitAppearance: 'none',
             }}
           />
         </div>
@@ -209,12 +217,16 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         <button
           onClick={() => setShowFunctionPanel(false)}
           style={{
-            width: '40px',
-            height: '40px',
+            width: '44px',
+            height: '44px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
+            background: 'transparent',
+            border: 'none',
+            WebkitAppearance: 'none',
+            cursor: 'pointer',
           }}
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -231,7 +243,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             onClick={handleSubmit}
             disabled={isLoading}
             style={{
-              height: '40px',
+              height: '44px',
               padding: '0 14px',
               borderRadius: '6px',
               background: '#07C160',
@@ -241,6 +253,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               flexShrink: 0,
               border: 'none',
               cursor: 'pointer',
+              WebkitAppearance: 'none',
             }}
           >
             发送
@@ -249,12 +262,16 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           <button
             onClick={() => setShowFunctionPanel(!showFunctionPanel)}
             style={{
-              width: '40px',
-              height: '40px',
+              width: '44px',
+              height: '44px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
+              background: 'transparent',
+              border: 'none',
+              WebkitAppearance: 'none',
+              cursor: 'pointer',
             }}
           >
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.8" strokeLinecap="round">
