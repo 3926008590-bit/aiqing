@@ -551,8 +551,10 @@ export const Home: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           height: '100vh',
+          maxHeight: '100vh',
           overflow: 'hidden',
           background: '#ededed',
+          position: 'relative',
         }}
       >
         {/* 顶部栏 */}
@@ -610,7 +612,7 @@ export const Home: React.FC = () => {
         </div>
 
         {/* 消息区 */}
-        <div style={{ flex: 1, overflowY: 'auto', background: '#ededed' }}>
+        <div style={{ flex: 1, overflowY: 'auto', background: '#ededed', WebkitOverflowScrolling: 'touch', minHeight: 0 }}>
           <div style={{ padding: '12px 0' }}>
             {allMessages.map((message) => (
               <ChatMessage
@@ -1233,28 +1235,86 @@ export const Home: React.FC = () => {
           <div
             style={{
               position: 'fixed',
-              inset: 0,
-              background: '#000000',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
               zIndex: 1000,
               display: 'flex',
               flexDirection: 'column',
+              background: '#000000',
+              overflow: 'hidden',
             }}
           >
-            {/* 状态栏（模拟手机） */}
+            {/* 固定的顶部栏 */}
             <div
               style={{
-                height: '28px',
-                background: '#000000',
+                height: '44px',
+                background: peekPhoneApp === 'wechat' ? '#ededed' : peekPhoneApp === 'messages' ? '#ededed' : peekPhoneApp === 'phone' ? '#ffffff' : peekPhoneApp === 'settings' ? '#ededed' : peekPhoneApp === 'douyin' ? '#000000' : peekPhoneApp === 'xiaohongshu' ? '#ffffff' : peekPhoneApp === 'alipay' ? '#1677FF' : peekPhoneApp === 'taobao' ? '#ff6a00' : '#000000',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '0 18px',
-                color: '#ffffff',
-                fontSize: '12px',
-                fontWeight: 600,
+                padding: '0 12px',
+                flexShrink: 0,
+                borderBottom: peekPhoneApp && peekPhoneApp !== 'photos' && peekPhoneApp !== 'camera' && peekPhoneApp !== 'music' && peekPhoneApp !== 'safari' ? '1px solid #e5e5e5' : 'none',
               }}
             >
-              <span>
+              <button
+                onClick={() => {
+                  if (peekPhoneApp === null) {
+                    setPeekPhoneOpen(false);
+                  } else {
+                    setPeekPhoneApp(null);
+                  }
+                }}
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' ? '#ffffff' : '#000000',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                }}
+              >
+                {peekPhoneApp === null ? '← 关闭' : '← 返回'}
+              </button>
+
+              <div
+                style={{
+                  fontWeight: 600,
+                  fontSize: '16px',
+                  color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' ? '#ffffff' : '#000000',
+                }}
+              >
+                {peekPhoneApp === null && `偷看 ${currentConversation?.title || 'TA'} 的手机`}
+                {peekPhoneApp === 'wechat' && '微信'}
+                {peekPhoneApp === 'messages' && '信息'}
+                {peekPhoneApp === 'phone' && '电话'}
+                {peekPhoneApp === 'photos' && '照片'}
+                {peekPhoneApp === 'camera' && '相机'}
+                {peekPhoneApp === 'notes' && '备忘录'}
+                {peekPhoneApp === 'music' && '音乐'}
+                {peekPhoneApp === 'settings' && '设置'}
+                {peekPhoneApp === 'douyin' && '抖音'}
+                {peekPhoneApp === 'xiaohongshu' && '小红书'}
+                {peekPhoneApp === 'alipay' && '支付宝'}
+                {peekPhoneApp === 'taobao' && '淘宝'}
+                {peekPhoneApp === 'safari' && 'Safari'}
+              </div>
+
+              <span
+                style={{
+                  fontSize: '12px',
+                  color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' ? '#ffffff' : '#333333',
+                  fontWeight: 600,
+                  width: '60px',
+                  textAlign: 'right',
+                }}
+              >
                 {(() => {
                   const now = new Date();
                   const h = now.getHours().toString().padStart(2, '0');
@@ -1262,749 +1322,1509 @@ export const Home: React.FC = () => {
                   return `${h}:${m}`;
                 })()}
               </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <svg width="16" height="10" viewBox="0 0 16 10" fill="#ffffff">
-                  <rect x="0" y="6" width="2" height="4" rx="1" />
-                  <rect x="4" y="4" width="2" height="6" rx="1" />
-                  <rect x="8" y="2" width="2" height="8" rx="1" />
-                  <rect x="12" y="0" width="2" height="10" rx="1" />
-                </svg>
-                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#ffffff" strokeWidth="1">
-                  <path d="M7 8.5c0.8 0 1.5-0.7 1.5-1.5S7.8 5.5 7 5.5 5.5 6.2 5.5 7s0.7 1.5 1.5 1.5z" fill="#ffffff" />
-                  <path d="M1.5 4.5c1.5-1.5 3.5-2 5.5-2s4 0.5 5.5 2" />
-                  <path d="M0 3c2-2 4.5-3 7-3s5 1 7 3" />
-                </svg>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div style={{ width: '22px', height: '10px', border: '1px solid #ffffff', borderRadius: '2px', padding: '1px', display: 'flex', alignItems: 'center' }}>
-                    <div style={{ width: '80%', height: '100%', background: '#ffffff', borderRadius: '1px' }} />
-                  </div>
-                  <div style={{ width: '2px', height: '4px', background: '#ffffff', marginLeft: '1px', borderRadius: '1px' }} />
-                </div>
-              </div>
             </div>
 
-            {/* 手机主屏幕内容 */}
+            {/* APP页面内容区 */}
             <div
               style={{
                 flex: 1,
-                background: 'linear-gradient(180deg, #2a3a5c 0%, #4a5a7c 50%, #3a4a6c 100%)',
                 overflowY: 'auto',
-                position: 'relative',
+                minHeight: 0,
+                WebkitOverflowScrolling: 'touch',
+                background: peekPhoneApp === null
+                  ? 'linear-gradient(180deg, #2a3a5c 0%, #4a5a7c 50%, #3a4a6c 100%)'
+                  : peekPhoneApp === 'wechat' || peekPhoneApp === 'messages' || peekPhoneApp === 'notes' || peekPhoneApp === 'settings'
+                    ? '#ededed'
+                    : peekPhoneApp === 'phone' || peekPhoneApp === 'xiaohongshu' || peekPhoneApp === 'taobao'
+                      ? '#ffffff'
+                      : peekPhoneApp === 'photos'
+                        ? '#1c1c1e'
+                        : peekPhoneApp === 'camera' || peekPhoneApp === 'douyin'
+                          ? '#000000'
+                          : peekPhoneApp === 'music'
+                            ? '#121212'
+                            : peekPhoneApp === 'alipay'
+                              ? '#1677FF'
+                              : '#000000',
               }}
             >
-              {/* 顶部提示 */}
-              <div
-                style={{
-                  textAlign: 'center',
-                  padding: '12px 16px',
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  fontSize: '12px',
-                }}
-              >
-                （你正在偷偷看着 {currentConversation?.title || 'TA'} 的手机）
-              </div>
-
-              {/* 手机图标网格 */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(4, 1fr)',
-                  gap: '24px 16px',
-                  padding: '20px 24px 30px',
-                }}
-              >
-                {/* 微信 - 最重要的应用 */}
-                <div
-                  onClick={() => showToast('里面全是和你的聊天')}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '6px',
-                    cursor: 'pointer',
-                  }}
-                >
+              {/* 主屏幕：所有APP图标网格 */}
+              {peekPhoneApp === null && (
+                <div style={{ padding: '20px 24px 30px' }}>
                   <div
                     style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: 'linear-gradient(180deg, #07C160 0%, #06AD56 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                    }}
-                  >
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
-                      <path d="M9.5 3C5.4 3 2 5.7 2 9.1c0 1.9 1 3.6 2.6 4.7-0.1 0.5-0.4 1.6-0.5 1.9 0 0.2 0.1 0.3 0.3 0.1l2.3-1.2c0.9 0.2 1.8 0.4 2.8 0.4 0.2 0 0.4 0 0.6 0-0.1-0.4-0.1-0.8-0.1-1.2 0-3.2 3.1-5.8 7-5.8 0.4 0 0.8 0 1.1 0.1C17.6 4.8 13.9 3 9.5 3zM7 7.8L5.5 6.8l1.5-1L7 7.8zM12 7.8L10.5 6.8l1.5-1L12 7.8z" />
-                      <path d="M22 15c0 2.8-2.7 5-6 5-0.6 0-1.2-0.1-1.8-0.2L11 21.2c-0.2 0.1-0.3 0-0.3-0.1l-0.4-1.4C7.7 18.6 6 17.1 6 15.3c0-2.8 2.7-5 6-5 3.3 0 6 2.1 6 4.7z" />
-                    </svg>
-                  </div>
-                  <span style={{ color: '#ffffff', fontSize: '12px' }}>微信</span>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      marginLeft: '40px',
-                      marginTop: '-4px',
-                      background: '#ff3b30',
-                      color: '#ffffff',
-                      fontSize: '10px',
-                      fontWeight: 600,
-                      padding: '2px 5px',
-                      borderRadius: '10px',
-                      minWidth: '18px',
                       textAlign: 'center',
+                      padding: '8px 16px 16px',
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      fontSize: '12px',
                     }}
                   >
-                    99+
+                    （偷偷看看 TA 的手机里有什么...）
+                  </div>
+
+                  {/* 第一行：4个图标 */}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gap: '20px 16px',
+                      padding: '10px 0 30px',
+                    }}
+                  >
+                    {/* 微信 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('wechat')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(180deg, #07C160 0%, #06AD56 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                        }}
+                      >
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
+                          <path d="M9.5 3C5.4 3 2 5.7 2 9.1c0 1.9 1 3.6 2.6 4.7-0.1 0.5-0.4 1.6-0.5 1.9 0 0.2 0.1 0.3 0.3 0.1l2.3-1.2c0.9 0.2 1.8 0.4 2.8 0.4 0.2 0 0.4 0 0.6 0-0.1-0.4-0.1-0.8-0.1-1.2 0-3.2 3.1-5.8 7-5.8 0.4 0 0.8 0 1.1 0.1C17.6 4.8 13.9 3 9.5 3zM7 7.8L5.5 6.8l1.5-1L7 7.8zM12 7.8L10.5 6.8l1.5-1L12 7.8z" />
+                          <path d="M22 15c0 2.8-2.7 5-6 5-0.6 0-1.2-0.1-1.8-0.2L11 21.2c-0.2 0.1-0.3 0-0.3-0.1l-0.4-1.4C7.7 18.6 6 17.1 6 15.3c0-2.8 2.7-5 6-5 3.3 0 6 2.1 6 4.7z" />
+                        </svg>
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>微信</span>
+                    </div>
+
+                    {/* 信息 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('messages')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(180deg, #5ac8fa 0%, #007AFF 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                        }}
+                      >
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff">
+                          <rect x="3" y="4" width="18" height="14" rx="2" />
+                          <path d="M3 6l9 6 9-6" stroke="#007AFF" strokeWidth="1" fill="none" />
+                        </svg>
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>信息</span>
+                    </div>
+
+                    {/* 电话 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('phone')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(180deg, #34C759 0%, #28A745 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                        }}
+                      >
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff">
+                          <path d="M20 15.5c-1.2 0-2.4-0.2-3.5-0.6-0.4-0.2-0.9-0.1-1.2 0.3l-1.8 2.2c-2.8-1.4-5.1-3.7-6.5-6.5l2.2-1.8c0.4-0.3 0.5-0.8 0.3-1.2-0.4-1.1-0.6-2.3-0.6-3.5 0-0.3-0.2-0.5-0.5-0.5H4c-0.3 0-0.5 0.2-0.5 0.5 0 9.1 7.4 16.5 16.5 16.5 0.3 0 0.5-0.2 0.5-0.5v-3.5c0-0.3-0.2-0.5-0.5-0.5z" />
+                        </svg>
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>电话</span>
+                    </div>
+
+                    {/* 相册 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('photos')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: '#ffffff',
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(2, 1fr)',
+                          gap: '2px',
+                          padding: '6px',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                        }}
+                      >
+                        <div style={{ background: '#ff9500', borderRadius: '2px' }} />
+                        <div style={{ background: '#ff3b30', borderRadius: '2px' }} />
+                        <div style={{ background: '#5ac8fa', borderRadius: '2px' }} />
+                        <div style={{ background: '#af52de', borderRadius: '2px' }} />
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>相册</span>
+                    </div>
+                  </div>
+
+                  {/* 第二行：4个图标 */}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gap: '20px 16px',
+                      padding: '0 0 30px',
+                    }}
+                  >
+                    {/* 相机 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('camera')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(180deg, #8e8e93 0%, #48484a 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                        }}
+                      >
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
+                          <path d="M20 6h-2.8l-1.2-1.6c-0.4-0.5-1-0.8-1.7-0.8H9.7c-0.7 0-1.3 0.3-1.7 0.8L6.8 6H4c-1.1 0-2 0.9-2 2v10c0 1.1 0.9 2 2 2h16c1.1 0 2-0.9 2-2V8c0-1.1-0.9-2-2-2z" />
+                          <circle cx="12" cy="13" r="4" fill="#1c1c1e" />
+                          <circle cx="12" cy="13" r="2.5" fill="#8e8e93" />
+                        </svg>
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>相机</span>
+                    </div>
+
+                    {/* 备忘录 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('notes')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(180deg, #fffce7 0%, #ffe066 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                        }}
+                      >
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b6914" strokeWidth="1.5">
+                          <line x1="5" y1="6" x2="17" y2="6" />
+                          <line x1="5" y1="10" x2="17" y2="10" />
+                          <line x1="5" y1="14" x2="14" y2="14" />
+                          <line x1="5" y1="18" x2="12" y2="18" />
+                        </svg>
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>备忘录</span>
+                    </div>
+
+                    {/* 音乐 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('music')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(180deg, #fa2d44 0%, #c81e35 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                        }}
+                      >
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
+                          <path d="M20 3L8 5v8.2c-0.6-0.4-1.3-0.7-2-0.7-2.2 0-4 1.6-4 3.5s1.8 3.5 4 3.5 4-1.6 4-3.5V8l10-1.5V15c-0.6-0.4-1.3-0.7-2-0.7-2.2 0-4 1.6-4 3.5s1.8 3.5 4 3.5 4-1.6 4-3.5V3z" />
+                        </svg>
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>音乐</span>
+                    </div>
+
+                    {/* 设置 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('settings')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(180deg, #8e8e93 0%, #48484a 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                        }}
+                      >
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
+                          <circle cx="12" cy="12" r="3" />
+                          <path d="M19.4 15.2l-1.9-1.1c0.4-0.8 0.7-1.7 0.7-2.6s-0.3-1.8-0.7-2.6l1.9-1.1c0.5-0.3 0.7-0.9 0.5-1.5l-1.8-3.1c-0.2-0.4-0.6-0.6-1-0.5l-2.2 0.9c-0.5-0.4-1.1-0.7-1.7-0.9l-0.3-2.3c0-0.5-0.4-0.9-0.9-0.9h-3.6c-0.5 0-0.9 0.4-0.9 0.9L8.7 3.8c-0.6 0.2-1.2 0.5-1.7 0.9l-2.2-0.9c-0.4-0.2-0.9 0-1.1 0.5L1.9 7.4c-0.2 0.5 0 1 0.5 1.5l1.9 1.1c-0.4 0.8-0.7 1.7-0.7 2.6s0.3 1.8 0.7 2.6L2.4 16.3c-0.5 0.3-0.7 0.9-0.5 1.5l1.8 3.1c0.2 0.4 0.6 0.6 1 0.5l2.2-0.9c0.5 0.4 1.1 0.7 1.7 0.9l0.3 2.3c0 0.5 0.4 0.9 0.9 0.9h3.6c0.5 0 0.9-0.4 0.9-0.9l0.3-2.3c0.6-0.2 1.2-0.5 1.7-0.9l2.2 0.9c0.4 0.2 0.9 0 1.1-0.5l1.8-3.1c0.2-0.5 0-1-0.5-1.5z" fill="#ffffff" />
+                        </svg>
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>设置</span>
+                    </div>
+                  </div>
+
+                  {/* 第三行：4个图标（抖音、小红书、支付宝、淘宝） */}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gap: '20px 16px',
+                      padding: '0 0 30px',
+                    }}
+                  >
+                    {/* 抖音 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('douyin')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: '#000000',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                          color: '#ffffff',
+                          fontWeight: 'bold',
+                          fontSize: '20px',
+                        }}
+                      >
+                        抖音
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>抖音</span>
+                    </div>
+
+                    {/* 小红书 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('xiaohongshu')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: '#ff2442',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                          color: '#ffffff',
+                          fontWeight: 'bold',
+                          fontSize: '14px',
+                        }}
+                      >
+                        小红书
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>小红书</span>
+                    </div>
+
+                    {/* 支付宝 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('alipay')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: '#1677FF',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                          color: '#ffffff',
+                          fontWeight: 'bold',
+                          fontSize: '14px',
+                        }}
+                      >
+                        支付宝
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>支付宝</span>
+                    </div>
+
+                    {/* 淘宝 */}
+                    <div
+                      onClick={() => setPeekPhoneApp('taobao')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(180deg, #ff8800 0%, #ff5500 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                          color: '#ffffff',
+                          fontWeight: 'bold',
+                          fontSize: '14px',
+                        }}
+                      >
+                        淘宝
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>淘宝</span>
+                    </div>
+                  </div>
+
+                  {/* Safari */}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gap: '20px 16px',
+                      padding: '0 0 40px',
+                    }}
+                  >
+                    <div
+                      onClick={() => setPeekPhoneApp('safari')}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '58px',
+                          height: '58px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(180deg, #ffffff 0%, #e5e5e5 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                        }}
+                      >
+                        <svg width="32" height="32" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="10" fill="#007AFF" stroke="#ffffff" strokeWidth="1" />
+                          <path d="M12 2v20M2 12h20" stroke="#ffffff" strokeWidth="0.5" />
+                          <path d="M8 8l4 8 4-4-4 4-8-8z" fill="#ff3b30" opacity="0.9" />
+                        </svg>
+                      </div>
+                      <span style={{ color: '#ffffff', fontSize: '12px' }}>Safari</span>
+                    </div>
                   </div>
                 </div>
+              )}
 
-                {/* 信息 */}
+              {/* 微信：聊天对话 */}
+              {peekPhoneApp === 'wechat' && (
+                <div style={{ padding: '0', background: '#ededed', minHeight: '100%' }}>
+                  {/* 聊天列表简要（模拟） */}
+                  <div
+                    onClick={() => {}}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '12px 16px',
+                      background: '#ffffff',
+                      borderBottom: '1px solid #e5e5e5',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '8px',
+                        background: 'linear-gradient(135deg, #ff6b6b, #ee5a6f)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#ffffff',
+                        fontSize: '18px',
+                        fontWeight: 600,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {currentConversation?.title ? currentConversation.title.charAt(0) : '我'}
+                    </div>
+                    <div style={{ flex: 1, marginLeft: '12px', minWidth: 0 }}>
+                      <div style={{ fontSize: '16px', fontWeight: 500, color: '#000000' }}>
+                        {currentConversation?.title || '我'}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '13px',
+                          color: '#888888',
+                          marginTop: '3px',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        [正在输入...]
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#999999', marginRight: '8px' }}>刚刚</div>
+                  </div>
+
+                  {/* 聊天内容区 */}
+                  <div style={{ padding: '16px' }}>
+                    <div
+                      style={{
+                        fontSize: '11px',
+                        color: '#999999',
+                        textAlign: 'center',
+                        marginBottom: '20px',
+                      }}
+                    >
+                      以下是 TA 正在输入的消息草稿...
+                    </div>
+
+                    <div style={{ display: 'flex', marginBottom: '14px' }}>
+                      <div
+                        style={{
+                          background: '#ffffff',
+                          color: '#000000',
+                          padding: '10px 14px',
+                          borderRadius: '4px',
+                          fontSize: '15px',
+                          maxWidth: '75%',
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        今天想你了
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: '14px' }}>
+                      <div
+                        style={{
+                          background: '#ffffff',
+                          color: '#000000',
+                          padding: '10px 14px',
+                          borderRadius: '4px',
+                          fontSize: '15px',
+                          maxWidth: '75%',
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        你今天过得怎么样？
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: '14px' }}>
+                      <div
+                        style={{
+                          background: '#ffffff',
+                          color: '#000000',
+                          padding: '10px 14px',
+                          borderRadius: '4px',
+                          fontSize: '15px',
+                          maxWidth: '75%',
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        晚上要不要一起吃饭
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: '14px' }}>
+                      <div
+                        style={{
+                          background: '#ffffff',
+                          color: '#000000',
+                          padding: '10px 14px',
+                          borderRadius: '4px',
+                          fontSize: '15px',
+                          maxWidth: '75%',
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        等你回复哦～
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        fontSize: '11px',
+                        color: '#999999',
+                        textAlign: 'center',
+                        marginTop: '30px',
+                        fontStyle: 'italic',
+                      }}
+                    >
+                      （TA 一直在等你的回复...）
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 信息：短信列表 */}
+              {peekPhoneApp === 'messages' && (
+                <div style={{ background: '#ffffff', minHeight: '100%' }}>
+                  {[
+                    { from: '妈妈', text: '今天记得早点回家吃饭', time: '昨天' },
+                    { from: '外卖小哥', text: '您的外卖已送达，请下楼取餐', time: '昨天' },
+                    { from: '快递', text: '您的快递已放到小区门口的快递柜，取件码8842', time: '2天前' },
+                    { from: '银行卡', text: '【银行】您的账户于12:34支出520.00元', time: '3天前' },
+                    { from: '外卖平台', text: '您有一张优惠券即将过期，快去使用吧', time: '4天前' },
+                    { from: '10086', text: '本月已使用流量2.3GB，剩余5.7GB', time: '5天前' },
+                  ].map((msg, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '14px 16px',
+                        borderBottom: '1px solid #f0f0f0',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '42px',
+                          height: '42px',
+                          borderRadius: '50%',
+                          background: `linear-gradient(135deg, ${['#ff6b6b', '#4ecdc4', '#45b7d1', '#96c93d', '#f0932b', '#6c5ce7'][i % 6]}, ${['#ee5a6f', '#44a08d', '#2193b0', '#7cb342', '#e17055', '#5f4b8b'][i % 6]})`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#ffffff',
+                          fontSize: '15px',
+                          fontWeight: 500,
+                          flexShrink: 0,
+                        }}
+                      >
+                        {msg.from.charAt(0)}
+                      </div>
+                      <div style={{ flex: 1, marginLeft: '12px', minWidth: 0 }}>
+                        <div
+                          style={{
+                            fontSize: '15px',
+                            fontWeight: 500,
+                            color: '#000000',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          {msg.from}
+                          <span style={{ fontSize: '11px', color: '#999999', fontWeight: 'normal' }}>
+                            {msg.time}
+                          </span>
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '13px',
+                            color: '#888888',
+                            marginTop: '3px',
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {msg.text}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 电话：通话记录 */}
+              {peekPhoneApp === 'phone' && (
+                <div style={{ background: '#ffffff', minHeight: '100%' }}>
+                  {[
+                    { name: '妈妈', detail: '呼入 · 5分钟', time: '今天 18:32' },
+                    { name: '外卖', detail: '未接', time: '今天 12:15' },
+                    { name: '公司', detail: '呼出 · 2分钟', time: '今天 10:20' },
+                    { name: '朋友A', detail: '呼入 · 8分钟', time: '昨天 22:14' },
+                    { name: '快递', detail: '呼出 · 1分钟', time: '昨天 14:23' },
+                    { name: '银行', detail: '呼出 · 3分钟', time: '前天 16:50' },
+                  ].map((call, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '14px 16px',
+                        borderBottom: '1px solid #f0f0f0',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '42px',
+                          height: '42px',
+                          borderRadius: '50%',
+                          background: `linear-gradient(135deg, ${['#ff6b6b', '#ff3b30', '#45b7d1', '#96c93d', '#f0932b', '#6c5ce7'][i % 6]}, ${['#ee5a6f', '#c81e35', '#2193b0', '#7cb342', '#e17055', '#5f4b8b'][i % 6]})`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#ffffff',
+                          fontSize: '15px',
+                          fontWeight: 500,
+                          flexShrink: 0,
+                        }}
+                      >
+                        {call.name.charAt(0)}
+                      </div>
+                      <div style={{ flex: 1, marginLeft: '12px', minWidth: 0 }}>
+                        <div
+                          style={{
+                            fontSize: '16px',
+                            color: call.detail.includes('未接') ? '#ff3b30' : '#000000',
+                            fontWeight: 500,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          {call.name}
+                          <span style={{ fontSize: '12px', color: '#999999', fontWeight: 'normal' }}>
+                            {call.time}
+                          </span>
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '13px',
+                            color: call.detail.includes('未接') ? '#ff3b30' : '#888888',
+                            marginTop: '3px',
+                          }}
+                        >
+                          {call.detail}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 相册：照片网格 */}
+              {peekPhoneApp === 'photos' && (
+                <div style={{ background: '#1c1c1e', minHeight: '100%', padding: '8px' }}>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(3, 1fr)',
+                      gap: '4px',
+                    }}
+                  >
+                    {[
+                      '#ff6b6b', '#4ecdc4', '#45b7d1', '#96c93d',
+                      '#f0932b', '#6c5ce7', '#fd79a8', '#00b894',
+                      '#ff9500', '#ff3b30', '#5ac8fa', '#af52de',
+                      '#ffcc00', '#34c759', '#007AFF', '#ff2d55',
+                      '#5856d6', '#34C759', '#fa2d44', '#c81e35',
+                      '#8e8e93', '#48484a', '#fffce7', '#ffe066',
+                    ].map((color, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          aspectRatio: '1/1',
+                          background: `linear-gradient(135deg, ${color}, ${color}dd)`,
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'rgba(255,255,255,0.6)',
+                          fontSize: '24px',
+                        }}
+                      >
+                        ❤️
+                      </div>
+                    ))}
+                  </div>
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      marginTop: '20px',
+                      fontSize: '12px',
+                      color: '#888888',
+                    }}
+                  >
+                    共 124 张照片 · 多是你们的合照
+                  </div>
+                </div>
+              )}
+
+              {/* 相机：取景器 */}
+              {peekPhoneApp === 'camera' && (
                 <div
-                  onClick={() => showToast('没有新消息')}
                   style={{
+                    background: '#000000',
+                    minHeight: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: '6px',
-                    cursor: 'pointer',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                    padding: '20px',
                   }}
                 >
                   <div
                     style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: 'linear-gradient(180deg, #5ac8fa 0%, #007AFF 100%)',
+                      width: '280px',
+                      height: '400px',
+                      border: '2px solid #ffffff',
+                      borderRadius: '8px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                      background: 'linear-gradient(135deg, #333333, #111111)',
+                      color: '#ffffff',
+                      fontSize: '14px',
+                      flexDirection: 'column',
+                      gap: '12px',
                     }}
                   >
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff">
-                      <rect x="3" y="4" width="18" height="14" rx="2" />
-                      <path d="M3 6l9 6 9-6" stroke="#007AFF" strokeWidth="1" fill="none" />
-                    </svg>
+                    <div style={{ fontSize: '48px' }}>📷</div>
+                    <div>取景器</div>
+                    <div style={{ fontSize: '11px', opacity: 0.7 }}>（假装这里有画面）</div>
                   </div>
-                  <span style={{ color: '#ffffff', fontSize: '12px' }}>信息</span>
+                  <div
+                    style={{
+                      marginTop: '40px',
+                      width: '64px',
+                      height: '64px',
+                      borderRadius: '50%',
+                      border: '4px solid #ffffff',
+                      background: 'transparent',
+                    }}
+                  />
                 </div>
+              )}
 
-                {/* 电话 */}
+              {/* 备忘录：笔记列表 */}
+              {peekPhoneApp === 'notes' && (
+                <div style={{ background: '#ffffff', minHeight: '100%' }}>
+                  {[
+                    { title: '购物清单', content: '牛奶、鸡蛋、面包、水果...', time: '今天' },
+                    { title: '关于TA', content: '今天想TA了，TA是最可爱的人...', time: '今天' },
+                    { title: '工作计划', content: '下周需要完成的任务清单...', time: '昨天' },
+                    { title: '读书笔记', content: '《活着》读后感：生活就像...', time: '3天前' },
+                    { title: '灵感', content: '一个关于故事的想法...', time: '上周' },
+                    { title: '心愿', content: '想和TA一起去看海、看日落...', time: '上周' },
+                  ].map((note, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        padding: '14px 16px',
+                        borderBottom: '1px solid #f0f0f0',
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: '15px',
+                          fontWeight: 500,
+                          color: '#000000',
+                        }}
+                      >
+                        {note.title}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '13px',
+                          color: '#888888',
+                          marginTop: '4px',
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {note.content}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '11px',
+                          color: '#999999',
+                          marginTop: '6px',
+                        }}
+                      >
+                        {note.time}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 音乐：音乐播放器 */}
+              {peekPhoneApp === 'music' && (
                 <div
-                  onClick={() => showToast('最近没有通话记录')}
                   style={{
+                    background: '#121212',
+                    minHeight: '100%',
+                    padding: '40px 24px',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: '6px',
-                    cursor: 'pointer',
                   }}
                 >
                   <div
                     style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: 'linear-gradient(180deg, #34C759 0%, #28A745 100%)',
+                      width: '240px',
+                      height: '240px',
+                      background: 'linear-gradient(135deg, #fa2d44 0%, #c81e35 100%)',
+                      borderRadius: '12px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                      boxShadow: '0 8px 30px rgba(250,45,68,0.4)',
+                      marginTop: '30px',
                     }}
                   >
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff">
-                      <path d="M20 15.5c-1.2 0-2.4-0.2-3.5-0.6-0.4-0.2-0.9-0.1-1.2 0.3l-1.8 2.2c-2.8-1.4-5.1-3.7-6.5-6.5l2.2-1.8c0.4-0.3 0.5-0.8 0.3-1.2-0.4-1.1-0.6-2.3-0.6-3.5 0-0.3-0.2-0.5-0.5-0.5H4c-0.3 0-0.5 0.2-0.5 0.5 0 9.1 7.4 16.5 16.5 16.5 0.3 0 0.5-0.2 0.5-0.5v-3.5c0-0.3-0.2-0.5-0.5-0.5z" />
-                    </svg>
+                    <div style={{ fontSize: '80px' }}>🎵</div>
                   </div>
-                  <span style={{ color: '#ffffff', fontSize: '12px' }}>电话</span>
-                </div>
 
-                {/* 相册 */}
+                  <div
+                    style={{
+                      marginTop: '30px',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      color: '#ffffff',
+                    }}
+                  >
+                    想你的夜
+                  </div>
+                  <div
+                    style={{
+                      marginTop: '8px',
+                      fontSize: '13px',
+                      color: '#888888',
+                    }}
+                  >
+                    歌手 · TA的最爱
+                  </div>
+
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '4px',
+                      background: '#333333',
+                      borderRadius: '2px',
+                      marginTop: '30px',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '35%',
+                        height: '100%',
+                        background: '#ffffff',
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      fontSize: '11px',
+                      color: '#888888',
+                      marginTop: '6px',
+                    }}
+                  >
+                    <span>1:23</span>
+                    <span>4:05</span>
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '40px',
+                      marginTop: '40px',
+                      color: '#ffffff',
+                      fontSize: '32px',
+                    }}
+                  >
+                    <span>⏮</span>
+                    <span
+                      style={{
+                        fontSize: '48px',
+                      }}
+                    >
+                      ▶
+                    </span>
+                    <span>⏭</span>
+                  </div>
+                </div>
+              )}
+
+              {/* 设置 */}
+              {peekPhoneApp === 'settings' && (
+                <div style={{ background: '#ededed', minHeight: '100%', padding: '12px 0' }}>
+                  {[
+                    { label: '飞行模式', icon: '✈️' },
+                    { label: 'Wi-Fi', icon: '📶', value: '已连接' },
+                    { label: '蓝牙', icon: '🔵', value: '打开' },
+                    { label: '蜂窝网络', icon: '📱' },
+                  ].map((item, i) => (
+                    <div
+                      key={'g1-' + i}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '12px 16px',
+                        background: '#ffffff',
+                        borderBottom: i < 3 ? '1px solid #f0f0f0' : 'none',
+                      }}
+                    >
+                      <span style={{ fontSize: '18px', width: '28px' }}>{item.icon}</span>
+                      <span style={{ flex: 1, fontSize: '15px', color: '#000000', marginLeft: '8px' }}>
+                        {item.label}
+                      </span>
+                      <span style={{ fontSize: '13px', color: '#888888' }}>{item.value || ''}</span>
+                      <span style={{ fontSize: '14px', color: '#cccccc', marginLeft: '8px' }}>›</span>
+                    </div>
+                  ))}
+
+                  <div style={{ height: '20px' }} />
+
+                  {[
+                    { label: '通知', icon: '🔔' },
+                    { label: '声音', icon: '🔊' },
+                    { label: '显示与亮度', icon: '☀️' },
+                    { label: '墙纸', icon: '🖼' },
+                  ].map((item, i) => (
+                    <div
+                      key={'g2-' + i}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '12px 16px',
+                        background: '#ffffff',
+                        borderBottom: i < 3 ? '1px solid #f0f0f0' : 'none',
+                      }}
+                    >
+                      <span style={{ fontSize: '18px', width: '28px' }}>{item.icon}</span>
+                      <span style={{ flex: 1, fontSize: '15px', color: '#000000', marginLeft: '8px' }}>
+                        {item.label}
+                      </span>
+                      <span style={{ fontSize: '14px', color: '#cccccc' }}>›</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 抖音：视频 feed */}
+              {peekPhoneApp === 'douyin' && (
                 <div
-                  onClick={() => showToast('相册里有很多你们的合照')}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '6px',
-                    cursor: 'pointer',
+                    background: '#000000',
+                    minHeight: '100%',
+                    padding: '0',
+                  }}
+                >
+                  {[
+                    { user: '美食博主', desc: '今天教大家做一道超级好吃的菜！', likes: '12.5w', comments: '2341' },
+                    { user: '旅行达人', desc: '带你去看看这个世界最美的角落 🌍', likes: '8.3w', comments: '1520' },
+                    { user: '搞笑日常', desc: '哈哈哈笑死我了 真的绝了', likes: '25.1w', comments: '5823' },
+                    { user: '健身教练', desc: '每天坚持10分钟，身材变好不是梦', likes: '6.7w', comments: '892' },
+                  ].map((video, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        position: 'relative',
+                        height: '380px',
+                        background: `linear-gradient(135deg, ${['#ff6b6b', '#4ecdc4', '#45b7d1', '#96c93d'][i % 4]}, ${['#ee5a6f', '#44a08d', '#2193b0', '#7cb342'][i % 4]})`,
+                        marginBottom: '4px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-end',
+                        color: '#ffffff',
+                        padding: '16px',
+                      }}
+                    >
+                      <div style={{ fontSize: '15px', fontWeight: 600 }}>@{video.user}</div>
+                      <div style={{ fontSize: '13px', marginTop: '6px', lineHeight: 1.5 }}>
+                        {video.desc}
+                      </div>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          right: '16px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '16px',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <div style={{ textAlign: 'center' }}>
+                          <div style={{ fontSize: '24px' }}>❤️</div>
+                          <div style={{ fontSize: '11px', marginTop: '4px' }}>{video.likes}</div>
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                          <div style={{ fontSize: '24px' }}>💬</div>
+                          <div style={{ fontSize: '11px', marginTop: '4px' }}>{video.comments}</div>
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                          <div style={{ fontSize: '24px' }}>↗️</div>
+                          <div style={{ fontSize: '11px', marginTop: '4px' }}>分享</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 小红书：帖子 feed */}
+              {peekPhoneApp === 'xiaohongshu' && (
+                <div
+                  style={{
+                    background: '#f5f5f5',
+                    minHeight: '100%',
+                    padding: '8px',
                   }}
                 >
                   <div
                     style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: 'linear-gradient(180deg, #ffffff 0%, #e5e5e5 100%)',
                       display: 'grid',
                       gridTemplateColumns: 'repeat(2, 1fr)',
-                      gap: '2px',
-                      padding: '6px',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                      gap: '8px',
                     }}
                   >
-                    <div style={{ background: '#ff9500', borderRadius: '2px' }} />
-                    <div style={{ background: '#ff3b30', borderRadius: '2px' }} />
-                    <div style={{ background: '#5ac8fa', borderRadius: '2px' }} />
-                    <div style={{ background: '#af52de', borderRadius: '2px' }} />
+                    {[
+                      { title: '今天的穿搭分享～超级好看', author: '时尚小姐姐', likes: '3.2w', color: '#ff6b6b' },
+                      { title: '发现一家超好吃的咖啡店！', author: '美食侦探', likes: '1.8w', color: '#4ecdc4' },
+                      { title: '旅行日记：一个人的海边', author: '旅行达人', likes: '5.1w', color: '#45b7d1' },
+                      { title: '化妆教程：日常淡妆', author: '美妆博主', likes: '2.4w', color: '#f0932b' },
+                      { title: '读书笔记：今年最爱的几本书', author: '书虫', likes: '8500', color: '#6c5ce7' },
+                      { title: '租房改造：500元的奇迹', author: '生活家', likes: '1.2w', color: '#96c93d' },
+                    ].map((post, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          background: '#ffffff',
+                          borderRadius: '8px',
+                          overflow: 'hidden',
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <div
+                          style={{
+                            aspectRatio: '3/4',
+                            background: `linear-gradient(135deg, ${post.color}, ${post.color}dd)`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#ffffff',
+                            fontSize: '14px',
+                          }}
+                        >
+                          📷
+                        </div>
+                        <div
+                          style={{
+                            padding: '8px 10px 10px',
+                            fontSize: '13px',
+                            color: '#333333',
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {post.title}
+                        </div>
+                        <div
+                          style={{
+                            padding: '0 10px 10px',
+                            fontSize: '11px',
+                            color: '#999999',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <span>{post.author}</span>
+                          <span>❤️ {post.likes}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <span style={{ color: '#ffffff', fontSize: '12px' }}>相册</span>
                 </div>
+              )}
 
-                {/* 相机 */}
-                <div
-                  onClick={() => showToast('相机正在打开...')}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '6px',
-                    cursor: 'pointer',
-                  }}
-                >
+              {/* 支付宝：钱包 */}
+              {peekPhoneApp === 'alipay' && (
+                <div style={{ background: '#1677FF', minHeight: '100%', padding: '0' }}>
                   <div
                     style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: 'linear-gradient(180deg, #8e8e93 0%, #636366 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                      background: '#ffffff',
+                      margin: '16px',
+                      borderRadius: '12px',
+                      padding: '20px 16px',
+                      color: '#000000',
                     }}
                   >
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
-                      <path d="M20 6h-2.8l-1.2-1.6c-0.4-0.5-1-0.8-1.7-0.8H9.7c-0.7 0-1.3 0.3-1.7 0.8L6.8 6H4c-1.1 0-2 0.9-2 2v10c0 1.1 0.9 2 2 2h16c1.1 0 2-0.9 2-2V8c0-1.1-0.9-2-2-2z" />
-                      <circle cx="12" cy="13" r="4" fill="#636366" />
-                      <circle cx="12" cy="13" r="2.5" />
-                    </svg>
-                  </div>
-                  <span style={{ color: '#ffffff', fontSize: '12px' }}>相机</span>
-                </div>
-
-                {/* 备忘录 */}
-                <div
-                  onClick={() => showToast('最近的备忘录：记得给你打电话')}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '6px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: 'linear-gradient(180deg, #fffce7 0%, #ffe066 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                    }}
-                  >
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b6914" strokeWidth="1.5">
-                      <line x1="5" y1="6" x2="17" y2="6" />
-                      <line x1="5" y1="10" x2="17" y2="10" />
-                      <line x1="5" y1="14" x2="14" y2="14" />
-                      <line x1="5" y1="18" x2="12" y2="18" />
-                    </svg>
-                  </div>
-                  <span style={{ color: '#ffffff', fontSize: '12px' }}>备忘录</span>
-                </div>
-
-                {/* 音乐 */}
-                <div
-                  onClick={() => showToast('正在播放：情歌')}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '6px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: 'linear-gradient(180deg, #fa2d44 0%, #c81e35 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                    }}
-                  >
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
-                      <path d="M20 3L8 5v8.2c-0.6-0.4-1.3-0.7-2-0.7-2.2 0-4 1.6-4 3.5s1.8 3.5 4 3.5 4-1.6 4-3.5V8l10-1.5V15c-0.6-0.4-1.3-0.7-2-0.7-2.2 0-4 1.6-4 3.5s1.8 3.5 4 3.5 4-1.6 4-3.5V3z" />
-                    </svg>
-                  </div>
-                  <span style={{ color: '#ffffff', fontSize: '12px' }}>音乐</span>
-                </div>
-
-                {/* 设置 */}
-                <div
-                  onClick={() => showToast('设置里有你的指纹')}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '6px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: 'linear-gradient(180deg, #8e8e93 0%, #48484a 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                    }}
-                  >
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
-                      <circle cx="12" cy="12" r="3" />
-                      <path d="M19.4 15.2l-1.9-1.1c0.4-0.8 0.7-1.7 0.7-2.6s-0.3-1.8-0.7-2.6l1.9-1.1c0.5-0.3 0.7-0.9 0.5-1.5l-1.8-3.1c-0.2-0.4-0.6-0.6-1-0.5l-2.2 0.9c-0.5-0.4-1.1-0.7-1.7-0.9l-0.3-2.3c0-0.5-0.4-0.9-0.9-0.9h-3.6c-0.5 0-0.9 0.4-0.9 0.9L8.7 3.8c-0.6 0.2-1.2 0.5-1.7 0.9l-2.2-0.9c-0.4-0.2-0.9 0-1.1 0.5L1.9 7.4c-0.2 0.5 0 1 0.5 1.5l1.9 1.1c-0.4 0.8-0.7 1.7-0.7 2.6s0.3 1.8 0.7 2.6L2.4 16.3c-0.5 0.3-0.7 0.9-0.5 1.5l1.8 3.1c0.2 0.4 0.6 0.6 1 0.5l2.2-0.9c0.5 0.4 1.1 0.7 1.7 0.9l0.3 2.3c0 0.5 0.4 0.9 0.9 0.9h3.6c0.5 0 0.9-0.4 0.9-0.9l0.3-2.3c0.6-0.2 1.2-0.5 1.7-0.9l2.2 0.9c0.4 0.2 0.9 0 1.1-0.5l1.8-3.1c0.2-0.5 0-1-0.5-1.5z" fill="#ffffff" />
-                    </svg>
-                  </div>
-                  <span style={{ color: '#ffffff', fontSize: '12px' }}>设置</span>
-                </div>
-              </div>
-
-              {/* 微信聊天内容区（核心看点） */}
-              <div
-                style={{
-                  margin: '0 16px 20px',
-                  background: 'rgba(0, 0, 0, 0.3)',
-                  borderRadius: '14px',
-                  padding: '16px',
-                  color: '#ffffff',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '13px',
-                    opacity: 0.7,
-                    marginBottom: '10px',
-                    textAlign: 'center',
-                  }}
-                >
-                  微信聊天预览（最新几条）
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                    <div
-                      style={{
-                        background: '#ffffff',
-                        color: '#000000',
-                        padding: '8px 12px',
-                        borderRadius: '8px',
-                        fontSize: '13px',
-                        maxWidth: '70%',
-                      }}
-                    >
-                      今天想你了
+                    <div style={{ fontSize: '13px', color: '#888888' }}>余额（元）</div>
+                    <div style={{ fontSize: '32px', fontWeight: 600, marginTop: '8px' }}>
+                      ¥ 8,888.88
                     </div>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      background: '#ffffff',
+                      margin: '0 16px',
+                      borderRadius: '12px',
+                      padding: '20px 12px',
+                      gap: '12px',
+                    }}
+                  >
+                    {[
+                      { icon: '💰', name: '转账' },
+                      { icon: '📱', name: '充值' },
+                      { icon: '🎫', name: '卡券' },
+                      { icon: '🏠', name: '生活缴费' },
+                    ].map((item, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '6px',
+                        }}
+                      >
+                        <div style={{ fontSize: '28px' }}>{item.icon}</div>
+                        <div style={{ fontSize: '12px', color: '#333333' }}>{item.name}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ height: '16px' }} />
+
+                  {[
+                    { title: '最近转账：给TA发了520', time: '今天' },
+                    { title: '消费记录：午餐 35元', time: '今天' },
+                    { title: '收款：朋友还钱 200元', time: '昨天' },
+                    { title: '红包：抢到 8.88元', time: '昨天' },
+                  ].map((item, i) => (
                     <div
+                      key={i}
                       style={{
                         background: '#ffffff',
-                        color: '#000000',
-                        padding: '8px 12px',
+                        margin: '0 16px 8px',
                         borderRadius: '8px',
-                        fontSize: '13px',
-                        maxWidth: '70%',
+                        padding: '12px 14px',
+                        color: '#000000',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                       }}
                     >
-                      你今天过得怎么样？
+                      <span style={{ fontSize: '14px' }}>{item.title}</span>
+                      <span style={{ fontSize: '12px', color: '#999999' }}>{item.time}</span>
                     </div>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                    <div
-                      style={{
-                        background: '#ffffff',
-                        color: '#000000',
-                        padding: '8px 12px',
-                        borderRadius: '8px',
-                        fontSize: '13px',
-                        maxWidth: '70%',
-                      }}
-                    >
-                      晚上要不要一起吃饭
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                    <div
-                      style={{
-                        background: '#ffffff',
-                        color: '#000000',
-                        padding: '8px 12px',
-                        borderRadius: '8px',
-                        fontSize: '13px',
-                        maxWidth: '70%',
-                      }}
-                    >
-                      等你回复哦～
-                    </div>
-                  </div>
+                  ))}
                 </div>
+              )}
+
+              {/* 淘宝：商品 */}
+              {peekPhoneApp === 'taobao' && (
+                <div style={{ background: '#f5f5f5', minHeight: '100%', padding: '8px' }}>
+                  {[
+                    { name: '送给TA的生日礼物 情侣款', price: '199', sold: '3000+', color: '#ff6b6b' },
+                    { name: '情人节礼物 惊喜盒子', price: '299', sold: '1.5w', color: '#fd79a8' },
+                    { name: '情侣装 夏季新款 百搭', price: '129', sold: '8000+', color: '#45b7d1' },
+                    { name: '定制相框 合照打印', price: '59', sold: '2.3w', color: '#f0932b' },
+                    { name: '手写信 文艺复古风', price: '29', sold: '5000+', color: '#96c93d' },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        background: '#ffffff',
+                        marginBottom: '8px',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '110px',
+                          height: '110px',
+                          background: `linear-gradient(135deg, ${item.color}, ${item.color}dd)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#ffffff',
+                          fontSize: '32px',
+                          flexShrink: 0,
+                        }}
+                      >
+                        🎁
+                      </div>
+                      <div
+                        style={{
+                          flex: 1,
+                          padding: '12px',
+                          minWidth: 0,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: '14px',
+                            color: '#333333',
+                            lineHeight: 1.4,
+                            overflow: 'hidden',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                          }}
+                        >
+                          {item.name}
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-end',
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: '18px',
+                              fontWeight: 600,
+                              color: '#ff5500',
+                            }}
+                          >
+                            ¥{item.price}
+                          </span>
+                          <span style={{ fontSize: '11px', color: '#999999' }}>
+                            销量 {item.sold}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Safari：搜索页 */}
+              {peekPhoneApp === 'safari' && (
                 <div
                   style={{
-                    textAlign: 'center',
-                    marginTop: '12px',
-                    fontSize: '11px',
-                    opacity: 0.5,
-                    paddingTop: '10px',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                    background: '#000000',
+                    minHeight: '100%',
+                    padding: '20px 16px',
+                    color: '#ffffff',
                   }}
                 >
-                  （TA 一直在等你消息）
-                </div>
-              </div>
+                  <div
+                    style={{
+                      background: '#2c2c2e',
+                      borderRadius: '10px',
+                      padding: '12px 14px',
+                      fontSize: '14px',
+                      color: '#ffffff',
+                    }}
+                  >
+                    🔍  搜索或输入网址
+                  </div>
 
-              {/* 底部 Dock */}
-              <div
-                style={{
-                  position: 'sticky',
-                  bottom: 0,
-                  margin: '20px 20px',
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  borderRadius: '22px',
-                  padding: '12px 20px',
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  backdropFilter: 'blur(20px)',
-                }}
-              >
-                {/* 电话图标 */}
-                <div
-                  onClick={() => showToast('最近没有通话记录')}
-                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
-                >
                   <div
                     style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '12px',
-                      background: 'linear-gradient(180deg, #34C759 0%, #28A745 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      marginTop: '24px',
+                      fontSize: '13px',
+                      color: '#888888',
+                      marginBottom: '12px',
                     }}
                   >
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="#ffffff">
-                      <path d="M20 15.5c-1.2 0-2.4-0.2-3.5-0.6-0.4-0.2-0.9-0.1-1.2 0.3l-1.8 2.2c-2.8-1.4-5.1-3.7-6.5-6.5l2.2-1.8c0.4-0.3 0.5-0.8 0.3-1.2-0.4-1.1-0.6-2.3-0.6-3.5 0-0.3-0.2-0.5-0.5-0.5H4c-0.3 0-0.5 0.2-0.5 0.5 0 9.1 7.4 16.5 16.5 16.5 0.3 0 0.5-0.2 0.5-0.5v-3.5c0-0.3-0.2-0.5-0.5-0.5z" />
-                    </svg>
+                    TA最近搜索
                   </div>
-                </div>
-                {/* Safari 图标 */}
-                <div
-                  onClick={() => showToast('浏览器里有很多关于你的搜索')}
-                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
-                >
+
+                  {[
+                    '如何给喜欢的人准备惊喜',
+                    '好看的情侣头像',
+                    '附近好吃的餐厅推荐',
+                    '怎么让聊天不尴尬',
+                    '一周年礼物送什么好',
+                    '怎么变得更优秀',
+                  ].map((text, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        padding: '12px 0',
+                        fontSize: '14px',
+                        color: '#ffffff',
+                        borderBottom: '1px solid #2c2c2e',
+                      }}
+                    >
+                      <span style={{ color: '#5ac8fa', marginRight: '10px' }}>🔍</span>
+                      {text}
+                    </div>
+                  ))}
+
                   <div
                     style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '12px',
-                      background: 'linear-gradient(180deg, #5ac8fa 0%, #007AFF 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      marginTop: '30px',
+                      fontSize: '11px',
+                      color: '#666666',
+                      textAlign: 'center',
+                      fontStyle: 'italic',
                     }}
                   >
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
-                      <circle cx="12" cy="12" r="10" fill="#007AFF" stroke="#ffffff" strokeWidth="1" />
-                      <path d="M12 2v20M2 12h20" stroke="#ffffff" strokeWidth="0.5" />
-                    </svg>
+                    （TA的搜索记录里，全是你）
                   </div>
                 </div>
-                {/* 信息图标 */}
-                <div
-                  onClick={() => showToast('没有新信息')}
-                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
-                >
-                  <div
-                    style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '12px',
-                      background: 'linear-gradient(180deg, #5ac8fa 0%, #007AFF 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="#ffffff">
-                      <rect x="3" y="4" width="18" height="14" rx="2" />
-                      <path d="M3 6l9 6 9-6" stroke="#007AFF" strokeWidth="1" fill="none" />
-                    </svg>
-                  </div>
-                </div>
-                {/* 相机图标 */}
-                <div
-                  onClick={() => showToast('相机正在打开...')}
-                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
-                >
-                  <div
-                    style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '12px',
-                      background: 'linear-gradient(180deg, #8e8e93 0%, #636366 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
-                      <path d="M20 6h-2.8l-1.2-1.6c-0.4-0.5-1-0.8-1.7-0.8H9.7c-0.7 0-1.3 0.3-1.7 0.8L6.8 6H4c-1.1 0-2 0.9-2 2v10c0 1.1 0.9 2 2 2h16c1.1 0 2-0.9 2-2V8c0-1.1-0.9-2-2-2z" />
-                      <circle cx="12" cy="13" r="4" fill="#636366" />
-                      <circle cx="12" cy="13" r="2.5" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
-            {/* 关闭按钮 */}
+            {/* 右上角固定的关闭按钮 */}
             <div
               style={{
                 position: 'absolute',
-                top: '36px',
-                right: '12px',
-                zIndex: 20,
+                top: '52px',
+                right: '16px',
+                zIndex: 50,
               }}
             >
               <button
-                onClick={() => setPeekPhoneOpen(false)}
+                onClick={() => {
+                  setPeekPhoneApp(null);
+                  setPeekPhoneOpen(false);
+                }}
                 style={{
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
-                  background: 'rgba(255, 255, 255, 0.2)',
+                  background: 'rgba(0, 0, 0, 0.5)',
                   border: 'none',
                   color: '#ffffff',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '18px',
+                  fontSize: '16px',
+                  fontWeight: 600,
                 }}
               >
                 ✕
               </button>
             </div>
 
-            {/* 底部 Home 指示条（模拟 iPhone Home Indicator） */}
+            {/* 底部 Home indicator（点击可关闭） */}
             <div
-              onClick={() => setPeekPhoneOpen(false)}
+              onClick={() => {
+                setPeekPhoneApp(null);
+                setPeekPhoneOpen(false);
+              }}
               style={{
-                height: '34px',
-                background: '#000000',
+                height: '30px',
+                background: peekPhoneApp === 'douyin' || peekPhoneApp === 'camera' || peekPhoneApp === 'music' || peekPhoneApp === 'photos' || peekPhoneApp === 'safari' ? '#000000' : '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
+                flexShrink: 0,
               }}
             >
               <div
                 style={{
-                  width: '120px',
+                  width: '130px',
                   height: '5px',
                   borderRadius: '3px',
-                  background: '#ffffff',
+                  background: peekPhoneApp === 'douyin' || peekPhoneApp === 'camera' || peekPhoneApp === 'music' || peekPhoneApp === 'photos' || peekPhoneApp === 'safari' ? '#ffffff' : '#333333',
                 }}
               />
-            </div>
-          </div>
-        )}
-
-        <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
-
-        {/* 礼物弹窗 */}
-        {giftOpen && (
-          <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0, 0, 0, 0.5)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 1001,
-            }}
-            onClick={() => setGiftOpen(false)}
-          >
-            <div
-              style={{
-                background: '#ffffff',
-                borderRadius: '12px',
-                width: '300px',
-                padding: '20px',
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div style={{ fontSize: '18px', fontWeight: 600, textAlign: 'center', marginBottom: '16px', color: '#000000' }}>
-                送礼物
-              </div>
-              <div style={{ fontSize: '14px', color: '#666666', marginBottom: '12px' }}>
-                当前余额：<span style={{ color: '#07C160', fontWeight: 600 }}>{userProfile.balance}元</span>
-              </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
-                {[66, 88, 99, 188, 199, 520].map((amt) => (
-                  <button
-                    key={amt}
-                    onClick={() => setGiftAmount(amt)}
-                    style={{
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      border: giftAmount === amt ? '2px solid #07C160' : '1px solid #e5e5e5',
-                      background: giftAmount === amt ? '#e8f9ed' : '#ffffff',
-                      color: '#000000',
-                      fontSize: '14px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {amt}元
-                  </button>
-                ))}
-              </div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button
-                  onClick={() => setGiftOpen(false)}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    borderRadius: '6px',
-                    border: '1px solid #e5e5e5',
-                    background: '#ffffff',
-                    color: '#666666',
-                    fontSize: '15px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  取消
-                </button>
-                <button
-                  onClick={handleSendGift}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    background: '#07C160',
-                    color: '#ffffff',
-                    fontSize: '15px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  送出
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 红包弹窗 */}
-        {redPacketOpen && (
-          <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0, 0, 0, 0.5)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 1001,
-            }}
-            onClick={() => setRedPacketOpen(false)}
-          >
-            <div
-              style={{
-                background: '#ffffff',
-                borderRadius: '12px',
-                width: '300px',
-                padding: '20px',
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div style={{ fontSize: '18px', fontWeight: 600, textAlign: 'center', marginBottom: '16px', color: '#000000' }}>
-                发红包
-              </div>
-              <div style={{ fontSize: '14px', color: '#666666', marginBottom: '12px' }}>
-                当前余额：<span style={{ color: '#07C160', fontWeight: 600 }}>{userProfile.balance}元</span>
-              </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
-                {[10, 20, 50, 100, 200, 500].map((amt) => (
-                  <button
-                    key={amt}
-                    onClick={() => setRedPacketAmount(amt)}
-                    style={{
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      border: redPacketAmount === amt ? '2px solid #ff6b6b' : '1px solid #e5e5e5',
-                      background: redPacketAmount === amt ? '#ffe8e8' : '#ffffff',
-                      color: '#000000',
-                      fontSize: '14px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {amt}元
-                  </button>
-                ))}
-              </div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button
-                  onClick={() => setRedPacketOpen(false)}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    borderRadius: '6px',
-                    border: '1px solid #e5e5e5',
-                    background: '#ffffff',
-                    color: '#666666',
-                    fontSize: '15px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  取消
-                </button>
-                <button
-                  onClick={handleSendRedPacket}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    background: '#ff6b6b',
-                    color: '#ffffff',
-                    fontSize: '15px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  发红包
-                </button>
-              </div>
             </div>
           </div>
         )}
       </div>
     );
   }
+
 
   // ========== 微信会话列表界面 ==========
   const renderWeChat = () => (
@@ -3967,608 +4787,6 @@ export const Home: React.FC = () => {
         </div>
       )}
 
-      {/* 偷看手机页面 - 模拟对方手机界面 */}
-      {peekPhoneOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: '#000000',
-            zIndex: 1000,
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {/* 状态栏（模拟手机） */}
-          <div
-            style={{
-              height: '28px',
-              background: '#000000',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '0 18px',
-              color: '#ffffff',
-              fontSize: '12px',
-              fontWeight: 600,
-            }}
-          >
-            <span>
-              {(() => {
-                const now = new Date();
-                const h = now.getHours().toString().padStart(2, '0');
-                const m = now.getMinutes().toString().padStart(2, '0');
-                return `${h}:${m}`;
-              })()}
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <svg width="16" height="10" viewBox="0 0 16 10" fill="#ffffff">
-                <rect x="0" y="6" width="2" height="4" rx="1" />
-                <rect x="4" y="4" width="2" height="6" rx="1" />
-                <rect x="8" y="2" width="2" height="8" rx="1" />
-                <rect x="12" y="0" width="2" height="10" rx="1" />
-              </svg>
-              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#ffffff" strokeWidth="1">
-                <path d="M7 8.5c0.8 0 1.5-0.7 1.5-1.5S7.8 5.5 7 5.5 5.5 6.2 5.5 7s0.7 1.5 1.5 1.5z" fill="#ffffff" />
-                <path d="M1.5 4.5c1.5-1.5 3.5-2 5.5-2s4 0.5 5.5 2" />
-                <path d="M0 3c2-2 4.5-3 7-3s5 1 7 3" />
-              </svg>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ width: '22px', height: '10px', border: '1px solid #ffffff', borderRadius: '2px', padding: '1px', display: 'flex', alignItems: 'center' }}>
-                  <div style={{ width: '80%', height: '100%', background: '#ffffff', borderRadius: '1px' }} />
-                </div>
-                <div style={{ width: '2px', height: '4px', background: '#ffffff', marginLeft: '1px', borderRadius: '1px' }} />
-              </div>
-            </div>
-          </div>
-
-          {/* 手机主屏幕内容 */}
-          <div
-            style={{
-              flex: 1,
-              background: 'linear-gradient(180deg, #2a3a5c 0%, #4a5a7c 50%, #3a4a6c 100%)',
-              overflowY: 'auto',
-              position: 'relative',
-            }}
-          >
-            {/* 顶部提示 */}
-            <div
-              style={{
-                textAlign: 'center',
-                padding: '12px 16px',
-                color: 'rgba(255, 255, 255, 0.6)',
-                fontSize: '12px',
-              }}
-            >
-              （你正在偷偷看着 {currentConversation?.title || 'TA'} 的手机）
-            </div>
-
-            {/* 手机图标网格 */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '24px 16px',
-                padding: '20px 24px 30px',
-              }}
-            >
-              {/* 微信 - 最重要的应用 */}
-              <div
-                onClick={() => showToast('里面全是和你的聊天')}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '6px',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(180deg, #07C160 0%, #06AD56 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                  }}
-                >
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M9.5 3C5.4 3 2 5.7 2 9.1c0 1.9 1 3.6 2.6 4.7-0.1 0.5-0.4 1.6-0.5 1.9 0 0.2 0.1 0.3 0.3 0.1l2.3-1.2c0.9 0.2 1.8 0.4 2.8 0.4 0.2 0 0.4 0 0.6 0-0.1-0.4-0.1-0.8-0.1-1.2 0-3.2 3.1-5.8 7-5.8 0.4 0 0.8 0 1.1 0.1C17.6 4.8 13.9 3 9.5 3zM7 7.8L5.5 6.8l1.5-1L7 7.8zM12 7.8L10.5 6.8l1.5-1L12 7.8z" />
-                    <path d="M22 15c0 2.8-2.7 5-6 5-0.6 0-1.2-0.1-1.8-0.2L11 21.2c-0.2 0.1-0.3 0-0.3-0.1l-0.4-1.4C7.7 18.6 6 17.1 6 15.3c0-2.8 2.7-5 6-5 3.3 0 6 2.1 6 4.7z" />
-                  </svg>
-                </div>
-                <span style={{ color: '#ffffff', fontSize: '12px' }}>微信</span>
-                <div
-                  style={{
-                    position: 'absolute',
-                    marginLeft: '40px',
-                    marginTop: '-4px',
-                    background: '#ff3b30',
-                    color: '#ffffff',
-                    fontSize: '10px',
-                    fontWeight: 600,
-                    padding: '2px 5px',
-                    borderRadius: '10px',
-                    minWidth: '18px',
-                    textAlign: 'center',
-                  }}
-                >
-                  99+
-                </div>
-              </div>
-
-              {/* 信息 */}
-              <div
-                onClick={() => showToast('没有新消息')}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '6px',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(180deg, #5ac8fa 0%, #007aff 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                  }}
-                >
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff">
-                    <rect x="3" y="4" width="18" height="14" rx="2" />
-                    <path d="M3 6l9 6 9-6" stroke="#007aff" strokeWidth="1" fill="none" />
-                  </svg>
-                </div>
-                <span style={{ color: '#ffffff', fontSize: '12px' }}>信息</span>
-              </div>
-
-              {/* 电话 */}
-              <div
-                onClick={() => showToast('最近没有通话记录')}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '6px',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(180deg, #34c759 0%, #28a745 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                  }}
-                >
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M20 15.5c-1.2 0-2.4-0.2-3.5-0.6-0.4-0.2-0.9-0.1-1.2 0.3l-1.8 2.2c-2.8-1.4-5.1-3.7-6.5-6.5l2.2-1.8c0.4-0.3 0.5-0.8 0.3-1.2-0.4-1.1-0.6-2.3-0.6-3.5 0-0.3-0.2-0.5-0.5-0.5H4c-0.3 0-0.5 0.2-0.5 0.5 0 9.1 7.4 16.5 16.5 16.5 0.3 0 0.5-0.2 0.5-0.5v-3.5c0-0.3-0.2-0.5-0.5-0.5z" />
-                  </svg>
-                </div>
-                <span style={{ color: '#ffffff', fontSize: '12px' }}>电话</span>
-              </div>
-
-              {/* 相册 */}
-              <div
-                onClick={() => showToast('相册里有很多你们的合照')}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '6px',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(180deg, #ffffff 0%, #e5e5e5 100%)',
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(2, 1fr)',
-                    gap: '2px',
-                    padding: '6px',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                  }}
-                >
-                  <div style={{ background: '#ff9500', borderRadius: '2px' }} />
-                  <div style={{ background: '#ff3b30', borderRadius: '2px' }} />
-                  <div style={{ background: '#5ac8fa', borderRadius: '2px' }} />
-                  <div style={{ background: '#af52de', borderRadius: '2px' }} />
-                </div>
-                <span style={{ color: '#ffffff', fontSize: '12px' }}>相册</span>
-              </div>
-
-              {/* 相机 */}
-              <div
-                onClick={() => showToast('相机正在打开...')}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '6px',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(180deg, #8e8e93 0%, #636366 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                  }}
-                >
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M20 6h-2.8l-1.2-1.6c-0.4-0.5-1-0.8-1.7-0.8H9.7c-0.7 0-1.3 0.3-1.7 0.8L6.8 6H4c-1.1 0-2 0.9-2 2v10c0 1.1 0.9 2 2 2h16c1.1 0 2-0.9 2-2V8c0-1.1-0.9-2-2-2z" />
-                    <circle cx="12" cy="13" r="4" fill="#636366" />
-                    <circle cx="12" cy="13" r="2.5" />
-                  </svg>
-                </div>
-                <span style={{ color: '#ffffff', fontSize: '12px' }}>相机</span>
-              </div>
-
-              {/* 备忘录 */}
-              <div
-                onClick={() => showToast('最近的备忘录：记得给TA打电话')}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '6px',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(180deg, #fffce7 0%, #ffe066 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                  }}
-                >
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b6914" strokeWidth="1.5">
-                    <line x1="5" y1="6" x2="17" y2="6" />
-                    <line x1="5" y1="10" x2="17" y2="10" />
-                    <line x1="5" y1="14" x2="14" y2="14" />
-                    <line x1="5" y1="18" x2="12" y2="18" />
-                  </svg>
-                </div>
-                <span style={{ color: '#ffffff', fontSize: '12px' }}>备忘录</span>
-              </div>
-
-              {/* 音乐 */}
-              <div
-                onClick={() => showToast('正在播放：情歌')}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '6px',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(180deg, #fa2d44 0%, #c81e35 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                  }}
-                >
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M20 3L8 5v8.2c-0.6-0.4-1.3-0.7-2-0.7-2.2 0-4 1.6-4 3.5s1.8 3.5 4 3.5 4-1.6 4-3.5V8l10-1.5V15c-0.6-0.4-1.3-0.7-2-0.7-2.2 0-4 1.6-4 3.5s1.8 3.5 4 3.5 4-1.6 4-3.5V3z" />
-                  </svg>
-                </div>
-                <span style={{ color: '#ffffff', fontSize: '12px' }}>音乐</span>
-              </div>
-
-              {/* 设置 */}
-              <div
-                onClick={() => showToast('设置里有你的指纹')}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '6px',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(180deg, #8e8e93 0%, #48484a 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                  }}
-                >
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
-                    <circle cx="12" cy="12" r="3" />
-                    <path d="M19.4 15.2l-1.9-1.1c0.4-0.8 0.7-1.7 0.7-2.6s-0.3-1.8-0.7-2.6l1.9-1.1c0.5-0.3 0.7-0.9 0.5-1.5l-1.8-3.1c-0.2-0.4-0.6-0.6-1-0.5l-2.2 0.9c-0.5-0.4-1.1-0.7-1.7-0.9l-0.3-2.3c0-0.5-0.4-0.9-0.9-0.9h-3.6c-0.5 0-0.9 0.4-0.9 0.9L8.7 3.8c-0.6 0.2-1.2 0.5-1.7 0.9l-2.2-0.9c-0.4-0.2-0.9 0-1.1 0.5L1.9 7.4c-0.2 0.5 0 1 0.5 1.5l1.9 1.1c-0.4 0.8-0.7 1.7-0.7 2.6s0.3 1.8 0.7 2.6L2.4 16.3c-0.5 0.3-0.7 0.9-0.5 1.5l1.8 3.1c0.2 0.4 0.6 0.6 1 0.5l2.2-0.9c0.5 0.4 1.1 0.7 1.7 0.9l0.3 2.3c0 0.5 0.4 0.9 0.9 0.9h3.6c0.5 0 0.9-0.4 0.9-0.9l0.3-2.3c0.6-0.2 1.2-0.5 1.7-0.9l2.2 0.9c0.4 0.2 0.9 0 1.1-0.5l1.8-3.1c0.2-0.5 0-1-0.5-1.5z" fill="#ffffff" />
-                  </svg>
-                </div>
-                <span style={{ color: '#ffffff', fontSize: '12px' }}>设置</span>
-              </div>
-            </div>
-
-            {/* 微信聊天内容区（核心看点） */}
-            <div
-              style={{
-                margin: '0 16px 20px',
-                background: 'rgba(0, 0, 0, 0.3)',
-                borderRadius: '14px',
-                padding: '16px',
-                color: '#ffffff',
-              }}
-            >
-              <div
-                style={{
-                  fontSize: '13px',
-                  opacity: 0.7,
-                  marginBottom: '10px',
-                  textAlign: 'center',
-                }}
-              >
-                微信聊天预览（最新几条）
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                  <div
-                    style={{
-                      background: '#ffffff',
-                      color: '#000000',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      fontSize: '13px',
-                      maxWidth: '70%',
-                    }}
-                  >
-                    今天想你了
-                  </div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                  <div
-                    style={{
-                      background: '#ffffff',
-                      color: '#000000',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      fontSize: '13px',
-                      maxWidth: '70%',
-                    }}
-                  >
-                    你今天过得怎么样？
-                  </div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                  <div
-                    style={{
-                      background: '#ffffff',
-                      color: '#000000',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      fontSize: '13px',
-                      maxWidth: '70%',
-                    }}
-                  >
-                    晚上要不要一起吃饭
-                  </div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                  <div
-                    style={{
-                      background: '#ffffff',
-                      color: '#000000',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      fontSize: '13px',
-                      maxWidth: '70%',
-                    }}
-                  >
-                    等你回复哦～
-                  </div>
-                </div>
-              </div>
-              <div
-                style={{
-                  textAlign: 'center',
-                  marginTop: '12px',
-                  fontSize: '11px',
-                  opacity: 0.5,
-                  paddingTop: '10px',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                }}
-              >
-                （TA 一直在等你消息）
-              </div>
-            </div>
-
-            {/* 底部 Dock */}
-            <div
-              style={{
-                position: 'sticky',
-                bottom: 0,
-                margin: '20px 20px',
-                background: 'rgba(255, 255, 255, 0.15)',
-                borderRadius: '22px',
-                padding: '12px 20px',
-                display: 'flex',
-                justifyContent: 'space-around',
-                backdropFilter: 'blur(20px)',
-              }}
-            >
-              {/* 电话图标 */}
-              <div
-                onClick={() => showToast('最近没有通话记录')}
-                style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
-              >
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    background: 'linear-gradient(180deg, #34c759 0%, #28a745 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M20 15.5c-1.2 0-2.4-0.2-3.5-0.6-0.4-0.2-0.9-0.1-1.2 0.3l-1.8 2.2c-2.8-1.4-5.1-3.7-6.5-6.5l2.2-1.8c0.4-0.3 0.5-0.8 0.3-1.2-0.4-1.1-0.6-2.3-0.6-3.5 0-0.3-0.2-0.5-0.5-0.5H4c-0.3 0-0.5 0.2-0.5 0.5 0 9.1 7.4 16.5 16.5 16.5 0.3 0 0.5-0.2 0.5-0.5v-3.5c0-0.3-0.2-0.5-0.5-0.5z" />
-                  </svg>
-                </div>
-              </div>
-              {/* Safari 图标 */}
-              <div
-                onClick={() => showToast('浏览器里有很多关于你的搜索')}
-                style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
-              >
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    background: 'linear-gradient(180deg, #5ac8fa 0%, #007aff 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
-                    <circle cx="12" cy="12" r="10" fill="#007aff" stroke="#ffffff" strokeWidth="1" />
-                    <path d="M12 2v20M2 12h20" stroke="#ffffff" strokeWidth="0.5" />
-                  </svg>
-                </div>
-              </div>
-              {/* 信息图标 */}
-              <div
-                onClick={() => showToast('没有新信息')}
-                style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
-              >
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    background: 'linear-gradient(180deg, #5ac8fa 0%, #007aff 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="#ffffff">
-                    <rect x="3" y="4" width="18" height="14" rx="2" />
-                    <path d="M3 6l9 6 9-6" stroke="#007aff" strokeWidth="1" fill="none" />
-                  </svg>
-                </div>
-              </div>
-              {/* 相机图标 */}
-              <div
-                onClick={() => showToast('相机正在打开...')}
-                style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
-              >
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    background: 'linear-gradient(180deg, #8e8e93 0%, #636366 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M20 6h-2.8l-1.2-1.6c-0.4-0.5-1-0.8-1.7-0.8H9.7c-0.7 0-1.3 0.3-1.7 0.8L6.8 6H4c-1.1 0-2 0.9-2 2v10c0 1.1 0.9 2 2 2h16c1.1 0 2-0.9 2-2V8c0-1.1-0.9-2-2-2z" />
-                    <circle cx="12" cy="13" r="4" fill="#636366" />
-                    <circle cx="12" cy="13" r="2.5" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 关闭按钮 */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '36px',
-              right: '12px',
-              zIndex: 20,
-            }}
-          >
-            <button
-              onClick={() => setPeekPhoneOpen(false)}
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.2)',
-                border: 'none',
-                color: '#ffffff',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '18px',
-              }}
-            >
-              ✕
-            </button>
-          </div>
-
-          {/* 底部 Home 指示条（模拟 iPhone Home Indicator） */}
-          <div
-            onClick={() => setPeekPhoneOpen(false)}
-            style={{
-              height: '34px',
-              background: '#000000',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
-          >
-            <div
-              style={{
-                width: '120px',
-                height: '5px',
-                borderRadius: '3px',
-                background: '#ffffff',
-              }}
-            />
-          </div>
-        </div>
-      )}
 
       <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
