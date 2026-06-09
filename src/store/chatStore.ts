@@ -21,6 +21,7 @@ export interface Conversation {
 export interface UserProfile {
   nickname: string;
   wechatId: string;
+  balance: number; // 余额
   avatarColor1?: string;
   avatarColor2?: string;
   avatarImage?: string; // base64 dataURL
@@ -49,6 +50,7 @@ interface ChatState {
   deleteMessage: (messageId: string) => void;
   getLastUserMessage: () => Message | null;
   updateUserProfile: (profile: Partial<UserProfile>) => void;
+  updateBalance: (balance: number) => void;
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 15);
@@ -100,6 +102,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     return {
       nickname: '芋',
       wechatId: 'i7Y0417',
+      balance: 5200,
       avatarColor1: '#4ecdc4',
       avatarColor2: '#44a08d',
       avatarImage: undefined,
@@ -240,6 +243,14 @@ export const useChatStore = create<ChatState>((set, get) => ({
   updateUserProfile: (profile) => {
     set((state) => {
       const updated = { ...state.userProfile, ...profile };
+      localStorage.setItem('user_profile', JSON.stringify(updated));
+      return { userProfile: updated };
+    });
+  },
+
+  updateBalance: (balance: number) => {
+    set((state) => {
+      const updated = { ...state.userProfile, balance };
       localStorage.setItem('user_profile', JSON.stringify(updated));
       return { userProfile: updated };
     });

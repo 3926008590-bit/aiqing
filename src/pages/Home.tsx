@@ -116,6 +116,7 @@ export const Home: React.FC = () => {
     deleteMessage,
     userProfile,
     updateUserProfile,
+    updateBalance,
   } = useChatStore();
 
   const { showToast } = useToast();
@@ -152,6 +153,12 @@ export const Home: React.FC = () => {
   const [momentsOpen, setMomentsOpen] = useState(false);
   // 偷看手机
   const [peekPhoneOpen, setPeekPhoneOpen] = useState(false);
+  // 礼物弹窗
+  const [giftOpen, setGiftOpen] = useState(false);
+  const [giftAmount, setGiftAmount] = useState(0);
+  // 红包弹窗
+  const [redPacketOpen, setRedPacketOpen] = useState(false);
+  const [redPacketAmount, setRedPacketAmount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const currentConversation = conversations.find((c) => c.id === currentConversationId);
 
@@ -325,13 +332,45 @@ export const Home: React.FC = () => {
   // 礼物
   const handleGift = () => {
     if (!currentConversationId) return;
-    handleSend('[礼物] 我给你送了一份小礼物 🎁');
+    setGiftAmount(0);
+    setGiftOpen(true);
   };
 
   // 红包
   const handleRedPacket = () => {
     if (!currentConversationId) return;
-    handleSend('[红包] 恭喜发财，大吉大利 🧧');
+    setRedPacketAmount(0);
+    setRedPacketOpen(true);
+  };
+
+  // 发送礼物
+  const handleSendGift = () => {
+    if (giftAmount <= 0) {
+      showToast('请选择或输入金额');
+      return;
+    }
+    if (giftAmount > userProfile.balance) {
+      showToast('余额不足');
+      return;
+    }
+    updateBalance(userProfile.balance - giftAmount);
+    addMessage({ role: 'user', content: `[礼物] 我给你送了一份小礼物 ❤️` });
+    setGiftOpen(false);
+  };
+
+  // 发送红包
+  const handleSendRedPacket = () => {
+    if (redPacketAmount <= 0) {
+      showToast('请选择或输入金额');
+      return;
+    }
+    if (redPacketAmount > userProfile.balance) {
+      showToast('余额不足');
+      return;
+    }
+    updateBalance(userProfile.balance - redPacketAmount);
+    addMessage({ role: 'user', content: `[红包] ${redPacketAmount}元 恭喜发财，大吉大利 🧧` });
+    setRedPacketOpen(false);
   };
 
   // 查看朋友圈
@@ -1650,6 +1689,176 @@ export const Home: React.FC = () => {
         )}
 
         <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
+
+        {/* 礼物弹窗 */}
+        {giftOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1001,
+            }}
+            onClick={() => setGiftOpen(false)}
+          >
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '12px',
+                width: '300px',
+                padding: '20px',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{ fontSize: '18px', fontWeight: 600, textAlign: 'center', marginBottom: '16px', color: '#000000' }}>
+                送礼物
+              </div>
+              <div style={{ fontSize: '14px', color: '#666666', marginBottom: '12px' }}>
+                当前余额：<span style={{ color: '#07C160', fontWeight: 600 }}>{userProfile.balance}元</span>
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                {[66, 88, 99, 188, 199, 520].map((amt) => (
+                  <button
+                    key={amt}
+                    onClick={() => setGiftAmount(amt)}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      border: giftAmount === amt ? '2px solid #07C160' : '1px solid #e5e5e5',
+                      background: giftAmount === amt ? '#e8f9ed' : '#ffffff',
+                      color: '#000000',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {amt}元
+                  </button>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  onClick={() => setGiftOpen(false)}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    borderRadius: '6px',
+                    border: '1px solid #e5e5e5',
+                    background: '#ffffff',
+                    color: '#666666',
+                    fontSize: '15px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  取消
+                </button>
+                <button
+                  onClick={handleSendGift}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    borderRadius: '6px',
+                    border: 'none',
+                    background: '#07C160',
+                    color: '#ffffff',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  送出
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 红包弹窗 */}
+        {redPacketOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1001,
+            }}
+            onClick={() => setRedPacketOpen(false)}
+          >
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '12px',
+                width: '300px',
+                padding: '20px',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{ fontSize: '18px', fontWeight: 600, textAlign: 'center', marginBottom: '16px', color: '#000000' }}>
+                发红包
+              </div>
+              <div style={{ fontSize: '14px', color: '#666666', marginBottom: '12px' }}>
+                当前余额：<span style={{ color: '#07C160', fontWeight: 600 }}>{userProfile.balance}元</span>
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                {[10, 20, 50, 100, 200, 500].map((amt) => (
+                  <button
+                    key={amt}
+                    onClick={() => setRedPacketAmount(amt)}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      border: redPacketAmount === amt ? '2px solid #ff6b6b' : '1px solid #e5e5e5',
+                      background: redPacketAmount === amt ? '#ffe8e8' : '#ffffff',
+                      color: '#000000',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {amt}元
+                  </button>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  onClick={() => setRedPacketOpen(false)}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    borderRadius: '6px',
+                    border: '1px solid #e5e5e5',
+                    background: '#ffffff',
+                    color: '#666666',
+                    fontSize: '15px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  取消
+                </button>
+                <button
+                  onClick={handleSendRedPacket}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    borderRadius: '6px',
+                    border: 'none',
+                    background: '#ff6b6b',
+                    color: '#ffffff',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  发红包
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
