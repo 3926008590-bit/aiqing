@@ -233,14 +233,11 @@ export const Home: React.FC = () => {
         onChunk: (fullContent) => {
           updateStreamingContent(fullContent);
         },
+
         onFinish: (fullContent) => {
           clearStreamingContent();
           if (fullContent) {
             addMessage({ role: 'assistant', content: fullContent });
-            if ((currentConversation?.messages.length || 0) === 0) {
-              const title = message.slice(0, 30) + (message.length > 30 ? '...' : '');
-              updateConversationTitle(currentConversationId!, title);
-            }
           }
         },
         onError: (error) => {
