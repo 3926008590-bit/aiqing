@@ -146,6 +146,7 @@ export const Home: React.FC = () => {
   const [editAvatarColor1, setEditAvatarColor1] = useState('#4ecdc4');
   const [editAvatarColor2, setEditAvatarColor2] = useState('#44a08d');
   const [editAvatarImage, setEditAvatarImage] = useState<string | null>(null);
+  const [editBalance, setEditBalance] = useState(0);
   const editFileInputRef = useRef<HTMLInputElement | null>(null);
 
   // 自定义性格弹窗
@@ -195,6 +196,7 @@ export const Home: React.FC = () => {
       setEditAvatarColor1(userProfile.avatarColor1 || '#4ecdc4');
       setEditAvatarColor2(userProfile.avatarColor2 || '#44a08d');
       setEditAvatarImage(userProfile.avatarImage || null);
+      setEditBalance(userProfile.balance || 0);
     }
   }, [editProfileOpen, userProfile.nickname, userProfile.wechatId, userProfile.avatarColor1, userProfile.avatarColor2, userProfile.avatarImage]);
 
@@ -1032,6 +1034,9 @@ export const Home: React.FC = () => {
                   <div style={{ fontWeight: 500 }}>{userProfile?.nickname || '我'}</div>
                   <div style={{ opacity: 0.7, fontSize: '12px', marginTop: '2px' }}>
                     微信号：{userProfile?.wechatId || '未设置'}
+                  </div>
+                  <div style={{ color: '#07C160', fontSize: '12px', marginTop: '4px' }}>
+                    余额：¥{userProfile?.balance}
                   </div>
                 </div>
                 <div
@@ -2649,6 +2654,9 @@ export const Home: React.FC = () => {
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '18px', fontWeight: 600, color: '#000000', marginBottom: '6px' }}>{userProfile.nickname}</div>
             <div style={{ fontSize: '14px', color: '#888888' }}>微信号: {userProfile.wechatId}</div>
+            <div style={{ fontSize: '13px', color: '#07C160', marginTop: '4px' }}>
+              余额：¥{userProfile.balance}
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <button
@@ -3081,6 +3089,26 @@ export const Home: React.FC = () => {
               />
             </div>
 
+            {/* 余额 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '13px', color: '#888888' }}>余额（元）</span>
+              <input
+                type="number"
+                value={editBalance}
+                onChange={(e) => setEditBalance(Number(e.target.value) || 0)}
+                placeholder="请输入余额"
+                min="0"
+                style={{
+                  padding: '10px 12px',
+                  fontSize: '15px',
+                  border: '1px solid #e5e5e5',
+                  borderRadius: '8px',
+                  outline: 'none',
+                  background: '#f7f7f7',
+                }}
+              />
+            </div>
+
             {/* 按钮区 */}
             <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
               <button
@@ -3117,6 +3145,7 @@ export const Home: React.FC = () => {
                     avatarColor1: editAvatarColor1,
                     avatarColor2: editAvatarColor2,
                     avatarImage: editAvatarImage || undefined,
+                    balance: editBalance,
                   });
                   setEditProfileOpen(false);
                   showToast('已保存');
@@ -3771,6 +3800,9 @@ export const Home: React.FC = () => {
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontSize: '17px', fontWeight: 600 }}>{userProfile.nickname || '我'}</div>
                 <div style={{ fontSize: '13px', opacity: 0.7, marginTop: '4px' }}>微信号：{userProfile.wechatId || '-'}</div>
+                <div style={{ fontSize: '13px', color: '#07C160', marginTop: '4px' }}>
+                  余额：¥{userProfile.balance}
+                </div>
               </div>
               {userProfile.avatarImage ? (
                 <img
