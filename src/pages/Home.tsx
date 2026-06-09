@@ -514,6 +514,1144 @@ export const Home: React.FC = () => {
           danger
         />
 
+        {/* 自定义性格弹窗 */}
+        {personaOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+              padding: '20px',
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setPersonaOpen(false);
+              }
+            }}
+          >
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '12px',
+                width: '100%',
+                maxWidth: '340px',
+                padding: '24px 20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+              }}
+            >
+              <div style={{ fontSize: '17px', fontWeight: 600, color: '#000000', textAlign: 'center' }}>
+                自定义性格
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <span style={{ fontSize: '13px', color: '#888888' }}>描述 TA 的性格/人设</span>
+                <textarea
+                  value={personaText}
+                  onChange={(e) => setPersonaText(e.target.value)}
+                  placeholder="例如：你是一个活泼可爱的女孩子，说话带点俏皮..."
+                  rows={6}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    fontSize: '14px',
+                    border: '1px solid #e5e5e5',
+                    borderRadius: '8px',
+                    resize: 'none',
+                    outline: 'none',
+                    color: '#000000',
+                    background: '#fafafa',
+                    fontFamily: 'inherit',
+                    lineHeight: 1.6,
+                  }}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={() => setPersonaOpen(false)}
+                  style={{
+                    padding: '10px 18px',
+                    fontSize: '14px',
+                    borderRadius: '8px',
+                    background: '#f0f0f0',
+                    color: '#333333',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  取消
+                </button>
+                <button
+                  onClick={handleSavePersona}
+                  style={{
+                    padding: '10px 18px',
+                    fontSize: '14px',
+                    borderRadius: '8px',
+                    background: '#07C160',
+                    color: '#ffffff',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  保存
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 回溯选项弹窗 */}
+        {recallOpen && !recallMode && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.4)',
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              zIndex: 1000,
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setRecallOpen(false);
+              }
+            }}
+          >
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '12px 12px 0 0',
+                width: '100%',
+                maxWidth: '400px',
+                overflow: 'hidden',
+              }}
+            >
+              <button
+                onClick={() => {
+                  setRecallMode('select');
+                }}
+                style={{
+                  width: '100%',
+                  padding: '18px 0',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: '1px solid #f0f0f0',
+                  fontSize: '16px',
+                  color: '#333333',
+                  cursor: 'pointer',
+                }}
+              >
+                选择聊天回溯
+              </button>
+              <button
+                onClick={handleRecallStart}
+                style={{
+                  width: '100%',
+                  padding: '18px 0',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: '1px solid #f0f0f0',
+                  fontSize: '16px',
+                  color: '#ff3b30',
+                  cursor: 'pointer',
+                }}
+              >
+                清除记忆
+              </button>
+              <button
+                onClick={() => setRecallOpen(false)}
+                style={{
+                  width: '100%',
+                  padding: '18px 0',
+                  background: '#ffffff',
+                  border: 'none',
+                  fontSize: '16px',
+                  color: '#07C160',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                }}
+              >
+                取消
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 选择回溯点弹窗 */}
+        {recallOpen && recallMode === 'select' && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: '#ededed',
+              zIndex: 1000,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <div
+              style={{
+                height: '44px',
+                background: '#f7f7f7',
+                borderBottom: '1px solid #e5e5e5',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0 12px',
+                flexShrink: 0,
+              }}
+            >
+              <button
+                onClick={() => {
+                  setRecallMode(null);
+                  setRecallOpen(false);
+                }}
+                style={{
+                  color: '#000000',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '15px',
+                  padding: '4px 8px',
+                }}
+              >
+                取消
+              </button>
+              <div style={{ fontSize: '17px', fontWeight: 500, color: '#000000' }}>选择回溯位置</div>
+              <div style={{ width: '40px' }} />
+            </div>
+            <div style={{ flex: 1, overflowY: 'auto', padding: '16px 0', background: '#ededed' }}>
+              {(currentConversation?.messages || []).length === 0 ? (
+                <div
+                  style={{
+                    textAlign: 'center',
+                    color: '#888888',
+                    padding: '40px 20px',
+                    fontSize: '14px',
+                  }}
+                >
+                  暂无消息
+                </div>
+              ) : (
+                (currentConversation?.messages || []).map((msg, idx) => (
+                  <div
+                    key={msg.id}
+                    onClick={() => handleRecallToMessage(msg.id)}
+                    style={{
+                      display: 'flex',
+                      gap: '10px',
+                      padding: '10px 16px',
+                      borderBottom: '1px solid #e8e8e8',
+                      cursor: 'pointer',
+                      alignItems: 'flex-start',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '13px',
+                        color: '#999999',
+                        minWidth: '36px',
+                        marginTop: '1px',
+                      }}
+                    >
+                      {idx + 1}.
+                    </span>
+                    <div
+                      style={{
+                        flex: 1,
+                        fontSize: '14px',
+                        color: msg.role === 'user' ? '#07C160' : '#333333',
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      <span style={{ color: '#888888', marginRight: '6px', fontSize: '12px' }}>
+                        {msg.role === 'user' ? '我' : 'TA'}
+                      </span>
+                      {msg.content.length > 80 ? msg.content.substring(0, 80) + '...' : msg.content}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 朋友圈页面 */}
+        {momentsOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: '#ededed',
+              zIndex: 1000,
+              display: 'flex',
+              flexDirection: 'column',
+              overflowY: 'auto',
+            }}
+          >
+            {/* 顶部栏 */}
+            <div
+              style={{
+                height: '44px',
+                background: '#f7f7f7',
+                borderBottom: '1px solid #e5e5e5',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0 12px',
+                flexShrink: 0,
+                position: 'sticky',
+                top: 0,
+              }}
+            >
+              <button
+                onClick={() => setMomentsOpen(false)}
+                style={{
+                  color: '#000000',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '15px',
+                  padding: '4px 8px',
+                  width: '60px',
+                  textAlign: 'left',
+                }}
+              >
+                ← 返回
+              </button>
+              <div style={{ fontSize: '17px', fontWeight: 500, color: '#000000' }}>朋友圈</div>
+              <button
+                onClick={() => showToast('发布功能待上线')}
+                style={{
+                  color: '#000000',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '15px',
+                  padding: '4px 8px',
+                  width: '60px',
+                  textAlign: 'right',
+                }}
+              >
+                📷
+              </button>
+            </div>
+
+            {/* 顶部封面区 */}
+            <div
+              style={{
+                background: 'linear-gradient(135deg, #3a4a6c 0%, #5a6a8c 50%, #2a3a5c 100%)',
+                padding: '20px 16px 30px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                position: 'relative',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  gap: '12px',
+                  marginTop: '50px',
+                  width: '100%',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <div
+                  style={{
+                    color: '#ffffff',
+                    fontSize: '14px',
+                    textAlign: 'right',
+                  }}
+                >
+                  <div style={{ fontWeight: 500 }}>{userProfile?.nickname || '我'}</div>
+                  <div style={{ opacity: 0.7, fontSize: '12px', marginTop: '2px' }}>
+                    微信号：{userProfile?.wechatId || '未设置'}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '8px',
+                    background: userProfile?.avatarImage
+                      ? 'transparent'
+                      : `linear-gradient(135deg, ${userProfile?.avatarColor1 || '#45b7d1'}, ${userProfile?.avatarColor2 || '#2193b0'})`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                    fontSize: '24px',
+                    fontWeight: 600,
+                    overflow: 'hidden',
+                    border: userProfile?.avatarImage ? '1px solid #ffffff40' : 'none',
+                    flexShrink: 0,
+                  }}
+                >
+                  {userProfile?.avatarImage ? (
+                    <img
+                      src={userProfile.avatarImage}
+                      alt="头像"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                  ) : (
+                    (userProfile?.nickname || '我').charAt(0)
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* 朋友圈内容列表 */}
+            <div style={{ flex: 1, background: '#ffffff' }}>
+              {(() => {
+                const contactList = conversations.length > 0
+                  ? conversations.map((c) => c.title).filter((n) => n && n.trim().length > 0)
+                  : [];
+
+                const samplePosts: Array<{
+                  name: string;
+                  avatar?: string;
+                  avatarColor?: string;
+                  avatarColor2?: string;
+                  text: string;
+                  time: string;
+                }> = [
+                  ...contactList.slice(0, 4).map((name, i) => {
+                    const conv = conversations.find((c) => c.title === name);
+                    const posts = [
+                      '今天天气真不错，出来走走～',
+                      '刚看完一部电影，强烈推荐！',
+                      '周末去了趟公园，心情很好',
+                      '最近在读一本书，很有启发',
+                      '生活就是要保持一点好奇心',
+                    ];
+                    return {
+                      name,
+                      avatar: conv?.avatarImage,
+                      avatarColor: conv?.avatarColor,
+                      avatarColor2: conv?.avatarColor2,
+                      text: posts[i % posts.length],
+                      time: `${i + 1} 小时前`,
+                    };
+                  }),
+                ];
+
+                // 如果没有联系人，加一条默认的芋的动态
+                if (samplePosts.length === 0) {
+                  samplePosts.push({
+                    name: '芋',
+                    text: '今天也在想你呢～',
+                    time: '刚刚',
+                  });
+                }
+
+                return samplePosts.map((post, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      display: 'flex',
+                      gap: '12px',
+                      padding: '16px',
+                      borderBottom: '1px solid #f0f0f0',
+                    }}
+                  >
+                    {/* 头像 */}
+                    <div
+                      style={{
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '6px',
+                        background: post.avatar
+                          ? 'transparent'
+                          : `linear-gradient(135deg, ${post.avatarColor || '#45b7d1'}, ${post.avatarColor2 || '#2193b0'})`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#ffffff',
+                        fontSize: '18px',
+                        fontWeight: 600,
+                        overflow: 'hidden',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {post.avatar ? (
+                        <img
+                          src={post.avatar}
+                          alt="头像"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
+                      ) : (
+                        post.name.charAt(0)
+                      )}
+                    </div>
+
+                    {/* 内容区 */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div
+                        style={{
+                          color: '#576b95',
+                          fontSize: '15px',
+                          fontWeight: 500,
+                          marginBottom: '6px',
+                        }}
+                      >
+                        {post.name}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '15px',
+                          lineHeight: 1.6,
+                          color: '#222222',
+                          marginBottom: '8px',
+                        }}
+                      >
+                        {post.text}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '12px',
+                          color: '#999999',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        {post.time}
+                        <button
+                          onClick={() => showToast('评论功能待上线')}
+                          style={{
+                            background: '#f5f5f5',
+                            border: 'none',
+                            borderRadius: '4px',
+                            padding: '3px 10px',
+                            fontSize: '12px',
+                            color: '#666666',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          💬
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ));
+              })()}
+            </div>
+
+            {/* 底部留白 */}
+            <div style={{ height: '40px', background: '#ededed' }} />
+          </div>
+        )}
+
+        {/* 偷看手机页面 - 模拟对方手机界面 */}
+        {peekPhoneOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: '#000000',
+              zIndex: 1000,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {/* 状态栏（模拟手机） */}
+            <div
+              style={{
+                height: '28px',
+                background: '#000000',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0 18px',
+                color: '#ffffff',
+                fontSize: '12px',
+                fontWeight: 600,
+              }}
+            >
+              <span>
+                {(() => {
+                  const now = new Date();
+                  const h = now.getHours().toString().padStart(2, '0');
+                  const m = now.getMinutes().toString().padStart(2, '0');
+                  return `${h}:${m}`;
+                })()}
+              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="#ffffff">
+                  <rect x="0" y="6" width="2" height="4" rx="1" />
+                  <rect x="4" y="4" width="2" height="6" rx="1" />
+                  <rect x="8" y="2" width="2" height="8" rx="1" />
+                  <rect x="12" y="0" width="2" height="10" rx="1" />
+                </svg>
+                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#ffffff" strokeWidth="1">
+                  <path d="M7 8.5c0.8 0 1.5-0.7 1.5-1.5S7.8 5.5 7 5.5 5.5 6.2 5.5 7s0.7 1.5 1.5 1.5z" fill="#ffffff" />
+                  <path d="M1.5 4.5c1.5-1.5 3.5-2 5.5-2s4 0.5 5.5 2" />
+                  <path d="M0 3c2-2 4.5-3 7-3s5 1 7 3" />
+                </svg>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ width: '22px', height: '10px', border: '1px solid #ffffff', borderRadius: '2px', padding: '1px', display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '80%', height: '100%', background: '#ffffff', borderRadius: '1px' }} />
+                  </div>
+                  <div style={{ width: '2px', height: '4px', background: '#ffffff', marginLeft: '1px', borderRadius: '1px' }} />
+                </div>
+              </div>
+            </div>
+
+            {/* 手机主屏幕内容 */}
+            <div
+              style={{
+                flex: 1,
+                background: 'linear-gradient(180deg, #2a3a5c 0%, #4a5a7c 50%, #3a4a6c 100%)',
+                overflowY: 'auto',
+                position: 'relative',
+              }}
+            >
+              {/* 顶部提示 */}
+              <div
+                style={{
+                  textAlign: 'center',
+                  padding: '12px 16px',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  fontSize: '12px',
+                }}
+              >
+                （你正在偷偷看着 {currentConversation?.title || 'TA'} 的手机）
+              </div>
+
+              {/* 手机图标网格 */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '24px 16px',
+                  padding: '20px 24px 30px',
+                }}
+              >
+                {/* 微信 - 最重要的应用 */}
+                <div
+                  onClick={() => showToast('里面全是和你的聊天')}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(180deg, #07C160 0%, #06AD56 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    }}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
+                      <path d="M9.5 3C5.4 3 2 5.7 2 9.1c0 1.9 1 3.6 2.6 4.7-0.1 0.5-0.4 1.6-0.5 1.9 0 0.2 0.1 0.3 0.3 0.1l2.3-1.2c0.9 0.2 1.8 0.4 2.8 0.4 0.2 0 0.4 0 0.6 0-0.1-0.4-0.1-0.8-0.1-1.2 0-3.2 3.1-5.8 7-5.8 0.4 0 0.8 0 1.1 0.1C17.6 4.8 13.9 3 9.5 3zM7 7.8L5.5 6.8l1.5-1L7 7.8zM12 7.8L10.5 6.8l1.5-1L12 7.8z" />
+                      <path d="M22 15c0 2.8-2.7 5-6 5-0.6 0-1.2-0.1-1.8-0.2L11 21.2c-0.2 0.1-0.3 0-0.3-0.1l-0.4-1.4C7.7 18.6 6 17.1 6 15.3c0-2.8 2.7-5 6-5 3.3 0 6 2.1 6 4.7z" />
+                    </svg>
+                  </div>
+                  <span style={{ color: '#ffffff', fontSize: '12px' }}>微信</span>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      marginLeft: '40px',
+                      marginTop: '-4px',
+                      background: '#ff3b30',
+                      color: '#ffffff',
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      padding: '2px 5px',
+                      borderRadius: '10px',
+                      minWidth: '18px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    99+
+                  </div>
+                </div>
+
+                {/* 信息 */}
+                <div
+                  onClick={() => showToast('没有新消息')}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(180deg, #5ac8fa 0%, #007AFF 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    }}
+                  >
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff">
+                      <rect x="3" y="4" width="18" height="14" rx="2" />
+                      <path d="M3 6l9 6 9-6" stroke="#007AFF" strokeWidth="1" fill="none" />
+                    </svg>
+                  </div>
+                  <span style={{ color: '#ffffff', fontSize: '12px' }}>信息</span>
+                </div>
+
+                {/* 电话 */}
+                <div
+                  onClick={() => showToast('最近没有通话记录')}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(180deg, #34C759 0%, #28A745 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    }}
+                  >
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff">
+                      <path d="M20 15.5c-1.2 0-2.4-0.2-3.5-0.6-0.4-0.2-0.9-0.1-1.2 0.3l-1.8 2.2c-2.8-1.4-5.1-3.7-6.5-6.5l2.2-1.8c0.4-0.3 0.5-0.8 0.3-1.2-0.4-1.1-0.6-2.3-0.6-3.5 0-0.3-0.2-0.5-0.5-0.5H4c-0.3 0-0.5 0.2-0.5 0.5 0 9.1 7.4 16.5 16.5 16.5 0.3 0 0.5-0.2 0.5-0.5v-3.5c0-0.3-0.2-0.5-0.5-0.5z" />
+                    </svg>
+                  </div>
+                  <span style={{ color: '#ffffff', fontSize: '12px' }}>电话</span>
+                </div>
+
+                {/* 相册 */}
+                <div
+                  onClick={() => showToast('相册里有很多你们的合照')}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(180deg, #ffffff 0%, #e5e5e5 100%)',
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(2, 1fr)',
+                      gap: '2px',
+                      padding: '6px',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    }}
+                  >
+                    <div style={{ background: '#ff9500', borderRadius: '2px' }} />
+                    <div style={{ background: '#ff3b30', borderRadius: '2px' }} />
+                    <div style={{ background: '#5ac8fa', borderRadius: '2px' }} />
+                    <div style={{ background: '#af52de', borderRadius: '2px' }} />
+                  </div>
+                  <span style={{ color: '#ffffff', fontSize: '12px' }}>相册</span>
+                </div>
+
+                {/* 相机 */}
+                <div
+                  onClick={() => showToast('相机正在打开...')}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(180deg, #8e8e93 0%, #636366 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    }}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
+                      <path d="M20 6h-2.8l-1.2-1.6c-0.4-0.5-1-0.8-1.7-0.8H9.7c-0.7 0-1.3 0.3-1.7 0.8L6.8 6H4c-1.1 0-2 0.9-2 2v10c0 1.1 0.9 2 2 2h16c1.1 0 2-0.9 2-2V8c0-1.1-0.9-2-2-2z" />
+                      <circle cx="12" cy="13" r="4" fill="#636366" />
+                      <circle cx="12" cy="13" r="2.5" />
+                    </svg>
+                  </div>
+                  <span style={{ color: '#ffffff', fontSize: '12px' }}>相机</span>
+                </div>
+
+                {/* 备忘录 */}
+                <div
+                  onClick={() => showToast('最近的备忘录：记得给你打电话')}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(180deg, #fffce7 0%, #ffe066 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    }}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b6914" strokeWidth="1.5">
+                      <line x1="5" y1="6" x2="17" y2="6" />
+                      <line x1="5" y1="10" x2="17" y2="10" />
+                      <line x1="5" y1="14" x2="14" y2="14" />
+                      <line x1="5" y1="18" x2="12" y2="18" />
+                    </svg>
+                  </div>
+                  <span style={{ color: '#ffffff', fontSize: '12px' }}>备忘录</span>
+                </div>
+
+                {/* 音乐 */}
+                <div
+                  onClick={() => showToast('正在播放：情歌')}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(180deg, #fa2d44 0%, #c81e35 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    }}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
+                      <path d="M20 3L8 5v8.2c-0.6-0.4-1.3-0.7-2-0.7-2.2 0-4 1.6-4 3.5s1.8 3.5 4 3.5 4-1.6 4-3.5V8l10-1.5V15c-0.6-0.4-1.3-0.7-2-0.7-2.2 0-4 1.6-4 3.5s1.8 3.5 4 3.5 4-1.6 4-3.5V3z" />
+                    </svg>
+                  </div>
+                  <span style={{ color: '#ffffff', fontSize: '12px' }}>音乐</span>
+                </div>
+
+                {/* 设置 */}
+                <div
+                  onClick={() => showToast('设置里有你的指纹')}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(180deg, #8e8e93 0%, #48484a 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    }}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
+                      <circle cx="12" cy="12" r="3" />
+                      <path d="M19.4 15.2l-1.9-1.1c0.4-0.8 0.7-1.7 0.7-2.6s-0.3-1.8-0.7-2.6l1.9-1.1c0.5-0.3 0.7-0.9 0.5-1.5l-1.8-3.1c-0.2-0.4-0.6-0.6-1-0.5l-2.2 0.9c-0.5-0.4-1.1-0.7-1.7-0.9l-0.3-2.3c0-0.5-0.4-0.9-0.9-0.9h-3.6c-0.5 0-0.9 0.4-0.9 0.9L8.7 3.8c-0.6 0.2-1.2 0.5-1.7 0.9l-2.2-0.9c-0.4-0.2-0.9 0-1.1 0.5L1.9 7.4c-0.2 0.5 0 1 0.5 1.5l1.9 1.1c-0.4 0.8-0.7 1.7-0.7 2.6s0.3 1.8 0.7 2.6L2.4 16.3c-0.5 0.3-0.7 0.9-0.5 1.5l1.8 3.1c0.2 0.4 0.6 0.6 1 0.5l2.2-0.9c0.5 0.4 1.1 0.7 1.7 0.9l0.3 2.3c0 0.5 0.4 0.9 0.9 0.9h3.6c0.5 0 0.9-0.4 0.9-0.9l0.3-2.3c0.6-0.2 1.2-0.5 1.7-0.9l2.2 0.9c0.4 0.2 0.9 0 1.1-0.5l1.8-3.1c0.2-0.5 0-1-0.5-1.5z" fill="#ffffff" />
+                    </svg>
+                  </div>
+                  <span style={{ color: '#ffffff', fontSize: '12px' }}>设置</span>
+                </div>
+              </div>
+
+              {/* 微信聊天内容区（核心看点） */}
+              <div
+                style={{
+                  margin: '0 16px 20px',
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  borderRadius: '14px',
+                  padding: '16px',
+                  color: '#ffffff',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: '13px',
+                    opacity: 0.7,
+                    marginBottom: '10px',
+                    textAlign: 'center',
+                  }}
+                >
+                  微信聊天预览（最新几条）
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        color: '#000000',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        fontSize: '13px',
+                        maxWidth: '70%',
+                      }}
+                    >
+                      今天想你了
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        color: '#000000',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        fontSize: '13px',
+                        maxWidth: '70%',
+                      }}
+                    >
+                      你今天过得怎么样？
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        color: '#000000',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        fontSize: '13px',
+                        maxWidth: '70%',
+                      }}
+                    >
+                      晚上要不要一起吃饭
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        color: '#000000',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        fontSize: '13px',
+                        maxWidth: '70%',
+                      }}
+                    >
+                      等你回复哦～
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    textAlign: 'center',
+                    marginTop: '12px',
+                    fontSize: '11px',
+                    opacity: 0.5,
+                    paddingTop: '10px',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                  }}
+                >
+                  （TA 一直在等你消息）
+                </div>
+              </div>
+
+              {/* 底部 Dock */}
+              <div
+                style={{
+                  position: 'sticky',
+                  bottom: 0,
+                  margin: '20px 20px',
+                  background: 'rgba(255, 255, 255, 0.15)',
+                  borderRadius: '22px',
+                  padding: '12px 20px',
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                  backdropFilter: 'blur(20px)',
+                }}
+              >
+                {/* 电话图标 */}
+                <div
+                  onClick={() => showToast('最近没有通话记录')}
+                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+                >
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(180deg, #34C759 0%, #28A745 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="#ffffff">
+                      <path d="M20 15.5c-1.2 0-2.4-0.2-3.5-0.6-0.4-0.2-0.9-0.1-1.2 0.3l-1.8 2.2c-2.8-1.4-5.1-3.7-6.5-6.5l2.2-1.8c0.4-0.3 0.5-0.8 0.3-1.2-0.4-1.1-0.6-2.3-0.6-3.5 0-0.3-0.2-0.5-0.5-0.5H4c-0.3 0-0.5 0.2-0.5 0.5 0 9.1 7.4 16.5 16.5 16.5 0.3 0 0.5-0.2 0.5-0.5v-3.5c0-0.3-0.2-0.5-0.5-0.5z" />
+                    </svg>
+                  </div>
+                </div>
+                {/* Safari 图标 */}
+                <div
+                  onClick={() => showToast('浏览器里有很多关于你的搜索')}
+                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+                >
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(180deg, #5ac8fa 0%, #007AFF 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
+                      <circle cx="12" cy="12" r="10" fill="#007AFF" stroke="#ffffff" strokeWidth="1" />
+                      <path d="M12 2v20M2 12h20" stroke="#ffffff" strokeWidth="0.5" />
+                    </svg>
+                  </div>
+                </div>
+                {/* 信息图标 */}
+                <div
+                  onClick={() => showToast('没有新信息')}
+                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+                >
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(180deg, #5ac8fa 0%, #007AFF 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="#ffffff">
+                      <rect x="3" y="4" width="18" height="14" rx="2" />
+                      <path d="M3 6l9 6 9-6" stroke="#007AFF" strokeWidth="1" fill="none" />
+                    </svg>
+                  </div>
+                </div>
+                {/* 相机图标 */}
+                <div
+                  onClick={() => showToast('相机正在打开...')}
+                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+                >
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(180deg, #8e8e93 0%, #636366 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
+                      <path d="M20 6h-2.8l-1.2-1.6c-0.4-0.5-1-0.8-1.7-0.8H9.7c-0.7 0-1.3 0.3-1.7 0.8L6.8 6H4c-1.1 0-2 0.9-2 2v10c0 1.1 0.9 2 2 2h16c1.1 0 2-0.9 2-2V8c0-1.1-0.9-2-2-2z" />
+                      <circle cx="12" cy="13" r="4" fill="#636366" />
+                      <circle cx="12" cy="13" r="2.5" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 关闭按钮 */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '36px',
+                right: '12px',
+                zIndex: 20,
+              }}
+            >
+              <button
+                onClick={() => setPeekPhoneOpen(false)}
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 255, 255, 0.2)',
+                  border: 'none',
+                  color: '#ffffff',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '18px',
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* 底部 Home 指示条（模拟 iPhone Home Indicator） */}
+            <div
+              onClick={() => setPeekPhoneOpen(false)}
+              style={{
+                height: '34px',
+                background: '#000000',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <div
+                style={{
+                  width: '120px',
+                  height: '5px',
+                  borderRadius: '3px',
+                  background: '#ffffff',
+                }}
+              />
+            </div>
+          </div>
+        )}
+
         <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
       </div>
     );
