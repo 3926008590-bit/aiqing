@@ -1264,7 +1264,7 @@ export const Home: React.FC = () => {
               style={{
                 height: '48px',
                 minHeight: '48px',
-                background: peekPhoneApp === 'wechat' ? '#ededed' : peekPhoneApp === 'messages' ? '#ededed' : peekPhoneApp === 'phone' ? '#ffffff' : peekPhoneApp === 'settings' ? '#ededed' : peekPhoneApp === 'douyin' ? '#000000' : peekPhoneApp === 'xiaohongshu' ? '#ffffff' : peekPhoneApp === 'alipay' ? '#1677FF' : peekPhoneApp === 'taobao' ? '#ff6a00' : '#000000',
+                background: peekPhoneApp === null ? '#ededed' : peekPhoneApp === 'wechat' ? '#ededed' : peekPhoneApp === 'messages' ? '#ededed' : peekPhoneApp === 'phone' ? '#ffffff' : peekPhoneApp === 'settings' ? '#ededed' : peekPhoneApp === 'douyin' ? '#000000' : peekPhoneApp === 'xiaohongshu' ? '#ffffff' : peekPhoneApp === 'alipay' ? '#1677FF' : peekPhoneApp === 'taobao' ? '#ff6a00' : '#1c1c1e',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -1289,7 +1289,7 @@ export const Home: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'flex-start',
-                  color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' ? '#ffffff' : '#000000',
+                  color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' || peekPhoneApp === 'photos' || peekPhoneApp === 'camera' || peekPhoneApp === 'music' || peekPhoneApp === 'safari' ? '#ffffff' : '#000000',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
@@ -1299,7 +1299,7 @@ export const Home: React.FC = () => {
                   whiteSpace: 'nowrap',
                 }}
               >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '2px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '4px' }}>
                   <polyline points="15 18 9 12 15 6" />
                 </svg>
                 {peekPhoneApp === null ? '关闭' : '返回'}
@@ -1309,7 +1309,7 @@ export const Home: React.FC = () => {
                 style={{
                   fontWeight: 600,
                   fontSize: '16px',
-                  color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' ? '#ffffff' : '#000000',
+                  color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' || peekPhoneApp === 'photos' || peekPhoneApp === 'camera' || peekPhoneApp === 'music' || peekPhoneApp === 'safari' ? '#ffffff' : '#000000',
                 }}
               >
                 {peekPhoneApp === null && `偷看 ${currentConversation?.title || 'TA'} 的手机`}
@@ -1331,7 +1331,7 @@ export const Home: React.FC = () => {
               <span
                 style={{
                   fontSize: '12px',
-                  color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' ? '#ffffff' : '#333333',
+                  color: peekPhoneApp === 'douyin' || peekPhoneApp === 'alipay' || peekPhoneApp === 'photos' || peekPhoneApp === 'camera' || peekPhoneApp === 'music' || peekPhoneApp === 'safari' ? '#ffffff' : '#333333',
                   fontWeight: 600,
                   width: '60px',
                   textAlign: 'right',
