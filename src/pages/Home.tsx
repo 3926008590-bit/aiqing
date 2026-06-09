@@ -550,8 +550,8 @@ export const Home: React.FC = () => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          height: '100vh',
-          maxHeight: '100vh',
+          height: 'calc(100 * var(--vh, 1vh))',
+          maxHeight: 'calc(100 * var(--vh, 1vh))',
           overflow: 'hidden',
           background: '#ededed',
           position: 'relative',
@@ -3614,9 +3614,9 @@ export const Home: React.FC = () => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100 * var(--vh, 1vh))', maxHeight: 'calc(100 * var(--vh, 1vh))' }}>
       {/* 主内容区 */}
-      <div style={{ flex: 1, overflow: 'hidden' }}>
+      <div style={{ flex: 1, overflow: 'hidden', minHeight: 0 }}>
         {mainContent}
       </div>
 
