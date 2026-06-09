@@ -1243,6 +1243,246 @@ export const Home: React.FC = () => {
           </div>
         )}
 
+        {/* 礼物弹窗 */}
+        {giftOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+              padding: '20px',
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setGiftOpen(false);
+              }
+            }}
+          >
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '12px',
+                width: '100%',
+                maxWidth: '340px',
+                padding: '24px 20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+              }}
+            >
+              <div style={{ fontSize: '17px', fontWeight: 600, color: '#000000', textAlign: 'center' }}>
+                🎁 送礼物
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <span style={{ fontSize: '13px', color: '#888888' }}>选择礼物金额</span>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                  {[5.2, 13.14, 52, 66, 88, 520].map((amount) => (
+                    <button
+                      key={amount}
+                      onClick={() => setGiftAmount(amount)}
+                      style={{
+                        padding: '12px 0',
+                        borderRadius: '8px',
+                        background: giftAmount === amount ? '#07C160' : '#f5f5f5',
+                        color: giftAmount === amount ? '#ffffff' : '#000000',
+                        fontSize: '14px',
+                        fontWeight: 500,
+                        border: 'none',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      ¥{amount}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                  <span style={{ fontSize: '13px', color: '#888888' }}>自定义：</span>
+                  <input
+                    type="number"
+                    value={giftAmount === 0 ? '' : giftAmount}
+                    onChange={(e) => setGiftAmount(parseFloat(e.target.value) || 0)}
+                    placeholder="输入金额"
+                    style={{
+                      flex: 1,
+                      padding: '8px 12px',
+                      fontSize: '14px',
+                      border: '1px solid #e5e5e5',
+                      borderRadius: '6px',
+                      outline: 'none',
+                      color: '#000000',
+                    }}
+                  />
+                  <span style={{ fontSize: '13px', color: '#888888' }}>元</span>
+                </div>
+              </div>
+              <div style={{ fontSize: '13px', color: '#888888', textAlign: 'center' }}>
+                当前余额：¥{userProfile.balance?.toFixed?.(2) ?? userProfile.balance}
+              </div>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                <button
+                  onClick={() => setGiftOpen(false)}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '8px',
+                    background: '#f5f5f5',
+                    color: '#000000',
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  取消
+                </button>
+                <button
+                  onClick={handleSendGift}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '8px',
+                    background: '#07C160',
+                    color: '#ffffff',
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  送出
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 红包弹窗 */}
+        {redPacketOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+              padding: '20px',
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setRedPacketOpen(false);
+              }
+            }}
+          >
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '12px',
+                width: '100%',
+                maxWidth: '340px',
+                padding: '24px 20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+              }}
+            >
+              <div style={{ fontSize: '17px', fontWeight: 600, color: '#000000', textAlign: 'center' }}>
+                🧧 发红包
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <span style={{ fontSize: '13px', color: '#888888' }}>选择红包金额</span>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                  {[1.68, 6.66, 8.88, 18.88, 66.66, 88.88].map((amount) => (
+                    <button
+                      key={amount}
+                      onClick={() => setRedPacketAmount(amount)}
+                      style={{
+                        padding: '12px 0',
+                        borderRadius: '8px',
+                        background: redPacketAmount === amount ? '#07C160' : '#f5f5f5',
+                        color: redPacketAmount === amount ? '#ffffff' : '#000000',
+                        fontSize: '14px',
+                        fontWeight: 500,
+                        border: 'none',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      ¥{amount}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                  <span style={{ fontSize: '13px', color: '#888888' }}>自定义：</span>
+                  <input
+                    type="number"
+                    value={redPacketAmount === 0 ? '' : redPacketAmount}
+                    onChange={(e) => setRedPacketAmount(parseFloat(e.target.value) || 0)}
+                    placeholder="输入金额"
+                    style={{
+                      flex: 1,
+                      padding: '8px 12px',
+                      fontSize: '14px',
+                      border: '1px solid #e5e5e5',
+                      borderRadius: '6px',
+                      outline: 'none',
+                      color: '#000000',
+                    }}
+                  />
+                  <span style={{ fontSize: '13px', color: '#888888' }}>元</span>
+                </div>
+              </div>
+              <div style={{ fontSize: '13px', color: '#888888', textAlign: 'center' }}>
+                当前余额：¥{userProfile.balance?.toFixed?.(2) ?? userProfile.balance}
+              </div>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                <button
+                  onClick={() => setRedPacketOpen(false)}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '8px',
+                    background: '#f5f5f5',
+                    color: '#000000',
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  取消
+                </button>
+                <button
+                  onClick={handleSendRedPacket}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '8px',
+                    background: '#07C160',
+                    color: '#ffffff',
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  发红包
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* 偷看手机页面 - 模拟对方手机界面 */}
         {peekPhoneOpen && (
           <div
